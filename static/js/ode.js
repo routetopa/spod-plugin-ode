@@ -135,10 +135,10 @@ ODE.loadItemMarkup = function(id, params, callback)
 
 ODE.dataletParameters =
 {
-    component:'linechart-datalet',
-    dataset:'http://dati.lazio.it/catalog/api/action/datastore_search?resource_id=722b6cbd-28d3-4151-ac50-9c4261298168&limit=1000',
-    forder:'0,1',
-    query:'"result,records,Capitolo","result,records,Previsione Competenza"'
+    component:'',
+    dataset:'',
+    forder:'',
+    query:''
 };
 
 ODE.commentSendMessage = function(message, context)
