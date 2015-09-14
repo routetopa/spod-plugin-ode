@@ -68,7 +68,7 @@ class ODE_CLASS_EventHandler
         if (!OW::getRequest()->isAjax())
         {
             //Load polyfill for browser not web-component ready
-            OW::getDocument()->addScript('http://service.routetopa.eu/WebComponentsDEV/COMPONENTS/bower_components/webcomponentsjs/webcomponents.js', 'text/javascript');
+            //OW::getDocument()->addScript('https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.12/webcomponents.min.js', 'text/javascript');
 
             //Add ODE.JS script to all the Oxwall pages and set THEME_IMAGES_URL variable with theme image url
             OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . 'ode.js', 'text/javascript');
