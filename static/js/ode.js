@@ -36,10 +36,27 @@ ODE.init = function()
     ComponentService.deep_url = 'http://service.routetopa.eu/WebComponentsDEV/DEEP/';
     //ComponentService.getComponent(ds_params);
 
-    $("#ode_controllet_placeholder").bind('data-sevc-controllet.dataletCreated', function (e) {
-       console.log(e);
+    // Listen for datalet event
+    window.addEventListener('data-sevc-controllet.dataletCreated', function (e) {
+       console.log(e.detail.data);
+        ODE.setDataletValues(e.detail.data);
     });
 
+};
+
+ODE.setDataletValues = function (data)
+{
+    $('input[name=ode_datalet]').val(data.datalet);
+    $('input[name=ode_dataset]').val(data.dataUrl);
+    $('input[name=ode_query]').val('"'+data.fields.join('","')+'"');
+    $('input[name=ode_forder]').val('');
+
+    ODE.dataletParameters.component = data.datalet;
+    ODE.dataletParameters.dataset   = data.dataUrl;
+    ODE.dataletParameters.forder    = '';
+    ODE.dataletParameters.query     = '"'+data.fields.join('","')+'"';
+
+    previewFloatBox.close();
 };
 
 ODE.loadDatalet = function(component, dataset, forder, query, placeholder)
@@ -116,15 +133,13 @@ ODE.loadItemMarkup = function(id, params, callback)
     });
 };
 
-ODE.listenOnDataletPost = function()
+ODE.dataletParameters =
 {
-
-};
-
-ODE.dataletParameters = {component:'linechart-datalet',
+    component:'linechart-datalet',
     dataset:'http://dati.lazio.it/catalog/api/action/datastore_search?resource_id=722b6cbd-28d3-4151-ac50-9c4261298168&limit=1000',
     forder:'0,1',
-    query:'"result,records,Capitolo","result,records,Previsione Competenza"'};
+    query:'"result,records,Capitolo","result,records,Previsione Competenza"'
+};
 
 ODE.commentSendMessage = function(message, context)
 {
