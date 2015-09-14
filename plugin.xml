@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <name>Open Data Enabler</name>
+    <key>ode</key>
+    <description>OPEN DATA OXWALL ENABLER</description>
+    <author>ISISLAB</author>
+    <authorEmail>isislab.unisa@gmail.com</authorEmail>
+    <authorUrl>http://www.isislab.it/</authorUrl>
+    <developerKey>your_developer_key_here</developerKey>
+    <build>1</build>
+    <copyright>ISISLAB All rights reserved.</copyright>
+    <license>MIT</license>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+</plugin>

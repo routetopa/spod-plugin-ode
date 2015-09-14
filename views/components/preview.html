@@ -1,0 +1,33 @@
+{script}
+{literal}
+
+var ds_params ={
+component   : "data-sevc-controllet",
+params      :{
+'data-url'          : "http://dati.lazio.it/catalog/api/action/datastore_search?resource_id=722b6cbd-28d3-4151-ac50-9c4261298168&limit=500",
+'deep-url'          : "http://service.routetopa.eu/WebComponentsDEV/DEEP/",
+'datalets-list-url' : "http://service.routetopa.eu/WebComponentsDEV/DEEP/datalets-list"
+},
+fields     : Array(),
+placeHolder : "ode_controllet_placeholder_test"
+};
+ComponentService.deep_url = 'http://service.routetopa.eu/WebComponentsDEV/DEEP/';
+ComponentService.getComponent(ds_params);
+
+{/literal}
+{/script}
+
+<!--
+<div id="translate_floatbox_content">
+
+    <div class="title">
+    </div>
+
+    <div class='ow_right'>
+        <input type="button" name="close_button" id="close_button" value="{text key='translate+floatbox_close'}" />
+    </div>
+</div>
+-->
+
+<div class="controllet_containter_class" id="ode_controllet_placeholder_test">
+</div>
