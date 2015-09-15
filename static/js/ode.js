@@ -21,7 +21,7 @@ ODE.init = function()
         });
     });
 
-    var ds_params ={
+    /*var ds_params ={
         component   : "data-sevc-controllet",
         params      :{
             'data-url'          : "http://dati.lazio.it/catalog/api/action/datastore_search?resource_id=722b6cbd-28d3-4151-ac50-9c4261298168&limit=500",
@@ -34,7 +34,7 @@ ODE.init = function()
 
     //TODO Export deep_url
     ComponentService.deep_url = 'http://service.routetopa.eu/WebComponentsDEV/DEEP/';
-    //ComponentService.getComponent(ds_params);
+    ComponentService.getComponent(ds_params);*/
 
     // Listen for datalet event
     window.addEventListener('data-sevc-controllet.dataletCreated', function (e) {
