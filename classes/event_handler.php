@@ -82,12 +82,14 @@ class ODE_CLASS_EventHandler
             //Init JS CONSTANTS
             $js = UTIL_JsGenerator::composeJsString('
                 ComponentService.deep_url = {$ode_deep_url}
+                ComponentService.deep_datalet_list = {$ode_deep_datalet_list}
                 ODE.ajax_load_item = {$ajax_load_item}
                 ODE.ajax_add_comment = {$ajax_add_comment}
             ', array(
                 'ode_deep_url' => ODE_DEEP_URL,
                 'ajax_load_item' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'loadItem'),
-                'ajax_add_comment' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'addComment')
+                'ajax_add_comment' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'addComment'),
+                'ode_deep_datalet_list' => ODE_DEEP_DATALET_LIST
             ));
 
             OW::getDocument()->addOnloadScript($js);
