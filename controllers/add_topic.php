@@ -187,14 +187,17 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
                 }
 
                 /* ODE */
-                ODE_BOL_Service::getInstance()->addDatalet(
-                    $_REQUEST['ode_datalet'],
-                    $_REQUEST['ode_dataset'],
-                    $_REQUEST['ode_query'],
-                    OW::getUser()->getId(),
-                    $_REQUEST['ode_forder'],
-                    $topicDto->lastPostId,
-                    'forum');
+                if( ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'], $_REQUEST['ode_query']) )
+                {
+                    ODE_BOL_Service::getInstance()->addDatalet(
+                        $_REQUEST['ode_datalet'],
+                        $_REQUEST['ode_dataset'],
+                        $_REQUEST['ode_query'],
+                        OW::getUser()->getId(),
+                        $_REQUEST['ode_forder'],
+                        $topicDto->lastPostId,
+                        'forum');
+                }
                 /* ODE */
 
                 $this->redirect(OW::getRouter()->

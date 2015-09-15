@@ -129,8 +129,11 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             ));
 
         /* ODE */
-        ODE_BOL_Service::getInstance()->addDatalet($_POST['ode_datalet'], $_POST['ode_dataset'],
-            $_POST['ode_query'], OW::getUser()->getId(), '0,1', $out['entityId'], 'newsfeed');
+        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'], $_REQUEST['ode_query']) )
+        {
+            ODE_BOL_Service::getInstance()->addDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'],
+                $_REQUEST['ode_query'], OW::getUser()->getId(), $_REQUEST['ode_forder'], $out['entityId'], 'newsfeed');
+        }
         /* ODE */
 
         echo json_encode(array(
@@ -188,14 +191,17 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
         /* ODE */
-        ODE_BOL_Service::getInstance()->addDatalet(
-            $_REQUEST['datalet']['component'],
-            $_REQUEST['datalet']['dataset'],
-            $_REQUEST['datalet']['query'],
-            OW::getUser()->getId(),
-            $_REQUEST['datalet']['forder'],
-            $comment->getId(),
-            'comment');
+        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['dataset'], $_REQUEST['datalet']['query']) )
+        {
+            ODE_BOL_Service::getInstance()->addDatalet(
+                $_REQUEST['datalet']['component'],
+                $_REQUEST['datalet']['dataset'],
+                $_REQUEST['datalet']['query'],
+                OW::getUser()->getId(),
+                $_REQUEST['datalet']['forder'],
+                $comment->getId(),
+                'comment');
+        }
         /* ODE */
 
         // trigger event comment add

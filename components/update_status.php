@@ -56,19 +56,15 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $form->addElement($odeButton);
 
         $field = new HiddenField('ode_datalet');
-        //$field->setValue('linechart-datalet');
         $form->addElement($field);
 
         $field = new HiddenField('ode_dataset');
-        //$field->setValue('http://dati.lazio.it/catalog/api/action/datastore_search?resource_id=722b6cbd-28d3-4151-ac50-9c4261298168&limit=1000');
         $form->addElement($field);
 
         $field = new HiddenField('ode_query');
-        //$field->setValue("'result,records,Capitolo','result,records,Previsione Competenza'");
         $form->addElement($field);
 
         $field = new HiddenField('ode_forder');
-        //$field->setValue("0,1");
         $form->addElement($field);
 
         $script = "$('#{$odeButton->getId()}').click(function(e){

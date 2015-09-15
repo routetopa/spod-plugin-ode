@@ -582,24 +582,25 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         {
             $data = $addPostForm->getValues();
 
-            if ( $data['topic'] && $data['topic'] == $topicDto->id && !$topicDto->locked )
-            {
-                if ( !OW::getUser()->getId() )
-                {
+            if ( $data['topic'] && $data['topic'] == $topicDto->id && !$topicDto->locked ) {
+                if (!OW::getUser()->getId()) {
                     throw new AuthenticateException();
                 }
 
                 $postDto = $this->forumService->addPost($topicDto, $data);
 
                 /* ODE */
-                ODE_BOL_Service::getInstance()->addDatalet(
-                    $_REQUEST['ode_datalet'],
-                    $_REQUEST['ode_dataset'],
-                    $_REQUEST['ode_query'],
-                    OW::getUser()->getId(),
-                    $_REQUEST['ode_forder'],
-                    $postDto->id,
-                    'forum');
+                if (ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'], $_REQUEST['ode_query']))
+                {
+                    ODE_BOL_Service::getInstance()->addDatalet(
+                        $_REQUEST['ode_datalet'],
+                        $_REQUEST['ode_dataset'],
+                        $_REQUEST['ode_query'],
+                        OW::getUser()->getId(),
+                        $_REQUEST['ode_forder'],
+                        $postDto->id,
+                        'forum');
+                }
                 /* ODE */
 
                 $this->redirect($this->forumService->getPostUrl($topicId, $postDto->id));

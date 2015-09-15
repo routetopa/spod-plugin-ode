@@ -58,6 +58,8 @@ class ODE_BOL_Service
 
     public function addDatalet($datalet, $dataset, $query, $ownerId, $forder, $postId, $plugin)
     {
+        ODE_CLASS_Helper::sanitizeDataletInput($datalet, $dataset, $query);
+
         $dt            = new ODE_BOL_Datalet();
         $dt->dataset   = $dataset;
         $dt->component = $datalet;
