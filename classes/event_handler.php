@@ -47,6 +47,14 @@ class ODE_CLASS_EventHandler
         OW::getRouter()->removeRoute('delete-topic');
         OW::getRouter()->addRoute(new OW_Route('delete-topic', 'forum/deleteTopic/:topicId', 'ODE_CTRL_Topic', 'deleteTopic'));
 
+        // Remove default event.add route from Event plugin and replace with a custom one
+        OW::getRouter()->removeRoute('event.add');
+        OW::getRouter()->addRoute(new OW_Route('event.add', 'event/add', 'ODE_CTRL_Event', 'add'));
+
+        // Remove default event.view route from Event plugin and replace with a custom one
+        OW::getRouter()->removeRoute('event.view');
+        OW::getRouter()->addRoute(new OW_Route('event.view', 'event/:eventId', 'ODE_CTRL_Event', 'view'));
+
         // event raised just before rendering a feed item (= an Action)
         OW::getEventManager()->bind('feed.on_item_render', array($this, 'onItemRender'));
         OW::getEventManager()->bind('feed.on_item_render', array($this, 'onLastReplyForumRender'));
