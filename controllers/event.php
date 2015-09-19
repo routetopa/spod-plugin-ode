@@ -103,7 +103,7 @@ class ODE_CTRL_Event extends OW_ActionController
                                                     \'fields-order\' : \''.$datalet["forder"].'\'
                                                  },
 		                                         fields      :  Array('.$datalet["query"].'),
-		                                         placeHolder : "datalet_placeholder_'.$event->getId().'"
+		                                         placeHolder : "datalet_placeholder_'.$event->getId().'_event"
 	                                            });');
         }
         /* ODE */

@@ -17,12 +17,6 @@ class ODE_CLASS_EventHandler
     // Handle event and route
     public function init()
     {
-        // event triggered when receiving a request, just after the base system initialization
-        OW::getEventManager()->bind(OW_EventManager::ON_APPLICATION_INIT, array($this, 'onApplicationInit'));
-
-        // event that allows returning a component to replace the standard status update form
-        OW::getEventManager()->bind('feed.get_status_update_cmp', array($this, 'onStatusUpdateCreate'));
-
         // Remove default topic-default route from Forum plugin and replace with a custom one
         OW::getRouter()->removeRoute('topic-default');
         OW::getRouter()->addRoute(new OW_Route('topic-default', 'forum/topic/:topicId', 'ODE_CTRL_Topic', 'index'));
@@ -55,6 +49,12 @@ class ODE_CLASS_EventHandler
         OW::getRouter()->removeRoute('event.view');
         OW::getRouter()->addRoute(new OW_Route('event.view', 'event/:eventId', 'ODE_CTRL_Event', 'view'));
 
+        // event triggered when receiving a request, just after the base system initialization
+        OW::getEventManager()->bind(OW_EventManager::ON_APPLICATION_INIT, array($this, 'onApplicationInit'));
+
+        // event that allows returning a component to replace the standard status update form
+        OW::getEventManager()->bind('feed.get_status_update_cmp', array($this, 'onStatusUpdateCreate'));
+
         // event raised just before rendering a feed item (= an Action)
         OW::getEventManager()->bind('feed.on_item_render', array($this, 'onItemRender'));
         OW::getEventManager()->bind('feed.on_item_render', array($this, 'onLastReplyForumRender'));
@@ -75,8 +75,10 @@ class ODE_CLASS_EventHandler
         // if request is Ajax, we don't need to re-execute the same code again!
         if (!OW::getRequest()->isAjax())
         {
-            //Load polyfill for browser not web-component ready
-            //OW::getDocument()->addScript('https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.12/webcomponents.min.js', 'text/javascript');
+            // TODO try to bind this js inclusion to an event
+            // Load polyfill for browser not web-component ready
+            // Load in ow_core -> application.php #528
+            //OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . '/webcomponentsjs-0.7.12/webcomponents.js', 'text/javascript', (-101));
 
             //Add ODE.JS script to all the Oxwall pages and set THEME_IMAGES_URL variable with theme image url
             OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . 'ode.js', 'text/javascript');
@@ -106,11 +108,11 @@ class ODE_CLASS_EventHandler
 
         if (OW::getApplication()->isMobile())
         {
-            //TODO MOBILE PAGE REQUEST
+            // TODO MOBILE PAGE REQUEST
         }
         else
         {
-            //TODO DESKTOP PAGE REQUEST
+            // TODO DESKTOP PAGE REQUEST
         }
     }
 
