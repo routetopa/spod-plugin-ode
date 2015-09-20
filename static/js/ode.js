@@ -17,7 +17,7 @@ ODE.init = function()
         var newEl = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_lens.svg) no-repeat center;" data-id="' + id + '"></a>'));
         newEl = newEl.children().first();
         newEl.click(function (e) {
-            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'500px', iconClass:'ow_ic_lens', title:''});
+            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'60vh', iconClass:'ow_ic_lens', title:''});
         });
     });
 

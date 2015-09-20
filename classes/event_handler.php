@@ -70,6 +70,7 @@ class ODE_CLASS_EventHandler
         OW::getEventManager()->bind('base_delete_comment', array($this, 'onDeleteComment'));
     }
 
+    // Add ODE Javascript, DEEP-CLIENT and set Javascript constant
     public function onApplicationInit(OW_Event $event)
     {
         // if request is Ajax, we don't need to re-execute the same code again!
@@ -116,6 +117,7 @@ class ODE_CLASS_EventHandler
         }
     }
 
+    // Replace the newsfeed form
     public function onStatusUpdateCreate(OW_Event $event)
     {
         $params = $event->getParams();
@@ -256,17 +258,7 @@ class ODE_CLASS_EventHandler
 
     }
 
-    // TODO REMOVE this method
-    public function onAddComment(OW_Event $event)
-    {
-        $params = $event->getParams();
-
-        /* ODE */
-        //ODE_BOL_Service::getInstance()->addDatalet('comment', 'comment',
-          //  'comment', OW::getUser()->getId(), '0,1', $params['commentId'], 'comment');
-        /* ODE */
-    }
-
+    // Handle comment deletion
     public function onDeleteComment(OW_Event $event)
     {
         //Get parameter for check pluginKey for this event
