@@ -66,7 +66,6 @@ class ODE_CLASS_EventHandler
         OW::getEventManager()->bind('feed.before_action_delete', array($this, 'onBeforePostDelete'));
 
         // events raised when adding or deleting a comment
-        OW::getEventManager()->bind('base_add_comment', array($this, 'onAddComment'));
         OW::getEventManager()->bind('base_delete_comment', array($this, 'onDeleteComment'));
     }
 
