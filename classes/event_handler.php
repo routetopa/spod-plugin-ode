@@ -85,14 +85,12 @@ class ODE_CLASS_EventHandler
             OW::getDocument()->addOnloadScript('ODE.THEME_IMAGES_URL = "' . OW::getThemeManager()->getThemeImagesUrl() . '";');
 
             //Add deepClient.js to all the Oxwall pages
-            //TODO set reference to deepClient.js to a GIT version
-            /*OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . 'deepClient.js', 'text/javascript');*/
-            OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . 'JQueryDeepClient.js', 'text/javascript');
+            OW::getDocument()->addScript(ODE_DEEP_CLIENT, 'text/javascript');
 
             //Init JS CONSTANTS
             $js = UTIL_JsGenerator::composeJsString('
-                ComponentService.deep_url = {$ode_deep_url}
-                ComponentService.deep_datalet_list = {$ode_deep_datalet_list}
+                ODE.deep_url = {$ode_deep_url}
+                ODE.deep_datalet_list = {$ode_deep_datalet_list}
                 ODE.ajax_load_item = {$ajax_load_item}
                 ODE.ajax_add_comment = {$ajax_add_comment}
             ', array(

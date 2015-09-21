@@ -1,34 +1,20 @@
 {script}
 {literal}
 
-var ds_params ={
+ComponentService.getComponent({
     component   : "data-sevc-controllet",
     params      :
         {
         'data-url'          : "",
-        'deep-url'          : ComponentService.deep_url,
-        'datalets-list-url' : ComponentService.deep_datalet_list
+        'deep-url'          : ODE.deep_url,
+        'datalets-list-url' : ODE.deep_datalet_list
         },
     fields     : Array(),
     placeHolder : "ode_controllet_placeholder_test"
-};
-
-ComponentService.getComponent(ds_params);
+});
 
 {/literal}
 {/script}
-
-<!--
-<div id="translate_floatbox_content">
-
-    <div class="title">
-    </div>
-
-    <div class='ow_right'>
-        <input type="button" name="close_button" id="close_button" value="{text key='translate+floatbox_close'}" />
-    </div>
-</div>
--->
 
 <div id="ode_controllet_placeholder_test" style="position:relative; z-index:2000">
 </div>

@@ -36,10 +36,11 @@ ODE.init = function()
     ComponentService.deep_url = 'http://service.routetopa.eu/WebComponentsDEV/DEEP/';
     ComponentService.getComponent(ds_params);*/
 
+    ComponentService.deep_url = ODE.deep_url;
+
     // Listen for datalet event
     window.addEventListener('data-sevc-controllet.dataletCreated', function (e) {
-       console.log(e.detail.data);
-        ODE.setDataletValues(e.detail.data);
+       ODE.setDataletValues(e.detail.data);
     });
 
 };
