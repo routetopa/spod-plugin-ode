@@ -4,8 +4,6 @@ ODE = {};
 
 ODE.init = function()
 {
-    //console.log('ODE PLUGIN INITIALIZED');
-
     var ta = $('.ow_comments_input textarea');
     $.each(ta, function(idx, obj) {
         if ( $(obj).attr('data-preview-added') ) {
@@ -17,34 +15,24 @@ ODE.init = function()
         var newEl = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_lens.svg) no-repeat center;" data-id="' + id + '"></a>'));
         newEl = newEl.children().first();
         newEl.click(function (e) {
+            ODE.pluginPreview = 'comment';
             previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'60vh', iconClass:'ow_ic_lens', title:''});
         });
     });
-
-    /*var ds_params ={
-        component   : "data-sevc-controllet",
-        params      :{
-            'data-url'          : "http://dati.lazio.it/catalog/api/action/datastore_search?resource_id=722b6cbd-28d3-4151-ac50-9c4261298168&limit=500",
-            'deep-url'          : "http://service.routetopa.eu/WebComponentsDEV/DEEP/",
-            'datalets-list-url' : "http://service.routetopa.eu/WebComponentsDEV/DEEP/datalets-list"
-        },
-        fields     : Array(),
-        placeHolder : "ode_controllet_placeholder"
-    };
-
-    //TODO Export deep_url
-    ComponentService.deep_url = 'http://service.routetopa.eu/WebComponentsDEV/DEEP/';
-    ComponentService.getComponent(ds_params);*/
 
     ComponentService.deep_url = ODE.deep_url;
 
     // Listen for datalet event
     window.addEventListener('data-sevc-controllet.dataletCreated', function (e) {
-       ODE.setDataletValues(e.detail.data);
 
         var data = e.detail.data;
-        $('#ode_controllet_placeholder').slideToggle('fast');
-        ODE.loadDatalet(data.datalet, data.dataUrl, '', data.fields, 'ode_controllet_placeholder');
+        ODE.setDataletValues(data);
+
+        if(ODE.pluginPreview == 'newsfeed')
+        {
+            $('#ode_controllet_placeholder').slideToggle('fast');
+            ODE.loadDatalet(data.datalet, data.dataUrl, '', data.fields, 'ode_controllet_placeholder');
+        }
 
     });
 
@@ -197,9 +185,9 @@ ODE.commentSendMessage = function(message, context)
 };
 
 OwComments.prototype.initTextarea = function()
-  {
+{
     /* ODE */
-    $('#ode_controllet_placeholder').hide();
+      ODE.reset();
     /* ODE */
 
     var self = this;
@@ -268,3 +256,17 @@ OwComments.prototype.initTextarea = function()
         });
     }
 };
+
+ODE.reset = function()
+{
+    $('#ode_controllet_placeholder').hide();
+    $('input[name=ode_datalet]').val("");
+    $('input[name=ode_dataset]').val("");
+    $('input[name=ode_query]').val("");
+    $('input[name=ode_forder]').val('');
+
+    ODE.dataletParameters.component = "";
+    ODE.dataletParameters.dataset   = "";
+    ODE.dataletParameters.forder    = "";
+    ODE.dataletParameters.query     = "";
+}

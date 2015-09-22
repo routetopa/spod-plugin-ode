@@ -586,7 +586,7 @@ class ODEEventAddForm extends Form
 
         /* ODE */
         $odeButton = new Button('ode_open_dialog');
-        $odeButton->setValue(OW::getLanguage()->text('ode', 'add_od'));
+        $odeButton->setValue(OW::getLanguage()->text('ode', 'add_ode_button'));
         $this->addElement($odeButton);
 
         $field = new HiddenField('ode_datalet');
@@ -602,6 +602,7 @@ class ODEEventAddForm extends Form
         $this->addElement($field);
 
         $script = "$('#{$odeButton->getId()}').click(function(e){
+            ODE.pluginPreview = 'event';
             previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'60vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
