@@ -1,5 +1,8 @@
 <?php
 
+$path = OW::getPluginManager()->getPlugin('ode')->getRootDir() . 'langs.zip';
+BOL_LanguageService::getInstance()->importPrefixFromZip($path, 'ode');
+
 $sql = 'DROP TABLE IF EXISTS `' . OW_DB_PREFIX . 'ode_datalet`;
 CREATE TABLE `' . OW_DB_PREFIX . 'ode_datalet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

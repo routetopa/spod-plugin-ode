@@ -6,7 +6,7 @@
     <author>ISISLAB</author>
     <authorEmail>isislab.unisa@gmail.com</authorEmail>
     <authorUrl>http://www.isislab.it/</authorUrl>
-    <developerKey>your_developer_key_here</developerKey>
+    <developerKey></developerKey>
     <build>1</build>
     <copyright>ISISLAB All rights reserved.</copyright>
     <license>MIT</license>

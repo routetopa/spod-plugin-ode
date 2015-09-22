@@ -41,6 +41,11 @@ ODE.init = function()
     // Listen for datalet event
     window.addEventListener('data-sevc-controllet.dataletCreated', function (e) {
        ODE.setDataletValues(e.detail.data);
+
+        var data = e.detail.data;
+        $('#ode_controllet_placeholder').slideToggle('fast');
+        ODE.loadDatalet(data.datalet, data.dataUrl, '', data.fields, 'ode_controllet_placeholder');
+
     });
 
 };
@@ -65,7 +70,7 @@ ODE.loadDatalet = function(component, dataset, forder, query, placeholder)
     ComponentService.getComponent({
         component   : component,
         params      : {'data-url' : dataset, 'fields-order' : forder},
-        fields      : Array(query),
+        fields      : query,
         placeHolder : placeholder
     });
 };
@@ -73,8 +78,6 @@ ODE.loadDatalet = function(component, dataset, forder, query, placeholder)
 ODE.odeLoadNewItem = function(params, preloader, id, callback)
 {
     var self = window.ow_newsfeed_feed_list[id];
-    console.log(self);
-    console.log('HELLO');
 
     if ( typeof preloader == 'undefined' )
     {
@@ -191,10 +194,14 @@ ODE.commentSendMessage = function(message, context)
     });
 
     self.$textarea.val('').keyup().trigger('input.autosize');
-}
+};
 
 OwComments.prototype.initTextarea = function()
-{
+  {
+    /* ODE */
+    $('#ode_controllet_placeholder').hide();
+    /* ODE */
+
     var self = this;
     this.realSubmitHandler = function(){
 
@@ -260,4 +267,4 @@ OwComments.prototype.initTextarea = function()
             }
         });
     }
-}
+};
