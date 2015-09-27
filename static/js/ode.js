@@ -16,7 +16,7 @@ ODE.init = function()
         newEl = newEl.children().first();
         newEl.click(function (e) {
             ODE.pluginPreview = 'comment';
-            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'60vh', iconClass:'ow_ic_lens', title:''});
+            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass:'ow_ic_lens', title:''});
         });
     });
 

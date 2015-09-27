@@ -603,7 +603,7 @@ class ODEEventAddForm extends Form
 
         $script = "$('#{$odeButton->getId()}').click(function(e){
             ODE.pluginPreview = 'event';
-            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'60vh', iconClass: 'ow_ic_add', title: ''});
+            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
         OW::getDocument()->addOnloadScript($script);

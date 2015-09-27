@@ -523,7 +523,7 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
 
         $script = "$('#{$odeButton->getId()}').click(function(e){
             ODE.pluginPreview = 'forum';
-            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'60vh', iconClass: 'ow_ic_add', title: ''});
+            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
         OW::getDocument()->addOnloadScript($script);
