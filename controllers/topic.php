@@ -219,7 +219,7 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         foreach ( $postList as &$post )
         {
             /* ODE */
-            $datalet = ODE_BOL_Service::getInstance()->getDataletByPostID($post['id'], "forum");
+            $datalet = ODE_BOL_Service::getInstance()->getDataletByPostId($post['id'], "forum");
 
             if(!empty($datalet))
             {
@@ -650,7 +650,7 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
                 $postUrl = $this->forumService->getPostUrl($topicId, $prevPostDto->id, false);
 
                 /* ODE */
-                ODE_BOL_Service::getInstance()->deleteDataletByPostId($postId, 'forum');
+                ODE_BOL_Service::getInstance()->deleteDataletsById($postId, 'forum');
                 /* ODE */
             }
         }
@@ -695,13 +695,13 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
 
             if ( $isModerator || $userId == $topicDto->userId )
             {
-                /* ODE */
-                $postId = FORUM_BOL_ForumService::getInstance()->findTopicFirstPost($topicId)->id;
-                ODE_BOL_Service::getInstance()->deleteDataletByPostId($postId, 'forum');
-                /* ODE */
-
                 $groupId = $topicDto->groupId;
                 $this->forumService->deleteTopic($topicId);
+
+                /* ODE */
+                //$postId = FORUM_BOL_ForumService::getInstance()->findTopicFirstPost($topicId)->id;
+                ODE_BOL_Service::getInstance()->deleteDataletsById($topicId, 'topic');
+                /* ODE */
 
                 $redirectUrl = OW::getRouter()->urlForRoute('group-default', array('groupId' => $groupId));
             }

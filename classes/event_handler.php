@@ -49,6 +49,10 @@ class ODE_CLASS_EventHandler
         OW::getRouter()->removeRoute('event.view');
         OW::getRouter()->addRoute(new OW_Route('event.view', 'event/:eventId', 'ODE_CTRL_Event', 'view'));
 
+        // Remove default event.delete route from Event plugin and replace with a custom one
+        OW::getRouter()->removeRoute('event.delete');
+        OW::getRouter()->addRoute(new OW_Route('event.delete', 'event/delete/:eventId', 'ODE_CTRL_Event', 'delete'));
+
         // event triggered when receiving a request, just after the base system initialization
         OW::getEventManager()->bind(OW_EventManager::ON_APPLICATION_INIT, array($this, 'onApplicationInit'));
 
@@ -145,7 +149,7 @@ class ODE_CLASS_EventHandler
         {
 
             $id = $data['content']['vars']['activity']['id'];
-            $datalet = ODE_BOL_Service::getInstance()->getDataletByPostID($id, $params["action"]["pluginKey"]);
+            $datalet = ODE_BOL_Service::getInstance()->getDataletByPostId($id, $params["action"]["pluginKey"]);
 
             if (!empty($datalet))
             {
@@ -180,7 +184,7 @@ class ODE_CLASS_EventHandler
             //if the entity is a post then id = $params['action']['entityId'] otherwise is a topic then get i get the first post of the topic
             $id = $params["action"]["pluginKey"] == "newsfeed" ? $params['action']['entityId'] : FORUM_BOL_ForumService::getInstance()->findTopicFirstPost($params['action']['entityId'])->id;
 
-            $datalet = ODE_BOL_Service::getInstance()->getDataletByPostID($id, $params["action"]["pluginKey"]);
+            $datalet = ODE_BOL_Service::getInstance()->getDataletByPostId($id, $params["action"]["pluginKey"]);
 
             $data = $event->getData();
 
@@ -221,7 +225,7 @@ class ODE_CLASS_EventHandler
         $comment = $event->getItem();
         $id = $comment->getId();
 
-        $datalet = ODE_BOL_Service::getInstance()->getDataletByPostID($id, "comment");
+        $datalet = ODE_BOL_Service::getInstance()->getDataletByPostId($id, "comment");
 
         if(!empty($datalet))
         {
@@ -250,7 +254,7 @@ class ODE_CLASS_EventHandler
     {
         //Get parameter for check pluginKey for this event
         $params = $event->getParams();
-        ODE_BOL_Service::getInstance()->deleteDataletByPostId($params['entityId'], 'newsfeed');
+        ODE_BOL_Service::getInstance()->deleteDataletsById($params['entityId'], 'newsfeed');
 
         /*$commentEntity = BOL_CommentService::getInstance()->findCommentEntity($params['entityType'], $params['entityId']);
         ODE_BOL_Service::getInstance()->deleteDataletByPostId($commentEntity->id, 'comment');*/
@@ -262,7 +266,7 @@ class ODE_CLASS_EventHandler
     {
         //Get parameter for check pluginKey for this event
         $params = $event->getParams();
-        ODE_BOL_Service::getInstance()->deleteDataletByPostId($params['commentId'], 'comment');
+        ODE_BOL_Service::getInstance()->deleteDataletsById($params['commentId'], 'comment');
     }
 
 }

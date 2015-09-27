@@ -34,3 +34,5 @@ CREATE TABLE `' . OW_DB_PREFIX . 'ode_datalet_post` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;';
 
 OW::getDbo()->query($sql);
+
+OW::getPluginManager()->addPluginSettingsRouteName('ode', 'ode-settings');

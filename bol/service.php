@@ -43,7 +43,7 @@ class ODE_BOL_Service
         return $result;
     }
 
-    public function getDataletByPostID($id, $plugin="")
+    public function getDataletByPostId($id, $plugin="")
     {
         $dbo = OW::getDbo();
 
@@ -55,6 +55,53 @@ class ODE_BOL_Service
 
         return $dbo->queryForRow($query);
     }
+
+    public function getDataletsById($id, $plugin)
+    {
+        $query = "SELECT * FROM ow_ode_datalet JOIN ow_ode_datalet_post ON ow_ode_datalet.id = dataletId ";
+
+        switch($plugin)
+        {
+            case "newsfeed" :
+
+                $commentEntityId = " SELECT id FROM ow_base_comment_entity WHERE entityId = ".$id." AND pluginKey = 'newsfeed' ";
+                $commentsId = " SELECT id FROM ow_base_comment WHERE commentEntityId = (".$commentEntityId.") ";
+                $query .= "WHERE postId = ".$id." AND plugin = 'newsfeed' OR postId IN (".$commentsId.") AND plugin = 'comment'";
+                break;
+
+            case "event" :
+
+                $commentEntityId = " SELECT id FROM ow_base_comment_entity WHERE entityId = ".$id." AND pluginKey = 'event' ";
+                $commentsId = " SELECT id FROM ow_base_comment WHERE commentEntityId = (".$commentEntityId.") ";
+                $query .= "WHERE postId = ".$id." AND plugin = 'event' OR postId IN ($commentsId) AND plugin = 'comment'";
+                break;
+
+            case "comment" :
+
+                $query .= "WHERE postId = ".$id." AND plugin = 'comment'";
+                break;
+
+            case "topic" :
+
+                $forumsId = " SELECT id FROM ow_forum_post WHERE topicId = ".$id." ";
+                $query .= "WHERE postId IN ($forumsId) AND plugin = 'forum'";
+                break;
+
+            case "forum" :
+
+                $query .= "WHERE postId = ".$id." AND plugin = 'forum'";
+                break;
+
+        }
+
+        //comment dataletId < newsfeed/event dataletId
+        $query .= " ORDER BY dataletId DESC;";
+
+        $dbo = OW::getDbo();
+
+        return $dbo->queryForList($query);
+    }
+
 
     public function addDatalet($datalet, $dataset, $query, $ownerId, $forder, $postId, $plugin)
     {
@@ -77,17 +124,19 @@ class ODE_BOL_Service
         ODE_BOL_DataletPostDao::getInstance()->save($dtp);
     }
 
-    public function deleteDataletByPostId($postId, $plugin)
+    public function deleteDataletsById($id, $plugin)
     {
-        $dt = $this->getDataletByPostID($postId, $plugin);
+        $datalets = $this->getDataletsById($id, $plugin);
 
-        ODE_BOL_DataletDao::getInstance()->deleteById($dt['id']);
+        foreach($datalets as &$dt)
+        {
+            ODE_BOL_DataletDao::getInstance()->deleteById($dt['id']);
 
-        $ex = new OW_Example();
-        $ex->andFieldEqual('postId', $postId);
-        ODE_BOL_DataletPostDao::getInstance()->deleteByExample($ex);
+            $ex = new OW_Example();
+            $ex->andFieldEqual('dataletId', $dt['id']);
+            ODE_BOL_DataletPostDao::getInstance()->deleteByExample($ex);
+        }
     }
-
     public function checkIfAdmin($id){
         /*$admins  =  $this->getAdminList();
         foreach($admins as $admin)

@@ -91,7 +91,7 @@ class ODE_CTRL_Event extends OW_ActionController
         );
 
         /* ODE */
-        $datalet = ODE_BOL_Service::getInstance()->getDataletByPostID($event->getId(), "event");
+        $datalet = ODE_BOL_Service::getInstance()->getDataletByPostId($event->getId(), "event");
 
         if(!empty($datalet))
         {
@@ -430,6 +430,25 @@ class ODE_CTRL_Event extends OW_ActionController
         }
 
         $this->addForm($form);
+    }
+
+    public function delete( $params )
+    {
+        $event = $this->getEventForParams($params);
+
+        if ( !OW::getUser()->isAuthenticated() || ( OW::getUser()->getId() != $event->getUserId() && !OW::getUser()->isAuthorized('event') ) )
+        {
+            throw new Redirect403Exception();
+        }
+
+        $this->eventService->deleteEvent($event->getId());
+
+        /* ODE */
+        ODE_BOL_Service::getInstance()->deleteDataletsById($event->getId(), 'event');
+        /* ODE */
+
+        OW::getFeedback()->info(OW::getLanguage()->text('event', 'delete_success_message'));
+        $this->redirect(OW::getRouter()->urlForRoute('event.main_menu_route'));
     }
 
     private function getEventForParams( $params )
