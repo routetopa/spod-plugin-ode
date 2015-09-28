@@ -695,13 +695,12 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
 
             if ( $isModerator || $userId == $topicDto->userId )
             {
-                $groupId = $topicDto->groupId;
-                $this->forumService->deleteTopic($topicId);
-
                 /* ODE */
-                //$postId = FORUM_BOL_ForumService::getInstance()->findTopicFirstPost($topicId)->id;
                 ODE_BOL_Service::getInstance()->deleteDataletsById($topicId, 'topic');
                 /* ODE */
+
+                $groupId = $topicDto->groupId;
+                $this->forumService->deleteTopic($topicId);
 
                 $redirectUrl = OW::getRouter()->urlForRoute('group-default', array('groupId' => $groupId));
             }

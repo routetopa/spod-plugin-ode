@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script>
+
+        var addedJs = 0;
+        var dynamicAddedJs = [];
+        dynamicAddedJs[0] = parent.ODE.deep_url.replace("DEEP/", "") + "COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js";
+        dynamicAddedJs[1] = parent.ODE.deep_url.replace("DEEP/", "") + "DEEPCLIENT/js/jquery-2.1.0.min.js";
+        dynamicAddedJs[2] = parent.ODE.deep_url.replace("DEEP/", "") + "DEEPCLIENT/js/deepClient.js";
+
+        function loadScript(sScriptSrc, oCallback)
+        {
+            var oHead = document.getElementsByTagName("head")[0];
+            var oScript = document.createElement('script');
+            oScript.type = 'text/javascript';
+            oScript.src = sScriptSrc;
+
+            // most browsers
+            oScript.onload = oCallback;
+
+            // IE 6 & 7
+            oScript.onreadystatechange = function() {
+                if (this.readyState == 'complete') {
+                    oCallback();
+                }
+            };
+
+            oHead.appendChild(oScript);
+        }
+
+        var onLoadCallback = function ()
+        {
+            if(addedJs == (dynamicAddedJs.length-1))
+            {
+                ComponentService.deep_url = parent.ODE.deep_url;
+                ComponentService.getComponent({
+                    component   : "data-sevc-controllet",
+                    params      :
+                    {
+                        'deep-url'          : parent.ODE.deep_url,
+                        'datalets-list-url' : parent.ODE.deep_datalet_list,
+                        'organization'      : parent.ODE.organization
+                    },
+                    fields     : Array(),
+                    placeHolder : "ode_controllet_placeholder_float"
+                });
+
+                window.addEventListener('data-sevc-controllet.dataletCreated', function(e){
+                    parent.ODE.savedDataletListener(e);
+                });
+
+                return;
+            }
+
+            addedJs++;
+            loadScript(dynamicAddedJs[addedJs], onLoadCallback);
+        };
+
+        loadScript(dynamicAddedJs[addedJs], onLoadCallback);
+
+    </script>
+
+</head>
+<body>
+
+<div id="ode_controllet_placeholder_float"></div>
+
+</body>
+</html>

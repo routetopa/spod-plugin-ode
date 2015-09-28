@@ -22,8 +22,8 @@ ODE.init = function()
 
     ComponentService.deep_url = ODE.deep_url;
 
-    // Listen for datalet event
-    window.addEventListener('data-sevc-controllet.dataletCreated', function (e) {
+   // Listen for datalet event
+   /*window.addEventListener('data-sevc-controllet.dataletCreated', function (e) {
 
         var data = e.detail.data;
         ODE.setDataletValues(data);
@@ -34,8 +34,24 @@ ODE.init = function()
             ODE.loadDatalet(data.datalet, data.dataUrl, '', data.fields, 'ode_controllet_placeholder');
         }
 
-    });
+        previewFloatBox.close();
+    });*/
 
+};
+
+// Listen for datalet event
+ODE.savedDataletListener = function(e)
+{
+    var data = e.detail.data;
+    ODE.setDataletValues(data);
+
+    if(ODE.pluginPreview == 'newsfeed')
+    {
+        $('#ode_controllet_placeholder').slideToggle('fast');
+        ODE.loadDatalet(data.datalet, data.dataUrl, '', data.fields, 'ode_controllet_placeholder');
+    }
+
+    previewFloatBox.close();
 };
 
 ODE.setDataletValues = function (data)
@@ -49,8 +65,6 @@ ODE.setDataletValues = function (data)
     ODE.dataletParameters.dataset   = data.dataUrl;
     ODE.dataletParameters.forder    = '';
     ODE.dataletParameters.query     = '"'+data.fields.join('","')+'"';
-
-    previewFloatBox.close();
 };
 
 ODE.loadDatalet = function(component, dataset, forder, query, placeholder)

@@ -1,7 +1,7 @@
 {script}
 {literal}
 
-ComponentService.deep_url = ODE.deep_url;
+/*ComponentService.deep_url = ODE.deep_url;
 ComponentService.getComponent({
     component   : "data-sevc-controllet",
     params      :
@@ -12,10 +12,13 @@ ComponentService.getComponent({
         },
     fields     : Array(),
     placeHolder : "ode_controllet_placeholder_float"
-});
+});*/
 
 {/literal}
 {/script}
 
-<div id="ode_controllet_placeholder_float" style="position:relative; z-index:2000;">
-</div>
+<!--<div id="ode_controllet_placeholder_float" style="">
+</div>-->
+
+<!-- CROSS BROWSER FIX -->
+<iframe id="ode_controllet_iframe_placeholder" src="ow_static/plugins/ode/pages/sevc.html" height="100%" width="100%"/>
