@@ -2,55 +2,20 @@
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
 
-if(empty($preference))
-{
-   $ode_deep_url = "http://service.routetopa.eu/DEEalerProvider/DEEP/";
-}
-else
-{
-    $ode_deep_url = $preference->defaultValue;
-}
-
+$ode_deep_url = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/" : $preference->defaultValue;
 define("ODE_DEEP_URL", $ode_deep_url);
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_datalet_list');
-
-if(empty($preference))
-{
-    $ode_deep_url = "http://service.routetopa.eu/DEEalerProvider/DEEP/datalets-list";
-}
-else
-{
-    $ode_deep_url = $preference->defaultValue;
-}
-
-define("ODE_DEEP_DATALET_LIST", $ode_deep_url);
+$ode_deep_datalet_list = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/datalets-list" :  $preference->defaultValue;
+define("ODE_DEEP_DATALET_LIST", $ode_deep_datalet_list);
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_client');
+$ode_deep_client = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
+define("ODE_DEEP_CLIENT", $ode_deep_client);
 
-if(empty($preference))
-{
-    $ode_deep_url = "http://service.routetopa.eu/DEEalerProvider/DEEPCLIENT/js/deepClient.js";
-}
-else
-{
-    $ode_deep_url = $preference->defaultValue;
-}
-
-define("ODE_DEEP_CLIENT", $ode_deep_url);
-
-$preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
-
-if(empty($preference))
-{
-    $ode_deep_url = 2;
-}
-else
-{
-    $ode_deep_url = $preference->defaultValue;
-}
-
-define("ODE_ORGANIZATION", $ode_deep_url);
+$preference = BOL_PreferenceService::getInstance()->findPreference('ode_dataset_list');
+$ode_dataset_list = empty($preference) ? "" : $preference->defaultValue;
+define("ODE_DATASET_LIST", $ode_dataset_list);
 
 OW::getRouter()->addRoute(new OW_Route('ode-settings', '/ode/settings', 'ODE_CTRL_Admin', 'settings'));
 
