@@ -1,7 +1,6 @@
 <?php
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
-
 $ode_deep_url = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/" : $preference->defaultValue;
 define("ODE_DEEP_URL", $ode_deep_url);
 

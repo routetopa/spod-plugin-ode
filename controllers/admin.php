@@ -18,32 +18,47 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $this->addForm($form);
 
         $deepUrl = new TextField('deep_url');
-        $deepUrl->setInvitation(OW::getLanguage()->text('ode', 'deep_url_invitation'));
-        $deepUrl->setHasInvitation(true);
+        //$deepUrl->setInvitation(OW::getLanguage()->text('ode', 'deep_url_invitation'));
+        //$deepUrl->setHasInvitation(true);
+        $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
+        $ode_deep_url = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/" : $preference->defaultValue;
+        $deepUrl->setValue($ode_deep_url);
         $deepUrl->setRequired();
         $form->addElement($deepUrl);
 
         $deepDataletList = new TextField('deep_datalet_list');
-        $deepDataletList->setInvitation(OW::getLanguage()->text('ode', 'deep_datalet_list_invitation'));
-        $deepDataletList->setHasInvitation(true);
+        //$deepDataletList->setInvitation(OW::getLanguage()->text('ode', 'deep_datalet_list_invitation'));
+        //$deepDataletList->setHasInvitation(true);
+        $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_datalet_list');
+        $ode_deep_datalet_list = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/datalets-list" :  $preference->defaultValue;
+        $deepDataletList->setValue($ode_deep_datalet_list);
         $deepDataletList->setRequired();
         $form->addElement($deepDataletList);
 
         $deepClient = new TextField('deep_client');
-        $deepClient->setInvitation(OW::getLanguage()->text('ode', 'deep_client_invitation'));
-        $deepClient->setHasInvitation(true);
+        //$deepClient->setInvitation(OW::getLanguage()->text('ode', 'deep_client_invitation'));
+        //$deepClient->setHasInvitation(true);
+        $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_client');
+        $ode_deep_client = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
+        $deepClient->setValue($ode_deep_client);
         $deepClient->setRequired();
         $form->addElement($deepClient);
 
         $provider = new TextField('od_provider');
-        $provider->setInvitation(OW::getLanguage()->text('ode', 'od_provider'));
-        $provider->setHasInvitation(true);
+        //$provider->setInvitation(OW::getLanguage()->text('ode', 'od_provider'));
+        //$provider->setHasInvitation(true);
+        $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
+        $odProvider = empty($preference) ? "http://service.routetopa.eu" : $preference->defaultValue;
+        $provider->setValue($odProvider);
         $provider->setRequired();
         $form->addElement($provider);
 
         $organization = new TextField('organization');
-        $organization->setInvitation(OW::getLanguage()->text('ode', 'organization_invitation'));
-        $organization->setHasInvitation(true);
+        //$organization->setInvitation(OW::getLanguage()->text('ode', 'organization_invitation'));
+        //$organization->setHasInvitation(true);
+        $preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
+        $orgPref = empty($preference) ? "" : $preference->defaultValue;
+        $organization->setValue($orgPref);
         $form->addElement($organization);
 
         $submit = new Submit('add');
