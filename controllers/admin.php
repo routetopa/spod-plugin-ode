@@ -151,15 +151,15 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
         for($j=0; $j<count($response->body->result); $j++)
         {
-            $res = \Httpful\Request::get($odProvider. '/api/3/action/package_search?q=' . $response->body->result[$j])->send();
+            $res = \Httpful\Request::get($odProvider . '/api/3/action/package_search?q=' . $response->body->result[$j])->send();
 
             for ($i = 0; $i < count($res->body->result->results[0]->resources); $i++)
             {
                 if(!empty($organization) && $res->body->result->results[0]->organization->title != $organization) continue;
 
                 array_push($datasets, array("name" => $res->body->result->results[0]->resources[$i]->name,
-                    "url" => "http://ckan.routetopa.eu/api/action/datastore_search?resource_id=" . $res->body->result->results[0]->resources[$i]->id,
-                    "description" => $res->body->result->results[0]->resources[$i]->description));
+                    "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
+                    "description" => str_replace("'", "", $res->body->result->results[0]->resources[$i]->description)));
             }
         }
 
