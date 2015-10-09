@@ -103,16 +103,15 @@ class ODE_BOL_Service
     }
 
 
-    public function addDatalet($datalet, $dataset, $query, $ownerId, $forder, $postId, $plugin)
+    public function addDatalet($datalet, $fields, $ownerId, $params, $postId, $plugin)
     {
-        ODE_CLASS_Helper::sanitizeDataletInput($datalet, $dataset, $query);
+        ODE_CLASS_Helper::sanitizeDataletInput($datalet, $dataset, $fields);
 
         $dt            = new ODE_BOL_Datalet();
-        $dt->dataset   = $dataset;
         $dt->component = $datalet;
-        $dt->query     = $query;
+        $dt->fields    = $fields;
         $dt->ownerId   = $ownerId;
-        $dt->forder    = $forder;
+        $dt->params    = $params;
         $dt->status    = 'approved';
         $dt->privacy   = 'everybody';
         ODE_BOL_DataletDao::getInstance()->save($dt);

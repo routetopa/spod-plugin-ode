@@ -4,22 +4,6 @@ ODE = {};
 
 ODE.init = function()
 {
-    var ta = $('.ow_comments_input textarea');
-    $.each(ta, function(idx, obj) {
-        if ( $(obj).attr('data-preview-added') ) {
-            return;
-        } else {
-            $(obj).attr('data-preview-added', true);
-        }
-        var id = obj.id;
-        var newEl = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_lens.svg) no-repeat center;" data-id="' + id + '"></a>'));
-        newEl = newEl.children().first();
-        newEl.click(function (e) {
-            ODE.pluginPreview = 'comment';
-            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass:'ow_ic_lens', title:''});
-        });
-    });
-
     ComponentService.deep_url = ODE.deep_url;
 
    // Listen for datalet event
@@ -39,16 +23,51 @@ ODE.init = function()
 
 };
 
+ODE.addOdeOnComment = function()
+{
+    var ta = $('.ow_comments_input textarea');
+    $.each(ta, function(idx, obj) {
+        if ( $(obj).attr('data-preview-added') ) {
+            return;
+        } else {
+            $(obj).attr('data-preview-added', true);
+        }
+        var id = obj.id;
+        var newEl = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_lens.svg) no-repeat center;" data-id="' + id + '"></a>'));
+        newEl = newEl.children().first();
+        newEl.click(function (e) {
+            ODE.pluginPreview = 'comment';
+            ODE.commentTarget = e.target;
+            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass:'ow_ic_lens', title:''});
+        });
+    });
+};
+
 // Listen for datalet event
 ODE.savedDataletListener = function(e)
 {
     var data = e.detail.data;
     ODE.setDataletValues(data);
 
-    if(ODE.pluginPreview == 'newsfeed')
+    switch(ODE.pluginPreview)
     {
-        $('#ode_controllet_placeholder').slideToggle('fast');
-        ODE.loadDatalet(data.datalet, data.dataUrl, '', data.fields, 'ode_controllet_placeholder');
+
+        case 'newsfeed' :
+            $('#ode_controllet_placeholder').slideToggle('fast');
+            ODE.loadDatalet(data.datalet, data.params, data.fields, 'ode_controllet_placeholder');
+            break;
+
+        case 'comment' :
+            $(ODE.commentTarget).parent().first().prepend($('<a class="ode_done" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_ok.svg) no-repeat center;"></a>'));
+            break;
+
+        case 'event' :
+        case 'forum' :
+            $('.ode_done').first().append($('<div class="ode_done" style="background:url(' + ODE.THEME_IMAGES_URL + 'ic_ok.svg) no-repeat center; height:20px; width:20px; float:left"></div>'));
+            break;
+
+        default : break;
+
     }
 
     previewFloatBox.close();
@@ -57,22 +76,20 @@ ODE.savedDataletListener = function(e)
 ODE.setDataletValues = function (data)
 {
     $('input[name=ode_datalet]').val(data.datalet);
-    $('input[name=ode_dataset]').val(data.dataUrl);
-    $('input[name=ode_query]').val('"'+data.fields.join('","')+'"');
-    $('input[name=ode_forder]').val('');
+    $('input[name=ode_fields]').val('"'+data.fields.join('","')+'"');
+    $('input[name=ode_params]').val(JSON.stringify(data.params));
 
     ODE.dataletParameters.component = data.datalet;
-    ODE.dataletParameters.dataset   = data.dataUrl;
-    ODE.dataletParameters.forder    = '';
-    ODE.dataletParameters.query     = '"'+data.fields.join('","')+'"';
+    ODE.dataletParameters.params    = JSON.stringify(data.params);
+    ODE.dataletParameters.fields    = '"'+data.fields.join('","')+'"';
 };
 
-ODE.loadDatalet = function(component, dataset, forder, query, placeholder)
+ODE.loadDatalet = function(component, params, fields, placeholder)
 {
     ComponentService.getComponent({
         component   : component,
-        params      : {'data-url' : dataset, 'fields-order' : forder},
-        fields      : query,
+        params      : params,
+        fields      : fields,
         placeHolder : placeholder
     });
 };
@@ -142,9 +159,8 @@ ODE.loadItemMarkup = function(id, params, callback)
 ODE.dataletParameters =
 {
     component:'',
-    dataset:'',
     forder:'',
-    query:''
+    fields:''
 };
 
 ODE.commentSendMessage = function(message, context)
@@ -186,6 +202,14 @@ ODE.commentSendMessage = function(message, context)
 
             self.$formWrapper.removeClass('ow_preloader');
             self.$commentsInputCont.show();
+
+            /* ODE */
+            // Remove ic_ok icon from comment field
+            $(ODE.commentTarget).parent().find('.ode_done').remove();
+            ODE.commentTarget = null;
+            ODE.reset();
+            /* ODE */
+
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
             OW.error(textStatus);
@@ -202,6 +226,7 @@ OwComments.prototype.initTextarea = function()
 {
     /* ODE */
       ODE.reset();
+      ODE.addOdeOnComment();
     /* ODE */
 
     var self = this;
@@ -275,12 +300,10 @@ ODE.reset = function()
 {
     $('#ode_controllet_placeholder').hide();
     $('input[name=ode_datalet]').val("");
-    $('input[name=ode_dataset]').val("");
-    $('input[name=ode_query]').val("");
-    $('input[name=ode_forder]').val('');
+    $('input[name=ode_fields]').val("");
+    $('input[name=ode_params]').val("");
 
     ODE.dataletParameters.component = "";
-    ODE.dataletParameters.dataset   = "";
-    ODE.dataletParameters.forder    = "";
-    ODE.dataletParameters.query     = "";
-}
+    ODE.dataletParameters.params    = "";
+    ODE.dataletParameters.fields    = "";
+};

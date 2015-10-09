@@ -13,10 +13,6 @@ class ODE_BOL_Datalet extends OW_Entity
     /**
      * @var string
      */
-    public $dataset;
-    /**
-     * @var string
-     */
     public $component;
     /**
      * @var string
@@ -25,11 +21,11 @@ class ODE_BOL_Datalet extends OW_Entity
     /**
      * @var string
      */
-    public $query;
+    public $fields;
     /**
      * @var string
      */
-    public $forder;
+    public $params;
     /**
      * @var integer
      */

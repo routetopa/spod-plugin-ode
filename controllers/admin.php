@@ -165,4 +165,10 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
         return json_encode($datasets);
     }
+
+    protected function isCkan($odProvider)
+    {
+        $res = \Httpful\Request::get($odProvider . '/api/3/')->send();
+        return false;
+    }
 }

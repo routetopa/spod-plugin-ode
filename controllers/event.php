@@ -96,15 +96,11 @@ class ODE_CTRL_Event extends OW_ActionController
         if(!empty($datalet))
         {
             $infoArray['hasDatalet'] = true;
-            OW::getDocument()->addOnloadScript('ComponentService.getComponent({
-	                                             component   : "'.$datalet["component"].'",
-                                                 params      :{
-                                                    \'data-url\' : \''.$datalet["dataset"].'\',
-                                                    \'fields-order\' : \''.$datalet["forder"].'\'
-                                                 },
-		                                         fields      :  Array('.$datalet["query"].'),
-		                                         placeHolder : "datalet_placeholder_'.$event->getId().'_event"
-	                                            });');
+
+            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    "datalet_placeholder_' . $event->getId() .'_event");');
         }
         /* ODE */
 
@@ -362,14 +358,13 @@ class ODE_CTRL_Event extends OW_ActionController
                     $this->eventService->saveEvent($event);
 
                     /* ODE */
-                    if (ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'], $_REQUEST['ode_query']))
+                    if (ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_params'], $_REQUEST['ode_fields']))
                     {
                         ODE_BOL_Service::getInstance()->addDatalet(
                             $_REQUEST['ode_datalet'],
-                            $_REQUEST['ode_dataset'],
-                            $_REQUEST['ode_query'],
+                            $_REQUEST['ode_fields'],
                             OW::getUser()->getId(),
-                            $_REQUEST['ode_forder'],
+                            $_REQUEST['ode_params'],
                             $event->id,
                             'event');
                     }
@@ -611,13 +606,10 @@ class ODEEventAddForm extends Form
         $field = new HiddenField('ode_datalet');
         $this->addElement($field);
 
-        $field = new HiddenField('ode_dataset');
+        $field = new HiddenField('ode_fields');
         $this->addElement($field);
 
-        $field = new HiddenField('ode_query');
-        $this->addElement($field);
-
-        $field = new HiddenField('ode_forder');
+        $field = new HiddenField('ode_params');
         $this->addElement($field);
 
         $script = "$('#{$odeButton->getId()}').click(function(e){

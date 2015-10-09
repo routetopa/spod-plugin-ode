@@ -187,14 +187,13 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
                 }
 
                 /* ODE */
-                if( ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'], $_REQUEST['ode_query']) )
+                if( ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_params'], $_REQUEST['ode_fields']) )
                 {
                     ODE_BOL_Service::getInstance()->addDatalet(
                         $_REQUEST['ode_datalet'],
-                        $_REQUEST['ode_dataset'],
-                        $_REQUEST['ode_query'],
+                        $_REQUEST['ode_fields'],
                         OW::getUser()->getId(),
-                        $_REQUEST['ode_forder'],
+                        $_REQUEST['ode_params'],
                         $topicDto->lastPostId,
                         'forum');
                 }
@@ -237,13 +236,10 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
         $field = new HiddenField('ode_datalet');
         $form->addElement($field);
 
-        $field = new HiddenField('ode_dataset');
+        $field = new HiddenField('ode_fields');
         $form->addElement($field);
 
-        $field = new HiddenField('ode_query');
-        $form->addElement($field);
-
-        $field = new HiddenField('ode_forder');
+        $field = new HiddenField('ode_params');
         $form->addElement($field);
 
         $script = "$('#{$odeButton->getId()}').click(function(e){

@@ -129,10 +129,10 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             ));
 
         /* ODE */
-        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'], $_REQUEST['ode_query']) )
+        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_params'], $_REQUEST['ode_fields']) )
         {
-            ODE_BOL_Service::getInstance()->addDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'],
-                $_REQUEST['ode_query'], OW::getUser()->getId(), $_REQUEST['ode_forder'], $out['entityId'], 'newsfeed');
+            ODE_BOL_Service::getInstance()->addDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_fields'],
+                OW::getUser()->getId(), $_REQUEST['ode_params'], $out['entityId'], 'newsfeed');
         }
         /* ODE */
 
@@ -191,14 +191,13 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
         /* ODE */
-        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['dataset'], $_REQUEST['datalet']['query']) )
+        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['params'], $_REQUEST['datalet']['fields']) )
         {
             ODE_BOL_Service::getInstance()->addDatalet(
                 $_REQUEST['datalet']['component'],
-                $_REQUEST['datalet']['dataset'],
-                $_REQUEST['datalet']['query'],
+                $_REQUEST['datalet']['fields'],
                 OW::getUser()->getId(),
-                $_REQUEST['datalet']['forder'],
+                $_REQUEST['datalet']['params'],
                 $comment->getId(),
                 'comment');
         }

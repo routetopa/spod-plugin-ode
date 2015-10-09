@@ -58,13 +58,10 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $field = new HiddenField('ode_datalet');
         $form->addElement($field);
 
-        $field = new HiddenField('ode_dataset');
+        $field = new HiddenField('ode_fields');
         $form->addElement($field);
 
-        $field = new HiddenField('ode_query');
-        $form->addElement($field);
-
-        $field = new HiddenField('ode_forder');
+        $field = new HiddenField('ode_params');
         $form->addElement($field);
 
         $script = "$('#{$odeButton->getId()}').click(function(e){

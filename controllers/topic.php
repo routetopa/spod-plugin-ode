@@ -224,15 +224,12 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
             if(!empty($datalet))
             {
                 $post['hasDatalet'] = true;
-                OW::getDocument()->addOnloadScript('ComponentService.getComponent({
-	                                             component   : "'.$datalet["component"].'",
-                                                 params      :{
-                                                    \'data-url\' : \''.$datalet["dataset"].'\',
-                                                    \'fields-order\' : \''.$datalet["forder"].'\'
-                                                 },
-		                                         fields      :  Array('.$datalet["query"].'),
-		                                         placeHolder : "datalet_placeholder_'.$post['id'].'"
-	                                            });');
+
+                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    "datalet_placeholder_' . $post['id']. '");');
+
             }
             /* ODE */
 
@@ -512,13 +509,10 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         $field = new HiddenField('ode_datalet');
         $form->addElement($field);
 
-        $field = new HiddenField('ode_dataset');
+        $field = new HiddenField('ode_fields');
         $form->addElement($field);
 
-        $field = new HiddenField('ode_query');
-        $form->addElement($field);
-
-        $field = new HiddenField('ode_forder');
+        $field = new HiddenField('ode_params');
         $form->addElement($field);
 
         $script = "$('#{$odeButton->getId()}').click(function(e){
@@ -587,14 +581,13 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
                 $postDto = $this->forumService->addPost($topicDto, $data);
 
                 /* ODE */
-                if (ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_dataset'], $_REQUEST['ode_query']))
+                if (ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_params'], $_REQUEST['ode_fields']))
                 {
                     ODE_BOL_Service::getInstance()->addDatalet(
                         $_REQUEST['ode_datalet'],
-                        $_REQUEST['ode_dataset'],
-                        $_REQUEST['ode_query'],
+                        $_REQUEST['ode_fields'],
                         OW::getUser()->getId(),
-                        $_REQUEST['ode_forder'],
+                        $_REQUEST['ode_params'],
                         $postDto->id,
                         'forum');
                 }

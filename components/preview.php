@@ -4,7 +4,7 @@ class ODE_CMP_Preview extends OW_Component
 {
     public function __construct($text)
     {
-        $this->assign('text', $text);
+        //$this->assign('text', $text);
         //$this->assign('url', OW::getThemeManager()->getThemeImagesUrl());
     }
 }

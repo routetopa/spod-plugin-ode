@@ -155,17 +155,10 @@ class ODE_CLASS_EventHandler
             {
                 $data['content']['vars']['activity']['description'] .= '<div id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
 
-                //TODO remove fields-order
-                //TODO check if data or dataset
-                OW::getDocument()->addOnloadScript('ComponentService.getComponent({
-	                                             component   : "' . $datalet["component"] . '",
-                                                 params      :{
-                                                    \'data-url\' : \'' . $datalet["dataset"] . '\',
-                                                    \'fields-order\' : \'' . $datalet["forder"] . '\'
-                                                 },
-		                                         fields      :  Array(' . $datalet["query"] . '),
-		                                         placeHolder : "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"
-	                                            });');
+                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'");');
 
                 $event->setData($data);
             }
@@ -202,17 +195,12 @@ class ODE_CLASS_EventHandler
 
                 $content .= '<div id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
 
-                //TODO remove fields-order
-                //TODO check if data or dataset
-                OW::getDocument()->addOnloadScript('ComponentService.getComponent({
-	                                             component   : "' . $datalet["component"] . '",
-                                                 params      :{
-                                                    \'data-url\' : \'' . $datalet["dataset"] . '\',
-                                                    \'fields-order\' : \'' . $datalet["forder"] . '\'
-                                                 },
-		                                         fields      :  Array(' . $datalet["query"] . '),
-		                                         placeHolder : "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"
-	                                            });');
+
+                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'");');
+
             }
 
             $event->setData($data);
@@ -232,17 +220,10 @@ class ODE_CLASS_EventHandler
             $content = $event->getDataProp('content');
             $content .= '<div id="datalet_placeholder_' . $id . '_comment"></div>';
 
-            //TODO remove fields-order
-            //TODO check if data or dataset
-            OW::getDocument()->addOnloadScript('ComponentService.getComponent({
-	                                             component   : "' . $datalet["component"] . '",
-                                                 params      :{
-                                                    \'data-url\' : \'' . $datalet["dataset"] . '\',
-                                                    \'fields-order\' : \'' . $datalet["forder"] . '\'
-                                                 },
-		                                         fields      :  Array(' . $datalet["query"] . '),
-		                                         placeHolder : "datalet_placeholder_' . $id . '_comment"
-	                                            });');
+            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    "datalet_placeholder_' . $id . '_comment");');
 
             $event->setDataProp('content', $content);
         }
@@ -255,10 +236,6 @@ class ODE_CLASS_EventHandler
         //Get parameter for check pluginKey for this event
         $params = $event->getParams();
         ODE_BOL_Service::getInstance()->deleteDataletsById($params['entityId'], 'newsfeed');
-
-        /*$commentEntity = BOL_CommentService::getInstance()->findCommentEntity($params['entityType'], $params['entityId']);
-        ODE_BOL_Service::getInstance()->deleteDataletByPostId($commentEntity->id, 'comment');*/
-
     }
 
     // Handle comment deletion
