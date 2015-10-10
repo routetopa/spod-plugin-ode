@@ -149,7 +149,8 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
                     }
                 }
 
-                if($this->isOpenDataSoft($odProvider[$j])){
+                if($this->isOpenDataSoft($odProvider[$j]))
+                {
                     $res = $this->getISSYDatasetList($odProvider[$j]);
                 }
 

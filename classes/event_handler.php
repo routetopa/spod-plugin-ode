@@ -98,12 +98,14 @@ class ODE_CLASS_EventHandler
                 ODE.ajax_load_item = {$ajax_load_item}
                 ODE.ajax_add_comment = {$ajax_add_comment}
                 ODE.ode_dataset_list = {$ode_dataset_list}
+                ODE.ode_deep_client = {$ode_deep_client}
             ', array(
                 'ode_deep_url' => ODE_DEEP_URL,
                 'ajax_load_item' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'loadItem'),
                 'ajax_add_comment' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'addComment'),
                 'ode_deep_datalet_list' => ODE_DEEP_DATALET_LIST,
-                'ode_dataset_list' => ODE_DATASET_LIST
+                'ode_dataset_list' => ODE_DATASET_LIST,
+                'ode_deep_client' => ODE_DEEP_CLIENT
             ));
 
             OW::getDocument()->addOnloadScript($js);
