@@ -18,8 +18,6 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $this->addForm($form);
 
         $deepUrl = new TextField('deep_url');
-        //$deepUrl->setInvitation(OW::getLanguage()->text('ode', 'deep_url_invitation'));
-        //$deepUrl->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
         $ode_deep_url = empty($preference) ? "http://deep.routetopa.eu/DEEP/" : $preference->defaultValue;
         $deepUrl->setValue($ode_deep_url);
@@ -27,8 +25,6 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $form->addElement($deepUrl);
 
         $deepDataletList = new TextField('deep_datalet_list');
-        //$deepDataletList->setInvitation(OW::getLanguage()->text('ode', 'deep_datalet_list_invitation'));
-        //$deepDataletList->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_datalet_list');
         $ode_deep_datalet_list = empty($preference) ? "http://deep.routetopa.eu/DEEP/datalets-list" :  $preference->defaultValue;
         $deepDataletList->setValue($ode_deep_datalet_list);
@@ -36,17 +32,20 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $form->addElement($deepDataletList);
 
         $deepClient = new TextField('deep_client');
-        //$deepClient->setInvitation(OW::getLanguage()->text('ode', 'deep_client_invitation'));
-        //$deepClient->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_client');
         $ode_deep_client = empty($preference) ? "http://deep.routetopa.eu/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
         $deepClient->setValue($ode_deep_client);
         $deepClient->setRequired();
         $form->addElement($deepClient);
 
+        $webcomponents = new TextField('webcomponents_js');
+        $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcomponents_js');
+        $ode_webcomponents_js = empty($preference) ? "http://deep.routetopa.eu/COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js" : $preference->defaultValue;
+        $webcomponents->setValue($ode_webcomponents_js);
+        $webcomponents->setRequired();
+        $form->addElement($webcomponents);
+
         $provider = new TextField('od_provider');
-        //$provider->setInvitation(OW::getLanguage()->text('ode', 'od_provider'));
-        //$provider->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
         $odProvider = empty($preference) ? "http://ckan.routetopa.eu" : $preference->defaultValue;
         $provider->setValue($odProvider);
@@ -54,8 +53,6 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $form->addElement($provider);
 
         $organization = new TextField('organization');
-        //$organization->setInvitation(OW::getLanguage()->text('ode', 'organization_invitation'));
-        //$organization->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
         $orgPref = empty($preference) ? "" : $preference->defaultValue;
         $organization->setValue($orgPref);
@@ -69,6 +66,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         {
             $data = $form->getValues();
 
+            /* ode_deep_url */
             $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
 
             if(empty($preference))
@@ -80,7 +78,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sortOrder = 1;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
-
+            /* ode_deep_datalet_list */
             $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_datalet_list');
 
             if(empty($preference))
@@ -92,7 +90,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sortOrder = 2;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
-
+            /* ode_deep_client */
             $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_client');
 
             if(empty($preference))
@@ -104,7 +102,19 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sortOrder = 3;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
+            /* ode_webcomponents_js */
+            $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcomponents_js');
 
+            if(empty($preference))
+                $preference = new BOL_Preference();
+
+            $preference->key = 'ode_webcomponents_js';
+            $preference->sectionName = 'general';
+            $preference->defaultValue = $data['webcomponents_js'];
+            $preference->sortOrder = 4;
+            BOL_PreferenceService::getInstance()->savePreference($preference);
+
+            /* od_provider */
             $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
 
             if(empty($preference))
@@ -113,9 +123,10 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->key = 'od_provider';
             $preference->sectionName = 'general';
             $preference->defaultValue = $data['od_provider'];
-            $preference->sortOrder = 4;
+            $preference->sortOrder = 5;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
+            /* ode_organization */
             $preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
 
             if(empty($preference))
@@ -124,7 +135,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->key = 'ode_organization';
             $preference->sectionName = 'general';
             $preference->defaultValue = $data['organization'];
-            $preference->sortOrder = 5;
+            $preference->sortOrder = 6;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
             /*LOAD DATASET*/
@@ -157,6 +168,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
                 $datasetArray = array_merge($datasetArray, $res);
             }
 
+            /* ode_dataset_list */
             $preference = BOL_PreferenceService::getInstance()->findPreference('ode_dataset_list');
 
             if(empty($preference))
@@ -165,7 +177,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->key = 'ode_dataset_list';
             $preference->sectionName = 'general';
             $preference->defaultValue = json_encode($datasetArray);
-            $preference->sortOrder = 6;
+            $preference->sortOrder = 7;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
         }

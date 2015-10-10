@@ -16,6 +16,10 @@ $preference = BOL_PreferenceService::getInstance()->findPreference('ode_dataset_
 $ode_dataset_list = empty($preference) ? "" : $preference->defaultValue;
 define("ODE_DATASET_LIST", $ode_dataset_list);
 
+$preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcomponents_js');
+$ode_webcomponents_js = empty($preference) ? "" : $preference->defaultValue;
+define("ODE_WEBCOMPONENTS_JS", $ode_webcomponents_js);
+
 OW::getRouter()->addRoute(new OW_Route('ode-settings', '/ode/settings', 'ODE_CTRL_Admin', 'settings'));
 
 ODE_CLASS_EventHandler::getInstance()->init();

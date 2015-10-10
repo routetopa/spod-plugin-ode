@@ -8,7 +8,7 @@
 
         var addedJs = 0;
         var dynamicAddedJs = [];
-        dynamicAddedJs[0] = parent.ODE.deep_url.replace("DEEP/", "") + "COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js";
+        dynamicAddedJs[0] = parent.ODE.ode_webcomponents_js;
         dynamicAddedJs[1] = parent.ODE.ode_deep_client.substring(0, parent.ODE.ode_deep_client.lastIndexOf("/")) + "/jquery-2.1.0.min.js";
         dynamicAddedJs[2] = parent.ODE.ode_deep_client;
 
