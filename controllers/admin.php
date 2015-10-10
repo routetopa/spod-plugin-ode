@@ -127,8 +127,35 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sortOrder = 5;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
+            /*LOAD DATASET*/
 
-            $datasetListJson = $this->getDatasetList($data['od_provider'], $data['organization']);
+            $odProvider = explode(",",$data['od_provider']);
+            $odOrganization = explode(",", $data['organization']);
+            $odCount = 0;
+            $datasetArray = array();
+
+            for($j=0; $j<count($odProvider); $j++)
+            {
+                if($this->isCkan($odProvider[$j]))
+                {
+                    if(!empty($odOrganization[$odCount]))
+                    {
+                        $res = $this->getCKANDatasetList($odProvider[$j], $odOrganization[$odCount]);
+                        $odCount++;
+                    }
+                    else
+                    {
+                        $res = $this->getCKANDatasetList($odProvider[$j]);
+                    }
+                }
+
+                if($this->isOpenDataSoft($odProvider[$j])){
+                    $res = $this->getISSYDatasetList($odProvider[$j]);
+                }
+
+                $datasetArray = array_merge($datasetArray, $res);
+            }
+
             $preference = BOL_PreferenceService::getInstance()->findPreference('ode_dataset_list');
 
             if(empty($preference))
@@ -136,17 +163,18 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
             $preference->key = 'ode_dataset_list';
             $preference->sectionName = 'general';
-            $preference->defaultValue = $datasetListJson;
+            $preference->defaultValue = json_encode($datasetArray);
             $preference->sortOrder = 6;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
         }
     }
 
-    protected function getDatasetList($odProvider, $organization="")
+    protected function getCKANDatasetList($odProvider, $organization="")
     {
         $datasets = Array();
 
+        $odProvider = rtrim($odProvider,"/");
         $response = \Httpful\Request::get($odProvider . '/api/3/action/package_list')->send();
 
         for($j=0; $j<count($response->body->result); $j++)
@@ -159,16 +187,60 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
                 array_push($datasets, array("name" => $res->body->result->results[0]->resources[$i]->name,
                     "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
-                    "description" => str_replace("'", "", $res->body->result->results[0]->resources[$i]->description)));
+                    "description" => str_replace("'", "", isset($res->body->result->results[0]->resources[$i]->description) ? $res->body->result->results[0]->resources[$i]->description : "")));
             }
         }
 
-        return json_encode($datasets);
+        return $datasets;
+    }
+
+    function getISSYDatasetList($odProvider)
+    {
+        $datasets = Array();
+
+        $odProvider = rtrim($odProvider,"/");
+        $response = \Httpful\Request::get($odProvider . '/api/datasets/1.0/search/?rows=10000')->send();
+
+        for($i=0; $i<count($response->body->datasets); $i++)
+        {
+            // Sanitize dataset title and description
+            $response->body->datasets[$i]->metas->title = str_replace("'", "", $response->body->datasets[$i]->metas->title);
+            $response->body->datasets[$i]->metas->description = str_replace("'", "", isset($response->body->datasets[$i]->metas->description) ? $response->body->datasets[$i]->metas->description : "");
+
+            array_push($datasets, array("name" => $response->body->datasets[$i]->metas->title,
+                "url" => $odProvider . '/api/records/1.0/search/?dataset=' . $response->body->datasets[$i]->datasetid,
+                "description" => $response->body->datasets[$i]->metas->description));
+
+        }
+
+        return $datasets;
     }
 
     protected function isCkan($odProvider)
     {
-        $res = \Httpful\Request::get($odProvider . '/api/3/')->send();
+        try
+        {
+            $odProvider = rtrim($odProvider,"/");
+            $res = \Httpful\Request::get($odProvider . '/api/3/')->followRedirects(true)->expectsJson()->send();
+            if(!empty($res->body->version))
+                return true;
+        }
+        catch(Exception $e){}
+
+        return false;
+    }
+
+    protected function isOpenDataSoft($odProvider)
+    {
+        try
+        {
+            $odProvider = rtrim($odProvider,"/");
+            $res = \Httpful\Request::get($odProvider . '/api/records/1.0/search/')->followRedirects(true)->expectsJson()->send();
+            if(!empty($res->body->error))
+                return true;
+        }
+        catch(Exception $e){}
+
         return false;
     }
 }
