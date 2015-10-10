@@ -17,6 +17,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $form = new Form('settings');
         $this->addForm($form);
 
+        /* DEEP ULR */
         $deepUrl = new TextField('deep_url');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
         $ode_deep_url = empty($preference) ? "http://deep.routetopa.eu/DEEP/" : $preference->defaultValue;
@@ -24,6 +25,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $deepUrl->setRequired();
         $form->addElement($deepUrl);
 
+        /* DEEP DATALET LIST */
         $deepDataletList = new TextField('deep_datalet_list');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_datalet_list');
         $ode_deep_datalet_list = empty($preference) ? "http://deep.routetopa.eu/DEEP/datalets-list" :  $preference->defaultValue;
@@ -31,6 +33,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $deepDataletList->setRequired();
         $form->addElement($deepDataletList);
 
+        /* DEEP CLIENT */
         $deepClient = new TextField('deep_client');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_client');
         $ode_deep_client = empty($preference) ? "http://deep.routetopa.eu/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
@@ -38,6 +41,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $deepClient->setRequired();
         $form->addElement($deepClient);
 
+        /* WEBCOMPONENT JS */
         $webcomponents = new TextField('webcomponents_js');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcomponents_js');
         $ode_webcomponents_js = empty($preference) ? "http://deep.routetopa.eu/COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js" : $preference->defaultValue;
@@ -45,6 +49,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $webcomponents->setRequired();
         $form->addElement($webcomponents);
 
+        /* OD PROVIDER */
         $provider = new TextField('od_provider');
         $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
         $odProvider = empty($preference) ? "http://ckan.routetopa.eu" : $preference->defaultValue;
@@ -52,6 +57,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $provider->setRequired();
         $form->addElement($provider);
 
+        /* OD ORGANIZATION */
         $organization = new TextField('organization');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
         $orgPref = empty($preference) ? "" : $preference->defaultValue;
