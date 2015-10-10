@@ -21,7 +21,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         //$deepUrl->setInvitation(OW::getLanguage()->text('ode', 'deep_url_invitation'));
         //$deepUrl->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
-        $ode_deep_url = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/" : $preference->defaultValue;
+        $ode_deep_url = empty($preference) ? "http://deep.routetopa.eu/DEEP/" : $preference->defaultValue;
         $deepUrl->setValue($ode_deep_url);
         $deepUrl->setRequired();
         $form->addElement($deepUrl);
@@ -30,7 +30,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         //$deepDataletList->setInvitation(OW::getLanguage()->text('ode', 'deep_datalet_list_invitation'));
         //$deepDataletList->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_datalet_list');
-        $ode_deep_datalet_list = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/datalets-list" :  $preference->defaultValue;
+        $ode_deep_datalet_list = empty($preference) ? "http://deep.routetopa.eu/DEEP/datalets-list" :  $preference->defaultValue;
         $deepDataletList->setValue($ode_deep_datalet_list);
         $deepDataletList->setRequired();
         $form->addElement($deepDataletList);
@@ -39,7 +39,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         //$deepClient->setInvitation(OW::getLanguage()->text('ode', 'deep_client_invitation'));
         //$deepClient->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_client');
-        $ode_deep_client = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
+        $ode_deep_client = empty($preference) ? "http://deep.routetopa.eu/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
         $deepClient->setValue($ode_deep_client);
         $deepClient->setRequired();
         $form->addElement($deepClient);
@@ -48,7 +48,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         //$provider->setInvitation(OW::getLanguage()->text('ode', 'od_provider'));
         //$provider->setHasInvitation(true);
         $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
-        $odProvider = empty($preference) ? "http://service.routetopa.eu" : $preference->defaultValue;
+        $odProvider = empty($preference) ? "http://ckan.routetopa.eu" : $preference->defaultValue;
         $provider->setValue($odProvider);
         $provider->setRequired();
         $form->addElement($provider);
