@@ -228,6 +228,7 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
                 OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
                                                                     '.$datalet["params"].',
                                                                     ['.$datalet["fields"].'],
+                                                                    \''.$datalet["data"].'\',
                                                                     "datalet_placeholder_' . $post['id']. '");');
 
             }
@@ -515,6 +516,9 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         $field = new HiddenField('ode_params');
         $form->addElement($field);
 
+        $field = new HiddenField('ode_data');
+        $form->addElement($field);
+
         $script = "$('#{$odeButton->getId()}').click(function(e){
             ODE.pluginPreview = 'forum';
             previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
@@ -589,7 +593,8 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
                         OW::getUser()->getId(),
                         $_REQUEST['ode_params'],
                         $postDto->id,
-                        'forum');
+                        'forum',
+                        $_REQUEST['ode_data']);
                 }
                 /* ODE */
 

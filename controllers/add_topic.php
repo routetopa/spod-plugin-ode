@@ -195,7 +195,8 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
                         OW::getUser()->getId(),
                         $_REQUEST['ode_params'],
                         $topicDto->lastPostId,
-                        'forum');
+                        'forum',
+                        $_REQUEST['ode_data']);
                 }
                 /* ODE */
 
@@ -240,6 +241,9 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
         $form->addElement($field);
 
         $field = new HiddenField('ode_params');
+        $form->addElement($field);
+
+        $field = new HiddenField('ode_data');
         $form->addElement($field);
 
         $script = "$('#{$odeButton->getId()}').click(function(e){

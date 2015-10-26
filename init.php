@@ -1,15 +1,15 @@
 <?php
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
-$ode_deep_url = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/" : $preference->defaultValue;
+$ode_deep_url = empty($preference) ? "http://deep.routetopa.eu/DEEP/" : $preference->defaultValue;
 define("ODE_DEEP_URL", $ode_deep_url);
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_datalet_list');
-$ode_deep_datalet_list = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEP/datalets-list" :  $preference->defaultValue;
+$ode_deep_datalet_list = empty($preference) ? "http://deep.routetopa.eu/DEEP/datalets-list" :  $preference->defaultValue;
 define("ODE_DEEP_DATALET_LIST", $ode_deep_datalet_list);
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_client');
-$ode_deep_client = empty($preference) ? "http://service.routetopa.eu/DEEalerProvider/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
+$ode_deep_client = empty($preference) ? "http://deep.routetopa.eu/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
 define("ODE_DEEP_CLIENT", $ode_deep_client);
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_dataset_list');

@@ -38,6 +38,23 @@
 class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 {
 
+    public function addPrivateRoomDatalet()
+    {
+        /* ODE */
+        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['component'], $_REQUEST['params'], $_REQUEST['fields']) )
+        {
+            SPODPR_BOL_Service::getInstance()->addDataletCard(OW::getUser()->getId(),
+                                                              $_REQUEST['component'],
+                                                              $_REQUEST['fields'],
+                                                              $_REQUEST['params'],
+                                                              $_REQUEST['data']);
+        }
+        /* ODE */
+
+        echo json_encode(array("status" => "ok"));
+        exit;
+    }
+
     public function statusUpdate()
     {
         if ( empty($_POST['status']) && empty($_POST['attachment']) )
@@ -132,7 +149,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_params'], $_REQUEST['ode_fields']) )
         {
             ODE_BOL_Service::getInstance()->addDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_fields'],
-                OW::getUser()->getId(), $_REQUEST['ode_params'], $out['entityId'], 'newsfeed');
+                OW::getUser()->getId(), $_REQUEST['ode_params'], $out['entityId'], 'newsfeed', $_REQUEST['ode_data']);
         }
         /* ODE */
 
@@ -199,7 +216,8 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 OW::getUser()->getId(),
                 $_REQUEST['datalet']['params'],
                 $comment->getId(),
-                'comment');
+                'comment',
+                $_REQUEST['datalet']['data']);
         }
         /* ODE */
 

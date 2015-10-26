@@ -64,6 +64,10 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $field = new HiddenField('ode_params');
         $form->addElement($field);
 
+        $field = new HiddenField('ode_data');
+        $form->addElement($field);
+
+
         $script = "$('#{$odeButton->getId()}').click(function(e){
             //$('#ode_controllet_placeholder').slideToggle('fast');
             ODE.pluginPreview = 'newsfeed';

@@ -35,7 +35,7 @@ class ODE_BOL_Service
         return ODE_BOL_DataletDao::getInstance()->findAll();
     }
 
-    public function getById($id)
+    public function getDataletById($id)
     {
         $example = new OW_Example();
         $example->andFieldEqual('id', $id);
@@ -102,8 +102,7 @@ class ODE_BOL_Service
         return $dbo->queryForList($query);
     }
 
-
-    public function addDatalet($datalet, $fields, $ownerId, $params, $postId, $plugin)
+    public function addPrivateRoomDatalet($datalet, $fields, $ownerId, $params, $data='')
     {
         ODE_CLASS_Helper::sanitizeDataletInput($datalet, $dataset, $fields);
 
@@ -114,6 +113,25 @@ class ODE_BOL_Service
         $dt->params    = $params;
         $dt->status    = 'approved';
         $dt->privacy   = 'everybody';
+        $dt->data      = $data;
+        ODE_BOL_DataletDao::getInstance()->save($dt);
+
+        return $dt->id;
+    }
+
+
+    public function addDatalet($datalet, $fields, $ownerId, $params, $postId, $plugin, $cache="")
+    {
+        ODE_CLASS_Helper::sanitizeDataletInput($datalet, $dataset, $fields);
+
+        $dt            = new ODE_BOL_Datalet();
+        $dt->component = $datalet;
+        $dt->fields    = $fields;
+        $dt->ownerId   = $ownerId;
+        $dt->params    = $params;
+        $dt->status    = 'approved';
+        $dt->privacy   = 'everybody';
+        $dt->data      = $cache;
         ODE_BOL_DataletDao::getInstance()->save($dt);
 
         $dtp            = new ODE_BOL_DataletPost();

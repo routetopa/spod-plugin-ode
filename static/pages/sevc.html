@@ -37,15 +37,28 @@
             if(addedJs == (dynamicAddedJs.length-1))
             {
                 ComponentService.deep_url = parent.ODE.deep_url;
+
+                var params =
+                {
+                    'deep-url'          : parent.ODE.deep_url,
+                    'datalets-list-url' : parent.ODE.deep_datalet_list,
+                    'datasets'          : parent.ODE.ode_dataset_list
+                };
+
+                if(parent.SPODPR != undefined && parent.SPODPR.ControlletPresets != undefined)
+                {
+                  params["selected-fields"]  = '[' + parent.SPODPR.ControlletPresets["selected-fields"] + ']';
+                  params["selected-datalet"] = parent.SPODPR.ControlletPresets["selected-datalet"];
+                  params["datalet-preset"]   = parent.SPODPR.ControlletPresets["datalet-preset"];
+
+                  //Reser controllet presets
+                  parent.SPODPR.ControlletPresets = undefined;
+                }
+
                 ComponentService.getComponent({
                     component   : "data-sevc-controllet",
-                    params      :
-                    {
-                        'deep-url'          : parent.ODE.deep_url,
-                        'datalets-list-url' : parent.ODE.deep_datalet_list,
-                        'datasets'          : parent.ODE.ode_dataset_list
-                    },
-                    fields     : Array(),
+                    params      : params,
+                    fields      : Array(),
                     placeHolder : "ode_controllet_placeholder_float"
                 });
 

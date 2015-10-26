@@ -5,22 +5,6 @@ ODE = {};
 ODE.init = function()
 {
     ComponentService.deep_url = ODE.deep_url;
-
-   // Listen for datalet event
-   /*window.addEventListener('data-sevc-controllet.dataletCreated', function (e) {
-
-        var data = e.detail.data;
-        ODE.setDataletValues(data);
-
-        if(ODE.pluginPreview == 'newsfeed')
-        {
-            $('#ode_controllet_placeholder').slideToggle('fast');
-            ODE.loadDatalet(data.datalet, data.dataUrl, '', data.fields, 'ode_controllet_placeholder');
-        }
-
-        previewFloatBox.close();
-    });*/
-
 };
 
 ODE.addOdeOnComment = function()
@@ -54,7 +38,7 @@ ODE.savedDataletListener = function(e)
 
         case 'newsfeed' :
             $('#ode_controllet_placeholder').slideToggle('fast');
-            ODE.loadDatalet(data.datalet, data.params, data.fields, 'ode_controllet_placeholder');
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData, 'ode_controllet_placeholder');
             break;
 
         case 'comment' :
@@ -66,6 +50,10 @@ ODE.savedDataletListener = function(e)
             $('.ode_done').first().append($('<div class="ode_done" style="background:url(' + ODE.THEME_IMAGES_URL + 'ic_ok.svg) no-repeat center; height:20px; width:20px; float:left"></div>'));
             break;
 
+        case 'private-room' :
+            ODE.addPrivateRoomDatalet();
+            break;
+
         default : break;
 
     }
@@ -73,19 +61,41 @@ ODE.savedDataletListener = function(e)
     previewFloatBox.close();
 };
 
+ODE.addPrivateRoomDatalet = function ()
+{
+    $.ajax({
+        type: 'post',
+        url: ODE.ajax_add_private_room_datalet,
+        data: ODE.dataletParameters,
+        dataType: 'JSON',
+        success: function(data){
+            //TODO create a scope fro add_card
+            add_card(ODE.dataletParameters);
+        },
+        error: function( XMLHttpRequest, textStatus, errorThrown ){
+            OW.error(textStatus);
+        },
+        complete: function(){}
+    });
+};
+
 ODE.setDataletValues = function (data)
 {
     $('input[name=ode_datalet]').val(data.datalet);
     $('input[name=ode_fields]').val('"'+data.fields.join('","')+'"');
     $('input[name=ode_params]').val(JSON.stringify(data.params));
+    $('input[name=ode_data]').val(data.staticData);
 
     ODE.dataletParameters.component = data.datalet;
     ODE.dataletParameters.params    = JSON.stringify(data.params);
     ODE.dataletParameters.fields    = '"'+data.fields.join('","')+'"';
+    ODE.dataletParameters.data      = data.staticData;
 };
 
-ODE.loadDatalet = function(component, params, fields, placeholder)
+ODE.loadDatalet = function(component, params, fields, cache, placeholder)
 {
+    $.extend(params, {data:cache});
+
     ComponentService.getComponent({
         component   : component,
         params      : params,
@@ -159,8 +169,9 @@ ODE.loadItemMarkup = function(id, params, callback)
 ODE.dataletParameters =
 {
     component:'',
-    forder:'',
-    fields:''
+    params:'',
+    fields:'',
+    data:''
 };
 
 ODE.commentSendMessage = function(message, context)
@@ -306,4 +317,5 @@ ODE.reset = function()
     ODE.dataletParameters.component = "";
     ODE.dataletParameters.params    = "";
     ODE.dataletParameters.fields    = "";
+    ODE.dataletParameters.data      = "";
 };

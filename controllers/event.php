@@ -100,6 +100,7 @@ class ODE_CTRL_Event extends OW_ActionController
             OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
                                                                     '.$datalet["params"].',
                                                                     ['.$datalet["fields"].'],
+                                                                    \''.$datalet["data"].'\',
                                                                     "datalet_placeholder_' . $event->getId() .'_event");');
         }
         /* ODE */
@@ -366,7 +367,8 @@ class ODE_CTRL_Event extends OW_ActionController
                             OW::getUser()->getId(),
                             $_REQUEST['ode_params'],
                             $event->id,
-                            'event');
+                            'event',
+                            $_REQUEST['ode_data']);
                     }
                     /* ODE */
 
@@ -610,6 +612,9 @@ class ODEEventAddForm extends Form
         $this->addElement($field);
 
         $field = new HiddenField('ode_params');
+        $this->addElement($field);
+
+        $field = new HiddenField('ode_data');
         $this->addElement($field);
 
         $script = "$('#{$odeButton->getId()}').click(function(e){
