@@ -70,7 +70,7 @@ ODE.addPrivateRoomDatalet = function ()
         dataType: 'JSON',
         success: function(data){
             //TODO create a scope fro add_card
-            add_card(ODE.dataletParameters);
+            add_card(ODE.dataletParameters,data.id);
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
             OW.error(textStatus);
@@ -90,6 +90,7 @@ ODE.setDataletValues = function (data)
     ODE.dataletParameters.params    = JSON.stringify(data.params);
     ODE.dataletParameters.fields    = '"'+data.fields.join('","')+'"';
     ODE.dataletParameters.data      = data.staticData;
+    ODE.dataletParameters.comment   = data.comment;
 };
 
 ODE.loadDatalet = function(component, params, fields, cache, placeholder)
@@ -171,7 +172,8 @@ ODE.dataletParameters =
     component:'',
     params:'',
     fields:'',
-    data:''
+    data:'',
+    comment:''
 };
 
 ODE.commentSendMessage = function(message, context)
@@ -318,4 +320,6 @@ ODE.reset = function()
     ODE.dataletParameters.params    = "";
     ODE.dataletParameters.fields    = "";
     ODE.dataletParameters.data      = "";
+    ODE.dataletParameters.comment   = "";
+
 };

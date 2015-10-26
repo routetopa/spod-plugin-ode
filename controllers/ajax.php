@@ -41,17 +41,20 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
     public function addPrivateRoomDatalet()
     {
         /* ODE */
+        $id = '';
+
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['component'], $_REQUEST['params'], $_REQUEST['fields']) )
         {
-            SPODPR_BOL_Service::getInstance()->addDataletCard(OW::getUser()->getId(),
+            $id = SPODPR_BOL_Service::getInstance()->addDataletCard(OW::getUser()->getId(),
                                                               $_REQUEST['component'],
                                                               $_REQUEST['fields'],
                                                               $_REQUEST['params'],
-                                                              $_REQUEST['data']);
+                                                              $_REQUEST['data'],
+                                                              $_REQUEST['comment']);
         }
         /* ODE */
 
-        echo json_encode(array("status" => "ok"));
+        echo json_encode(array("status" => "ok", "id" => $id));
         exit;
     }
 
