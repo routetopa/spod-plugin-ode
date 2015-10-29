@@ -46,32 +46,61 @@ background-repeat: no-repeat;
             <span class="ow_attachment_btn">{submit name="save"}</span>
             <span class="ow_attachment_btn">{submit name="ode_open_dialog"}</span>
 
-            <!-- TEST -->
-            <link rel="import" href="http://192.168.232.128/DEEalerProvider/COMPONENTS/controllets/paper-card-controllet/paper-card-controllet.html"/>
-            <link rel="import" href="http://192.168.232.128/DEEalerProvider/COMPONENTS/controllets/animated-button-container-controllet/animated-button-container-controllet.html"/>
-            <link rel="import" href="http://192.168.232.128/DEEalerProvider/COMPONENTS/controllets/generic-cards-container-controllet/generic-cards-container-controllet.html"/>
+            <!-- PRIVATE ROOM -->
+            <link rel="import" href="{$components_url}controllets/paper-card-controllet/paper-card-controllet.html"/>
+            <link rel="import" href="{$components_url}controllets/animated-button-container-controllet/animated-button-container-controllet.html"/>
+            <link rel="import" href="{$components_url}controllets/generic-cards-container-controllet/generic-cards-container-controllet.html"/>
+
             <span class="ow_attachment_btn">
                 <animated-button-container-controllet id="share_from_private_room"
-                                                      height="70"
+                                                      height="60"
                                                       width="30"
                                                       icon="assessment"
                                                       icon-width="36"
                                                       icon-height="36"
                                                       background-button-color="#00aabf">
                     <generic-cards-container-controllet>
-                        <paper-card-controllet class="card" width="200" height="200" comment="comment a" type="text" card-title="Title a">vlablasdvad</paper-card-controllet>
-                        <paper-card-controllet class="card" width="200" height="200" comment="comment b" type="text" card-title="Title b">asasasas</paper-card-controllet>
-                        <paper-card-controllet class="card" width="200" height="200" comment="comment c" type="text" card-title="Title c">dsdsdsds</paper-card-controllet>
-                        <paper-card-controllet class="card" width="200" height="200" comment="comment c" type="text" card-title="Title c">dfdfdfdfdf</paper-card-controllet>
-                        <paper-card-controllet class="card" width="200" height="200" comment="comment d" type="text" card-title="Title x">fgfgfgfgfgf</paper-card-controllet>
-                        <paper-card-controllet class="card" width="200" height="200" comment="comment d" type="text" card-title="Title y">hjhjhjhjhjhj</paper-card-controllet>
-                        <paper-card-controllet class="card" width="200" height="200" comment="comment e" type="text" card-title="Title z">hjhjhjhjyjyjy</paper-card-controllet>
-                        <paper-card-controllet class="card" width="200" height="200" comment="comment g" type="text" card-title="Title w">qqqqqqqqqqqq</paper-card-controllet>
-                        </paper-card-controllet>
+                        {foreach $cards as $card}
+                            <paper-card-controllet
+                                    class="card"
+
+                                    {if $card->isDatalet}
+                                        width="200"
+                                        height="200"
+                                        datalet-id="{$card->dataletId}"
+                                        datalet="{$card->component}"
+                                        preset='{$card->preset}'
+                                        fields='{$card->fields}'
+                                    {else}
+                                        width="200"
+                                        height="200"
+                                    {/if}
+
+                                    card-type="{$card->cardType}"
+                                    card-title="{$card->card->title}"
+                                    card-id="{$card->cardId}"
+                                    comment="{$card->card->comment}"
+                                >
+                            {if $card->isDatalet}
+                                <link rel="import" href="{$components_url}datalets/{$card->component}/{$card->component}.html" />
+                                <{$card->component} data-url="{$card->params->dataUrl}"
+                                    data='{$card->data}'
+                                    fields='[{$card->fields}]'>
+                                </{$card->component}>
+                            {else}
+                                {if $card->cardType == 'text'}
+                                        {$card->card->content}
+                                    {else}
+                                        <link rel="import" href="{$components_url}datalets/preview-datalet/preview-datalet.html" />
+                                        <preview-datalet data-url="undefined" url="{$card->card->content}"></preview-datalet>
+                                {/if}
+                            {/if}
+                            </paper-card-controllet>
+                        {/foreach}
                     </generic-cards-container-controllet>
                 </animated-button-container-controllet>
             </span>
-            <!-- TEST --> 
+            <!-- PRIVATE ROOM -->
 
             <span class="ow_attachment_icons">
                 <span class="ow_attachments" id="{$uniqId}-btn-cont" >
