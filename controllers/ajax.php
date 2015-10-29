@@ -38,21 +38,37 @@
 class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 {
 
-    public function addPrivateRoomDatalet()
+    public function privateRoomDatalet()
     {
         /* ODE */
         $id = '';
 
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['component'], $_REQUEST['params'], $_REQUEST['fields']) )
         {
-            $id = SPODPR_BOL_Service::getInstance()->addDataletCard(OW::getUser()->getId(),
+            $id = SPODPR_BOL_Service::getInstance()->dataletCard(OW::getUser()->getId(),
                                                               $_REQUEST['component'],
                                                               $_REQUEST['fields'],
                                                               $_REQUEST['params'],
                                                               $_REQUEST['data'],
-                                                              $_REQUEST['comment']);
+                                                              isset($_REQUEST['comment']) ? $_REQUEST['comment'] : '',
+                                                              isset($_REQUEST['dataletId']) ? $_REQUEST['dataletId'] : '',
+                                                              isset($_REQUEST['cardId']) ? $_REQUEST['cardId'] : '');
         }
         /* ODE */
+
+        echo json_encode(array("status" => "ok", "id" => $id));
+        exit;
+    }
+
+    public function modPrivateRoomDatalet()
+    {
+        SPODPR_BOL_Service::getInstance()->modPrivateRoomDatalet(OW::getUser()->getId(),
+            $_REQUEST['id'],
+            $_REQUEST['component'],
+            $_REQUEST['fields'],
+            $_REQUEST['params'],
+            $_REQUEST['data'],
+            $_REQUEST['comment']);
 
         echo json_encode(array("status" => "ok", "id" => $id));
         exit;

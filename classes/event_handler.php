@@ -97,7 +97,7 @@ class ODE_CLASS_EventHandler
                 ODE.deep_datalet_list = {$ode_deep_datalet_list}
                 ODE.ajax_load_item = {$ajax_load_item}
                 ODE.ajax_add_comment = {$ajax_add_comment}
-                ODE.ajax_add_private_room_datalet = {$ajax_add_private_room_datalet}
+                ODE.ajax_private_room_datalet = {$ajax_private_room_datalet}
                 ODE.ode_dataset_list = {$ode_dataset_list}
                 ODE.ode_deep_client = {$ode_deep_client}
                 ODE.ode_webcomponents_js = {$ode_webcomponents_js}
@@ -105,7 +105,7 @@ class ODE_CLASS_EventHandler
                 'ode_deep_url' => ODE_DEEP_URL,
                 'ajax_load_item' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'loadItem'),
                 'ajax_add_comment' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'addComment'),
-                'ajax_add_private_room_datalet' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'addPrivateRoomDatalet'),
+                'ajax_private_room_datalet' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'privateRoomDatalet'),
                 'ode_deep_datalet_list' => ODE_DEEP_DATALET_LIST,
                 'ode_dataset_list' => ODE_DATASET_LIST,
                 'ode_deep_client' => ODE_DEEP_CLIENT,

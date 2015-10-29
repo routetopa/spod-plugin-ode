@@ -51,7 +51,7 @@ ODE.savedDataletListener = function(e)
             break;
 
         case 'private-room' :
-            ODE.addPrivateRoomDatalet();
+            ODE.privateRoomDatalet();
             break;
 
         default : break;
@@ -61,16 +61,24 @@ ODE.savedDataletListener = function(e)
     previewFloatBox.close();
 };
 
-ODE.addPrivateRoomDatalet = function ()
+ODE.privateRoomDatalet = function ()
 {
+    $.extend(ODE.dataletParameters, {dataletId:SPODPR.dataletOpened, cardId:SPODPR.cardOpened});
+
     $.ajax({
         type: 'post',
-        url: ODE.ajax_add_private_room_datalet,
+        url: ODE.ajax_private_room_datalet,
         data: ODE.dataletParameters,
         dataType: 'JSON',
         success: function(data){
-            //TODO create a scope fro add_card
-            add_card(ODE.dataletParameters,data.id);
+
+            previewFloatBox.close();
+
+            if(ODE.dataletParameters.cardId == undefined)
+                add_card(ODE.dataletParameters,data.id);
+            else
+                sobstitute_card(ODE.dataletParameters, SPODPR.cardOpened);
+
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
             OW.error(textStatus);

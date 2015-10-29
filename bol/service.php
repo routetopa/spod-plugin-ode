@@ -102,14 +102,25 @@ class ODE_BOL_Service
         return $dbo->queryForList($query);
     }
 
-    public function addPrivateRoomDatalet($datalet, $fields, $ownerId, $params, $data='')
+    public function privateRoomDatalet($component, $fields, $userId, $params, $data='', $dataletId='')
     {
-        ODE_CLASS_Helper::sanitizeDataletInput($datalet, $dataset, $fields);
+        ODE_CLASS_Helper::sanitizeDataletInput($component, $params, $fields);
 
-        $dt            = new ODE_BOL_Datalet();
-        $dt->component = $datalet;
+        if(empty($dataletId))
+        {
+            $dt = new ODE_BOL_Datalet();
+        }
+        else
+        {
+            $example = new OW_Example();
+            $example->andFieldEqual('id', $dataletId);
+            $example->andFieldEqual('ownerId', $userId);
+            $dt = ODE_BOL_DataletDao::getInstance()->findObjectByExample($example);
+        }
+
+        $dt->component = $component;
         $dt->fields    = $fields;
-        $dt->ownerId   = $ownerId;
+        $dt->ownerId   = $userId;
         $dt->params    = $params;
         $dt->status    = 'approved';
         $dt->privacy   = 'everybody';
@@ -154,6 +165,7 @@ class ODE_BOL_Service
             ODE_BOL_DataletPostDao::getInstance()->deleteByExample($ex);
         }
     }
+
     public function checkIfAdmin($id){
         /*$admins  =  $this->getAdminList();
         foreach($admins as $admin)
