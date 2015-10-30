@@ -1,24 +1,19 @@
-{script}
-{literal}
+<style>
+    body .floatbox_header
+    {
+        display: none;
+    }
 
-/*ComponentService.deep_url = ODE.deep_url;
-ComponentService.getComponent({
-    component   : "data-sevc-controllet",
-    params      :
-        {
-        'deep-url'          : ODE.deep_url,
-        'datalets-list-url' : ODE.deep_datalet_list,
-        'organization'      : ODE.organization
-        },
-    fields     : Array(),
-    placeHolder : "ode_controllet_placeholder_float"
-});*/
+    body .floatbox_bottom
+    {
+        display: none;
+    }
 
-{/literal}
-{/script}
-
-<!--<div id="ode_controllet_placeholder_float" style="">
-</div>-->
+    body .floatbox_body
+    {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
 
 <!-- CROSS BROWSER FIX -->
 <iframe id="ode_controllet_iframe_placeholder" src="/ow_static/plugins/ode/pages/sevc.html" height="100%" width="100%"/>
