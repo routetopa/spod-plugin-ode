@@ -5,6 +5,29 @@ ODE = {};
 ODE.init = function()
 {
     ComponentService.deep_url = ODE.deep_url;
+
+    window.addEventListener('generic-cards-container-controllet_card-selected', function(e){
+        console.log(e);
+        var data = {detail:{data:{datalet:e.detail.selectedElement.getAttribute("datalet"),
+                                  fields:e.detail.selectedElement.getAttribute("fields").split('","'),
+                                  params:e.detail.selectedElement.getAttribute("preset"),
+                                  staticData:e.detail.selectedElement.getAttribute("static-data")}}};
+
+        ODE.pluginPreview = 'newsfeed';
+
+        ODE.dataletParameters.component = e.detail.selectedElement.getAttribute("datalet");
+        ODE.dataletParameters.params    = JSON.decode(e.detail.selectedElement.getAttribute("preset"));
+        ODE.dataletParameters.fields    = e.detail.selectedElement.getAttribute("fields").split('","');
+        ODE.dataletParameters.data      = e.detail.selectedElement.getAttribute("static-data");
+
+        ODE.loadDatalet(ODE.dataletParameters.component,
+                        ODE.dataletParameters.params,
+                        ODE.dataletParameters.fields,
+                        ODE.dataletParameters.data,
+                        'ode_controllet_placeholder');
+
+    });
+
 };
 
 ODE.addOdeOnComment = function()

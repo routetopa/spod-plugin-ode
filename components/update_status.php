@@ -90,7 +90,7 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
     public function loadPrivateRoom()
     {
         $this->assign('components_url', SPODPR_COMPONENTS_URL);
-        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId()));
+        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
     }
 
 }
