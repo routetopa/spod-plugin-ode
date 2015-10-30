@@ -155,6 +155,10 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
         $uid = uniqid();
         $form = $this->generateForm($groupSelect, $groupId, $isHidden, $uid);
 
+        /* ODE */
+        $this->loadPrivateRoom();
+        /* ODE */
+
         OW::getDocument()->addStyleDeclaration('
 			.disabled_option {
 				color: #9F9F9F;
@@ -246,13 +250,19 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
         $field = new HiddenField('ode_data');
         $form->addElement($field);
 
-        $script = "$('#{$odeButton->getId()}').click(function(e){
-            ODE.pluginPreview = 'forum';
-            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
+        $script = "ODE.pluginPreview = 'forum';
+            $('#{$odeButton->getId()}').click(function(e){
+                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
         OW::getDocument()->addOnloadScript($script);
 
         return $form;
+    }
+
+    protected function loadPrivateRoom()
+    {
+        $this->assign('components_url', SPODPR_COMPONENTS_URL);
+        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
     }
 }

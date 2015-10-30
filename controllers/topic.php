@@ -328,6 +328,10 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         $addPostForm = $this->generateAddPostForm($topicDto->id, $uid);
         $this->addForm($addPostForm);
 
+        /* ODE */
+        $this->loadPrivateRoom();
+        /* ODE */
+
         $addPostInputId = $addPostForm->getElement('text')->getId();
 
         if ( $enableAttachments )
@@ -519,8 +523,8 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         $field = new HiddenField('ode_data');
         $form->addElement($field);
 
-        $script = "$('#{$odeButton->getId()}').click(function(e){
-            ODE.pluginPreview = 'forum';
+        $script = "ODE.pluginPreview = 'forum';
+        $('#{$odeButton->getId()}').click(function(e){
             previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
@@ -705,6 +709,12 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         }
 
         $this->redirect($redirectUrl);
+    }
+
+    protected function loadPrivateRoom()
+    {
+        $this->assign('components_url', SPODPR_COMPONENTS_URL);
+        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
     }
 
 }

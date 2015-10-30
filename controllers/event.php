@@ -226,6 +226,10 @@ class ODE_CTRL_Event extends OW_ActionController
 
         $form = new ODEEventAddForm('event_add');
 
+        /* ODE */
+        $this->loadPrivateRoom();
+        /* ODE */
+
         if ( date('n', time()) == 12 && date('j', time()) == 31 )
         {
             $defaultDate = (date('Y', time()) + 1) . '/1/1';
@@ -465,6 +469,12 @@ class ODE_CTRL_Event extends OW_ActionController
         return $event;
     }
 
+    protected function loadPrivateRoom()
+    {
+        $this->assign('components_url', SPODPR_COMPONENTS_URL);
+        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
+    }
+
 }
 
 class ODEEventAddForm extends Form
@@ -617,16 +627,18 @@ class ODEEventAddForm extends Form
         $field = new HiddenField('ode_data');
         $this->addElement($field);
 
-        $script = "$('#{$odeButton->getId()}').click(function(e){
-            ODE.pluginPreview = 'event';
+        $script = "ODE.pluginPreview = 'event';
+        $('#{$odeButton->getId()}').click(function(e){
             previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
         OW::getDocument()->addOnloadScript($script);
+
         /* ODE */
 
         $this->setEnctype(Form::ENCTYPE_MULTYPART_FORMDATA);
     }
+
 }
 
 class EventTimeField extends FormElement

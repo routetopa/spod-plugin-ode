@@ -74,10 +74,10 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $form->addElement($field);
 
 
-        $script = "$('#{$odeButton->getId()}').click(function(e){
-            //$('#ode_controllet_placeholder').slideToggle('fast');
-            ODE.pluginPreview = 'newsfeed';
-            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
+        $script = "ODE.pluginPreview = 'newsfeed';
+            $('#{$odeButton->getId()}').click(function(e){
+                //$('#ode_controllet_placeholder').slideToggle('fast');
+                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
         OW::getDocument()->addOnloadScript($script);
@@ -87,7 +87,7 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         return $form;
     }
 
-    public function loadPrivateRoom()
+    protected function loadPrivateRoom()
     {
         $this->assign('components_url', SPODPR_COMPONENTS_URL);
         $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
