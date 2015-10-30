@@ -42,7 +42,7 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
     public function __construct( $feedAutoId, $feedType, $feedId, $actionVisibility = null )
     {
         parent::__construct($feedAutoId, $feedType, $feedId, $actionVisibility = null);
-        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_smallmargin'));
+        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
     }
 
     /**
