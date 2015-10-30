@@ -329,7 +329,7 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         $this->addForm($addPostForm);
 
         /* ODE */
-        $this->loadPrivateRoom();
+        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
         /* ODE */
 
         $addPostInputId = $addPostForm->getElement('text')->getId();
@@ -709,12 +709,6 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         }
 
         $this->redirect($redirectUrl);
-    }
-
-    protected function loadPrivateRoom()
-    {
-        $this->assign('components_url', SPODPR_COMPONENTS_URL);
-        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
     }
 
 }

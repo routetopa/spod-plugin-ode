@@ -42,7 +42,7 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
     public function __construct( $feedAutoId, $feedType, $feedId, $actionVisibility = null )
     {
         parent::__construct($feedAutoId, $feedType, $feedId, $actionVisibility = null);
-        $this->loadPrivateRoom();
+        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_smallmargin'));
     }
 
     /**
@@ -85,12 +85,6 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $form->setAction( OW::getRequest()->buildUrlQueryString(OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'statusUpdate')) );
 
         return $form;
-    }
-
-    protected function loadPrivateRoom()
-    {
-        $this->assign('components_url', SPODPR_COMPONENTS_URL);
-        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
     }
 
 }

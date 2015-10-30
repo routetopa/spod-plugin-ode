@@ -227,7 +227,7 @@ class ODE_CTRL_Event extends OW_ActionController
         $form = new ODEEventAddForm('event_add');
 
         /* ODE */
-        $this->loadPrivateRoom();
+        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
         /* ODE */
 
         if ( date('n', time()) == 12 && date('j', time()) == 31 )
@@ -468,13 +468,6 @@ class ODE_CTRL_Event extends OW_ActionController
 
         return $event;
     }
-
-    protected function loadPrivateRoom()
-    {
-        $this->assign('components_url', SPODPR_COMPONENTS_URL);
-        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
-    }
-
 }
 
 class ODEEventAddForm extends Form

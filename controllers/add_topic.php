@@ -156,7 +156,7 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
         $form = $this->generateForm($groupSelect, $groupId, $isHidden, $uid);
 
         /* ODE */
-        $this->loadPrivateRoom();
+        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
         /* ODE */
 
         OW::getDocument()->addStyleDeclaration('
@@ -258,11 +258,5 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
         OW::getDocument()->addOnloadScript($script);
 
         return $form;
-    }
-
-    protected function loadPrivateRoom()
-    {
-        $this->assign('components_url', SPODPR_COMPONENTS_URL);
-        $this->assign('cards', SPODPR_CLASS_Helper::getInstance()->getUserPrivateRoom(OW::getUser()->getId(), true));
     }
 }
