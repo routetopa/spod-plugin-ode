@@ -105,6 +105,11 @@ class ODE_CTRL_Event extends OW_ActionController
         }
         /* ODE */
 
+        /* ODE */
+        if(OW::getPluginManager()->isPluginActive('spodpr'))
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
+        /* ODE */
+
         $this->assign('info', $infoArray);
 
         // event attend form

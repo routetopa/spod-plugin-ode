@@ -5,6 +5,7 @@
 {else}
 {style}
 {literal}
+#button_container { visibility: hidden; }
 .attend_buttons{
 text-align:right;
 margin-bottom:7px;
@@ -87,6 +88,12 @@ text-align:center;
 
     {block_decorator name='box' type='empty' iconClass='ow_ic_picture' langLabel='event+view_page_image_block_cap_label' addClass="ow_std_margin clearfix"}
     {if !empty($info.image)}<img src="{$info.image}" alt="" style="float: right;margin: 5px;" />{/if}{$info.desc}
+
+    <!-- ODE -->
+    <div>
+        {$private_room}
+    </div>
+    <!-- ODE -->
 
     <!-- ODE -->
     {if isset($info.hasDatalet)}

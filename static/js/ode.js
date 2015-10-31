@@ -46,14 +46,18 @@ ODE.addOdeOnComment = function()
         });
 
         // Add PRIVATE_ROOM on Comment
-        var prElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_attach.svg) no-repeat center;" data-id="' + id + '"></a>'));
-        prElem = prElem.children().first();
-        prElem.click(function (e) {
-            ODE.pluginPreview = 'comment';
-            ODE.commentTarget = e.target;
-            $('.ow_submit_auto_click').show();
-            document.getElementById('share_from_private_room').dispatchEvent(new Event('animated-button-container-controllet_open-window'));
-        });
+        if(ODE.is_private_room_active)
+        {
+            var prElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_attach.svg) no-repeat center;" data-id="' + id + '"></a>'));
+            prElem = prElem.children().first();
+            prElem.click(function (e) {
+                ODE.pluginPreview = 'comment';
+                ODE.commentTarget = e.target;
+                $('.ow_submit_auto_click').show();
+                document.getElementById('share_from_private_room').dispatchEvent(new Event('animated-button-container-controllet_open-window'));
+            });
+        }
+
     });
 };
 
