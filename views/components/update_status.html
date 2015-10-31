@@ -46,7 +46,9 @@ background-repeat: no-repeat;
             <span class="ow_attachment_btn">{submit name="save"}</span>
             <!-- ODE -->
             <span class="ow_attachment_btn">{submit name="ode_open_dialog"}</span>
-            {$private_room}
+            {if isset($private_room)}
+                {$private_room}
+            {/if}
             <!-- ODE -->
             <span class="ow_attachment_icons">
                 <span class="ow_attachments" id="{$uniqId}-btn-cont" >

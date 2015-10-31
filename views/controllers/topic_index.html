@@ -175,7 +175,9 @@ return false;
         <div class="ow_smallmargin">
             <span class="ow_attachment_btn ode_done">{submit name="ode_open_dialog"}</span>
         </div>
-        {$private_room}
+        {if isset($private_room)}
+            {$private_room}
+        {/if}
         <!-- ODE -->
 
         {if $enableAttachments}<div class="ow_smallmargin">{$attachmentsCmp}</div>{/if}

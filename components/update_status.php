@@ -42,7 +42,9 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
     public function __construct( $feedAutoId, $feedType, $feedId, $actionVisibility = null )
     {
         parent::__construct($feedAutoId, $feedType, $feedId, $actionVisibility = null);
-        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
+
+        if(OW::getPluginManager()->isPluginActive('spodpr'))
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
     }
 
     /**
@@ -76,6 +78,7 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
 
         $script = "ODE.pluginPreview = 'newsfeed';
             $('#{$odeButton->getId()}').click(function(e){
+                ODE.pluginPreview = 'newsfeed';
                 //$('#ode_controllet_placeholder').slideToggle('fast');
                 previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
         });";

@@ -156,7 +156,8 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
         $form = $this->generateForm($groupSelect, $groupId, $isHidden, $uid);
 
         /* ODE */
-        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
+        if(OW::getPluginManager()->isPluginActive('spodpr'))
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
         /* ODE */
 
         OW::getDocument()->addStyleDeclaration('

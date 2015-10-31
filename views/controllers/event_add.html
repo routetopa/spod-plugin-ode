@@ -77,13 +77,15 @@ padding-left: 3px;
         <!-- ODE -->
 
         <!-- ODE -->
+        {if isset($private_room)}
         <tr class="ow_alt1">
             <td class="ow_label ode_done">{text key='ode+event_post_od_private_room'}</td>
             <td class="ow_value">
-                {$private_room}
+                    {$private_room}
             </td>
             <td></td>
         </tr>
+        {/if}
         <!-- ODE -->
 
     </table>

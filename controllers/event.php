@@ -227,7 +227,8 @@ class ODE_CTRL_Event extends OW_ActionController
         $form = new ODEEventAddForm('event_add');
 
         /* ODE */
-        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
+        if(OW::getPluginManager()->isPluginActive('spodpr'))
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
         /* ODE */
 
         if ( date('n', time()) == 12 && date('j', time()) == 31 )

@@ -329,7 +329,8 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
         $this->addForm($addPostForm);
 
         /* ODE */
-        $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
+        if(OW::getPluginManager()->isPluginActive('spodpr'))
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
         /* ODE */
 
         $addPostInputId = $addPostForm->getElement('text')->getId();

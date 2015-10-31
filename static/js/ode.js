@@ -19,6 +19,10 @@ ODE.init = function()
 
     });
 
+    $('#share_from_private_room').click(function (e){
+        ODE.pluginPreview = 'newsfeed';
+    });
+
 };
 
 ODE.addOdeOnComment = function()
@@ -31,12 +35,21 @@ ODE.addOdeOnComment = function()
             $(obj).attr('data-preview-added', true);
         }
         var id = obj.id;
-        var newEl = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_lens.svg) no-repeat center;" data-id="' + id + '"></a>'));
-        newEl = newEl.children().first();
-        newEl.click(function (e) {
+        var odeElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_lens.svg) no-repeat center;" data-id="' + id + '"></a>'));
+        odeElem = odeElem.children().first();
+        odeElem.click(function (e) {
             ODE.pluginPreview = 'comment';
             ODE.commentTarget = e.target;
             previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass:'ow_ic_lens', title:''});
+        });
+
+        var prElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_attach.svg) no-repeat center;" data-id="' + id + '"></a>'));
+        prElem = prElem.children().first();
+        prElem.click(function (e) {
+            ODE.pluginPreview = 'comment';
+            ODE.commentTarget = e.target;
+            $('.ow_submit_auto_click').show();
+            document.getElementById('share_from_private_room').dispatchEvent(new Event('animated-button-container-controllet_open-window'));
         });
     });
 };
@@ -56,12 +69,12 @@ ODE.savedDataletListener = function(e)
             break;
 
         case 'comment' :
-            $(ODE.commentTarget).parent().first().prepend($('<a class="ode_done" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_ok.svg) no-repeat center;"></a>'));
+            $(ODE.commentTarget).parent().first().prepend($('<a class="ode_done" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center;"></a>'));
             break;
 
         case 'event' :
         case 'forum' :
-            $('.ode_done').first().append($('<div class="ode_done" style="background:url(' + ODE.THEME_IMAGES_URL + 'ic_ok.svg) no-repeat center; height:20px; width:20px; float:left"></div>'));
+            $('.ode_done').first().append($('<div class="ode_done" style="background:url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center; height:20px; width:20px; float:left"></div>'));
             break;
 
         case 'private-room' :
@@ -72,7 +85,8 @@ ODE.savedDataletListener = function(e)
 
     }
 
-    previewFloatBox.close();
+    if(typeof previewFloatBox != 'undefined')
+        previewFloatBox.close();
 };
 
 ODE.privateRoomDatalet = function ()
@@ -91,7 +105,7 @@ ODE.privateRoomDatalet = function ()
             if(ODE.dataletParameters.cardId == undefined)
                 add_card(ODE.dataletParameters,data.id);
             else
-                sobstitute_card(ODE.dataletParameters, SPODPR.cardOpened);
+                replace_card(ODE.dataletParameters, SPODPR.cardOpened);
 
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
