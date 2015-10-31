@@ -35,6 +35,8 @@ ODE.addOdeOnComment = function()
             $(obj).attr('data-preview-added', true);
         }
         var id = obj.id;
+
+        // Add ODE on Comment
         var odeElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_lens.svg) no-repeat center;" data-id="' + id + '"></a>'));
         odeElem = odeElem.children().first();
         odeElem.click(function (e) {
@@ -43,6 +45,7 @@ ODE.addOdeOnComment = function()
             previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass:'ow_ic_lens', title:''});
         });
 
+        // Add PRIVATE_ROOM on Comment
         var prElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_attach.svg) no-repeat center;" data-id="' + id + '"></a>'));
         prElem = prElem.children().first();
         prElem.click(function (e) {
@@ -105,7 +108,7 @@ ODE.privateRoomDatalet = function ()
             if(ODE.dataletParameters.cardId == undefined)
                 add_card(ODE.dataletParameters,data.id);
             else
-                replace_card(ODE.dataletParameters, SPODPR.cardOpened);
+                replace_datalet_card(ODE.dataletParameters, SPODPR.cardOpened);
 
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
