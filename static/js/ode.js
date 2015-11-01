@@ -98,7 +98,15 @@ ODE.savedDataletListener = function(e)
 
 ODE.privateRoomDatalet = function ()
 {
-    $.extend(ODE.dataletParameters, {dataletId:SPODPR.dataletOpened, cardId:SPODPR.cardOpened});
+    if(SPODPR.dataletOpened == undefined || SPODPR.cardOpened == undefined)
+    {
+        delete ODE.dataletParameters['dataletId'];
+        delete ODE.dataletParameters['cardId'];
+    }
+    else
+    {
+        $.extend(ODE.dataletParameters, {dataletId: SPODPR.dataletOpened, cardId: SPODPR.cardOpened});
+    }
 
     $.ajax({
         type: 'post',
@@ -106,14 +114,12 @@ ODE.privateRoomDatalet = function ()
         data: ODE.dataletParameters,
         dataType: 'JSON',
         success: function(data){
-
             previewFloatBox.close();
 
             if(ODE.dataletParameters.cardId == undefined)
                 add_card(ODE.dataletParameters,data.id);
             else
                 replace_datalet_card(ODE.dataletParameters, SPODPR.cardOpened);
-
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
             OW.error(textStatus);
