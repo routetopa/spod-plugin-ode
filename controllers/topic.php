@@ -225,10 +225,18 @@ class ODE_CTRL_Topic extends FORUM_CTRL_Topic
             {
                 $post['hasDatalet'] = true;
 
-                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                // CACHE
+/*                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
                                                                     '.$datalet["params"].',
                                                                     ['.$datalet["fields"].'],
                                                                     \''.$datalet["data"].'\',
+                                                                    "datalet_placeholder_' . $post['id']. '");');*/
+
+                // NO CACHE
+                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    undefined,
                                                                     "datalet_placeholder_' . $post['id']. '");');
 
             }

@@ -163,10 +163,17 @@ class ODE_CLASS_EventHandler
             {
                 $data['content']['vars']['activity']['description'] .= '<div id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
 
-                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                //CACHE
+/*                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
                                                                     '.$datalet["params"].',
                                                                     ['.$datalet["fields"].'],
                                                                     \''.$datalet["data"].'\',
+                                                                    "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'");');*/
+                // NO CACHE
+                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    undefined,
                                                                     "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'");');
 
                 $event->setData($data);
@@ -190,10 +197,6 @@ class ODE_CLASS_EventHandler
 
             $data = $event->getData();
 
-            //echo $params["action"]["pluginKey"];
-            //echo var_dump($data['content']);
-            //echo $id;
-
             if (!empty($datalet)) {
 
                 switch($params["action"]["pluginKey"])
@@ -204,11 +207,18 @@ class ODE_CLASS_EventHandler
 
                 $content .= '<div id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
 
-
-                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                 // CACHE
+/*                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
                                                                     '.$datalet["params"].',
                                                                     ['.$datalet["fields"].'],
                                                                     \''.$datalet["data"].'\',
+                                                                    "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'");');*/
+
+                // NO CACHE
+                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    undefined,
                                                                     "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'");');
 
             }
@@ -230,10 +240,17 @@ class ODE_CLASS_EventHandler
             $content = $event->getDataProp('content');
             $content .= '<div id="datalet_placeholder_' . $id . '_comment"></div>';
 
-            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+            // CACHE
+/*            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
                                                                     '.$datalet["params"].',
                                                                     ['.$datalet["fields"].'],
                                                                     \''.$datalet["data"].'\',
+                                                                    "datalet_placeholder_' . $id . '_comment");');*/
+            // NO CACHE
+            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    undefined,
                                                                     "datalet_placeholder_' . $id . '_comment");');
 
             $event->setDataProp('content', $content);

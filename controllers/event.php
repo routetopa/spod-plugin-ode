@@ -97,10 +97,18 @@ class ODE_CTRL_Event extends OW_ActionController
         {
             $infoArray['hasDatalet'] = true;
 
-            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+            // CACHE
+/*            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
                                                                     '.$datalet["params"].',
                                                                     ['.$datalet["fields"].'],
                                                                     \''.$datalet["data"].'\',
+                                                                    "datalet_placeholder_' . $event->getId() .'_event");');*/
+
+            // NO CACHE
+            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    undefined,
                                                                     "datalet_placeholder_' . $event->getId() .'_event");');
         }
         /* ODE */
