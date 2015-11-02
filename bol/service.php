@@ -166,6 +166,39 @@ class ODE_BOL_Service
         }
     }
 
+    public function getSettingByKey($key)
+    {
+        $example = new OW_Example();
+        $example->andFieldEqual('key', $key);
+        $pref = ODE_BOL_SettingDao::getInstance()->findObjectByExample($example);
+        return $pref;
+    }
+
+    public function saveSetting($key, $value)
+    {
+        $pref = $this->getSettingByKey($key);
+
+        if($pref)
+        {
+            $pref->value = $value;
+        }
+        else
+        {
+            $pref = new ODE_BOL_Settings();
+            $pref->key = $key;
+            $pref->value = $value;
+        }
+
+        ODE_BOL_SettingDao::getInstance()->save($pref);
+
+    }
+
+    public function deleteSettings($key)
+    {
+        $pref = $this->getSettingByKey($key);
+        ODE_BOL_SettingDao::getInstance()->delete($pref);
+    }
+
     public function checkIfAdmin($id){
         /*$admins  =  $this->getAdminList();
         foreach($admins as $admin)

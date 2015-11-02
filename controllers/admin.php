@@ -153,6 +153,8 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
             for($j=0; $j<count($odProvider); $j++)
             {
+                $odProvider[$j] = trim($odProvider[$j]);
+
                 if($this->isCkan($odProvider[$j]))
                 {
                     if(!empty($odOrganization[$odCount]))
@@ -174,17 +176,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
                 $datasetArray = array_merge($datasetArray, $res);
             }
 
-            /* ode_dataset_list */
-            $preference = BOL_PreferenceService::getInstance()->findPreference('ode_dataset_list');
-
-            if(empty($preference))
-                $preference = new BOL_Preference();
-
-            $preference->key = 'ode_dataset_list';
-            $preference->sectionName = 'general';
-            $preference->defaultValue = json_encode($datasetArray);
-            $preference->sortOrder = 7;
-            BOL_PreferenceService::getInstance()->savePreference($preference);
+            ODE_BOL_Service::getInstance()->saveSetting('ode_dataset_list', json_encode($datasetArray));
 
         }
     }
@@ -204,9 +196,16 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             {
                 if(!empty($organization) && $res->body->result->results[0]->organization->title != $organization) continue;
 
-                array_push($datasets, array("name" => $res->body->result->results[0]->resources[$i]->name,
+/*                array_push($datasets, array("name" => $res->body->result->results[0]->resources[$i]->name,
                     "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
-                    "description" => str_replace("'", "", isset($res->body->result->results[0]->resources[$i]->description) ? $res->body->result->results[0]->resources[$i]->description : "")));
+                    "description" => str_replace("'", "", isset($res->body->result->results[0]->resources[$i]->description) ? $res->body->result->results[0]->resources[$i]->description : "")));*/
+
+                $name = str_replace("'", "", $res->body->result->results[0]->resources[$i]->name);
+
+                array_push($datasets, array("name" => $name,
+                                            "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
+                                            "description" => ""));
+
             }
         }
 

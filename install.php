@@ -30,6 +30,14 @@ CREATE TABLE `' . OW_DB_PREFIX . 'ode_datalet_post` (
   KEY `postId` (`postId`),
   KEY `dataletId` (`dataletId`),
   KEY `plugin` (`plugin`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+DROP TABLE IF EXISTS `' . OW_DB_PREFIX . 'ode_settings`;
+CREATE TABLE `' . OW_DB_PREFIX . 'ode_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `key` TEXT,
+  `value` MEDIUMTEXT,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;';
 
 OW::getDbo()->query($sql);
