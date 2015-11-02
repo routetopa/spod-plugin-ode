@@ -196,9 +196,9 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             {
                 if(!empty($organization) && $res->body->result->results[0]->organization->title != $organization) continue;
 
-/*                array_push($datasets, array("name" => $res->body->result->results[0]->resources[$i]->name,
-                    "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
-                    "description" => str_replace("'", "", isset($res->body->result->results[0]->resources[$i]->description) ? $res->body->result->results[0]->resources[$i]->description : "")));*/
+                //array_push($datasets, array("name" => $res->body->result->results[0]->resources[$i]->name,
+                //    "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
+                //    "description" => str_replace("'", "", isset($res->body->result->results[0]->resources[$i]->description) ? $res->body->result->results[0]->resources[$i]->description : "")));
 
                 $name = str_replace("'", "", $res->body->result->results[0]->resources[$i]->name);
 
@@ -211,6 +211,32 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
         return $datasets;
     }
+
+/*    protected function getCKANDatasetList($odProvider, $organization="")
+    {
+        $datasets = Array();
+
+        $odProvider = rtrim($odProvider,"/");
+
+        $res = \Httpful\Request::get($odProvider . '/api/3/action/package_search')->send();
+
+        for($j=0; $j<count($res->body->result->results); $j++)
+        {
+            for ($i = 0; $i < count($res->body->result->results[$j]->resources); $i++)
+            {
+                if(!empty($organization) && $res->body->result->results[$j]->resources[$i]->organization->title != $organization) continue;
+
+                $name = str_replace("'", "", isset($res->body->result->results[$j]->resources[$i]->name) ? $res->body->result->results[$j]->resources[$i]->name : $res->body->result->results[$j]->resources[$i]->description);
+
+                array_push($datasets, array("name" => $name,
+                    "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[$j]->resources[$i]->id,
+                    "description" => ""));
+
+            }
+        }
+
+        return $datasets;
+    }*/
 
     function getISSYDatasetList($odProvider)
     {
