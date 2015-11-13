@@ -226,6 +226,9 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
+        if(OW::getPluginManager()->isPluginActive('spodpublic'))
+            SPODPUBLIC_BOL_Service::getInstance()->addStat($params->getEntityId(), 'comments');
+
         /* ODE */
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['params'], $_REQUEST['datalet']['fields']) )
         {
@@ -235,8 +238,12 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 OW::getUser()->getId(),
                 $_REQUEST['datalet']['params'],
                 $comment->getId(),
-                'comment',
+                $_REQUEST['plugin'],
                 $_REQUEST['datalet']['data']);
+
+            if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
+                SPODPUBLIC_BOL_Service::getInstance()->addStat($params->getEntityId(), 'opendata');
+
         }
         /* ODE */
 

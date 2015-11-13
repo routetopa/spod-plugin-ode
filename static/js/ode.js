@@ -19,7 +19,7 @@ ODE.init = function()
 
     });
 
-    $('#share_from_private_room').click(function (e){
+    $('#open_window_button').click(function (e){
         ODE.pluginPreview = 'newsfeed';
     });
 
@@ -75,6 +75,7 @@ ODE.savedDataletListener = function(e)
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData, 'ode_controllet_placeholder');
             break;
 
+        case 'public-room' :
         case 'comment' :
             $(ODE.commentTarget).parent().first().prepend($('<a class="ode_done" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center;"></a>'));
             break;
@@ -239,7 +240,8 @@ ODE.commentSendMessage = function(message, context)
         commentCountOnPage: self.commentCountOnPage,
         commentText: message,
         initialCount: self.initialCount,
-        datalet: ODE.dataletParameters
+        datalet: ODE.dataletParameters,
+        plugin: ODE.pluginPreview
     };
 
     if( self.attachmentInfo ){

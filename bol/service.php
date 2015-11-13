@@ -56,6 +56,19 @@ class ODE_BOL_Service
         return $dbo->queryForRow($query);
     }
 
+    public function getDataletByPostIdWhereArray($id, array $plugin)
+    {
+        $dbo = OW::getDbo();
+
+        //TODO FIX TABLE PREFIX NAME
+        $query = "SELECT *
+                  FROM ow_ode_datalet JOIN ow_ode_datalet_post ON ow_ode_datalet.id = ow_ode_datalet_post.dataletId
+                  WHERE ow_ode_datalet_post.postId = " . $id . " AND
+                  ow_ode_datalet_post.plugin IN ('". implode("','", $plugin) ."');";
+
+        return $dbo->queryForRow($query);
+    }
+
     public function getDataletsById($id, $plugin)
     {
         $query = "SELECT * FROM ow_ode_datalet JOIN ow_ode_datalet_post ON ow_ode_datalet.id = dataletId ";

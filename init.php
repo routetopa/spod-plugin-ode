@@ -13,7 +13,7 @@ $ode_deep_client = empty($preference) ? "http://deep.routetopa.eu/DEEPCLIENT/js/
 define("ODE_DEEP_CLIENT", $ode_deep_client);
 
 $preference =  ODE_BOL_Service::getInstance()->getSettingByKey('ode_dataset_list');
-$ode_dataset_list = $preference->value;
+$ode_dataset_list = isset($preference->value) ? $preference->value : "";
 define("ODE_DATASET_LIST", $ode_dataset_list);
 
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcomponents_js');
