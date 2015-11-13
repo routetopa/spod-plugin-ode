@@ -241,7 +241,8 @@ ODE.commentSendMessage = function(message, context)
         commentText: message,
         initialCount: self.initialCount,
         datalet: ODE.dataletParameters,
-        plugin: ODE.pluginPreview
+        plugin: ODE.pluginPreview,
+        publicRoom: (typeof parent.ODE.publicRoom === 'undefined') ? '' : parent.ODE.publicRoom
     };
 
     if( self.attachmentInfo ){

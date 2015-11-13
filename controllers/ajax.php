@@ -226,9 +226,8 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
-        if(OW::getPluginManager()->isPluginActive('spodpublic'))
-            $public_room_id = SPODPUBLIC_CLASS_Graph::getInstance()->getRoot($params->getEntityId());
-            //SPODPUBLIC_BOL_Service::getInstance()->addStat($params->getEntityId(), 'comments');
+        if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($_REQUEST['publicRoom']))
+            SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'comments');
 
         /* ODE */
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['params'], $_REQUEST['datalet']['fields']) )
@@ -242,8 +241,8 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $_REQUEST['plugin'],
                 $_REQUEST['datalet']['data']);
 
-            /*if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
-                SPODPUBLIC_BOL_Service::getInstance()->addStat($params->getEntityId(), 'opendata');*/
+            if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
+                SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'opendata');
 
         }
         /* ODE */
