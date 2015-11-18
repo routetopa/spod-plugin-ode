@@ -226,8 +226,8 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
-        if(OW::getPluginManager()->isPluginActive('spodpublic'))
-            SPODPUBLIC_BOL_Service::getInstance()->addStat($params->getEntityId(), 'comments');
+        /*if(OW::getPluginManager()->isPluginActive('spodpublic'))
+            SPODPUBLIC_BOL_Service::getInstance()->addStat($params->getEntityId(), 'comments');*/
 
         /* ODE */
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['params'], $_REQUEST['datalet']['fields']) )
@@ -241,8 +241,8 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $_REQUEST['plugin'],
                 $_REQUEST['datalet']['data']);
 
-            if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
-                SPODPUBLIC_BOL_Service::getInstance()->addStat($params->getEntityId(), 'opendata');
+            /*if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
+                SPODPUBLIC_BOL_Service::getInstance()->addStat($params->getEntityId(), 'opendata');*/
 
         }
         /* ODE */
@@ -267,7 +267,12 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         }
         else
         {
-            $commentListCmp = new BASE_CMP_CommentsList($params, $_POST['cid']);
+            if($params->getPluginKey() == "spodpublic")
+            {
+                $commentListCmp = new SPODPUBLIC_CMP_CommentsList($params, $_POST['cid']);
+            }else{
+                $commentListCmp = new BASE_CMP_CommentsList($params, $_POST['cid']);
+            }
         }
 
         exit(json_encode(array(
