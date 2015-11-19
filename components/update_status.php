@@ -80,7 +80,7 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
             $('#{$odeButton->getId()}').click(function(e){
                 ODE.pluginPreview = 'newsfeed';
                 //$('#ode_controllet_placeholder').slideToggle('fast');
-                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'65vh', iconClass: 'ow_ic_add', title: ''});
+                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'80vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
         OW::getDocument()->addOnloadScript($script);
