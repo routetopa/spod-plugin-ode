@@ -45,14 +45,20 @@
                     'datasets'          : parent.ODE.ode_dataset_list
                 };
 
+                // Modify existing datalet
                 if(parent.SPODPR != undefined && parent.SPODPR.ControlletPresets != undefined)
                 {
                   params["selected-fields"]  = '[' + parent.SPODPR.ControlletPresets["selected-fields"] + ']';
                   params["selected-datalet"] = parent.SPODPR.ControlletPresets["selected-datalet"];
                   params["datalet-preset"]   = parent.SPODPR.ControlletPresets["datalet-preset"];
 
-                  //Reser controllet presets
+                  //Reset controllet presets
                   parent.SPODPR.ControlletPresets = undefined;
+                }
+
+                if(parent.SPODPUBLICROOM != undefined && parent.SPODPUBLICROOM.suggested_datasets != undefined)
+                {
+                    params["suggested-datasets"] = parent.SPODPUBLICROOM.suggested_datasets;
                 }
 
                 ComponentService.getComponent({
