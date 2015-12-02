@@ -11,7 +11,6 @@
         dynamicAddedJs[0] = parent.ODE.ode_webcomponents_js;
         dynamicAddedJs[1] = parent.ODE.ode_deep_client.substring(0, parent.ODE.ode_deep_client.lastIndexOf("/")) + "/jquery-2.1.0.min.js";
         dynamicAddedJs[2] = parent.ODE.ode_deep_client;
-        //dynamicAddedJs[3] = parent.ODE.deep_url.replace("DEEP", "COMPONENTS") + "bower_components/l20n/dist/compat/web/l20n.min.js";
 
         function loadScript(sScriptSrc, oCallback)
         {
@@ -37,14 +36,18 @@
         {
             if(addedJs == (dynamicAddedJs.length-1))
             {
+                var languageLink = document.createElement("link");
+                languageLink.rel = "localization";
+                languageLink.href = parent.ODE.deep_url.replace("DEEP", "COMPONENTS") + "locales/" + parent.ODE.user_language + ".l20n";
+                document.getElementsByTagName("head")[0].appendChild(languageLink);
+
                 ComponentService.deep_url = parent.ODE.deep_url;
 
                 var params =
                 {
                     'deep-url'          : parent.ODE.deep_url,
                     'datalets-list-url' : parent.ODE.deep_datalet_list,
-                    'datasets'          : parent.ODE.ode_dataset_list,
-                    'language'          : parent.ODE.user_language
+                    'datasets'          : parent.ODE.ode_dataset_list
                 };
 
                 // Modify existing datalet
