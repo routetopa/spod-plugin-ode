@@ -242,10 +242,18 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $_REQUEST['datalet']['data']);
 
             if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
+            {
                 SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'opendata');
+            }
 
         }
         /* ODE */
+
+        /* SPODPUBLIC */
+        if(OW::getPluginManager()->isPluginActive('spodpublic') && $params->getPluginKey() == 'spodpublic')
+            SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($_REQUEST['publicRoom'],$comment->getId(),$_REQUEST['sentiment']);
+        /* SPODPUBLIC */
+
 
         // trigger event comment add
         $event = new OW_Event('base_add_comment', array(

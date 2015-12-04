@@ -229,6 +229,13 @@ ODE.dataletParameters =
 ODE.commentSendMessage = function(message, context)
 {
     var self = context;
+
+    if(self.pluginKey == "spodpublic")
+    {
+        //1 neutral - 2 up - 3 down
+        var sentiment = $("#comment_sentiment_"+self.entityId).attr('sentiment');
+    }
+
     var dataToSend = {
         entityType: self.entityType,
         entityId: self.entityId,
@@ -242,7 +249,8 @@ ODE.commentSendMessage = function(message, context)
         initialCount: self.initialCount,
         datalet: ODE.dataletParameters,
         plugin: ODE.pluginPreview,
-        publicRoom: (typeof parent.ODE.publicRoom === 'undefined') ? '' : parent.ODE.publicRoom
+        publicRoom: (typeof parent.ODE.publicRoom === 'undefined') ? '' : parent.ODE.publicRoom,
+        sentiment: (typeof sentiment === 'undefined') ? '' : sentiment
     };
 
     if( self.attachmentInfo ){
