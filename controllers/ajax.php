@@ -50,7 +50,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                                                               $_REQUEST['fields'],
                                                               $_REQUEST['params'],
                                                               $_REQUEST['data'],
-                                                              isset($_REQUEST['comment']) ? $_REQUEST['comment'] : '',
+                                                              //isset($_REQUEST['comment']) ? $_REQUEST['comment'] : '',
                                                               isset($_REQUEST['dataletId']) ? $_REQUEST['dataletId'] : '',
                                                               isset($_REQUEST['cardId']) ? $_REQUEST['cardId'] : '');
         }
@@ -60,19 +60,18 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         exit;
     }
 
-    public function modPrivateRoomDatalet()
+    /*public function modPrivateRoomDatalet()
     {
         SPODPR_BOL_Service::getInstance()->modPrivateRoomDatalet(OW::getUser()->getId(),
             $_REQUEST['id'],
             $_REQUEST['component'],
             $_REQUEST['fields'],
             $_REQUEST['params'],
-            $_REQUEST['data'],
-            $_REQUEST['comment']);
+            $_REQUEST['data']);
 
-        echo json_encode(array("status" => "ok", "id" => $id));
+        echo json_encode(array("status" => "ok"));
         exit;
-    }
+    }*/
 
     public function statusUpdate()
     {
