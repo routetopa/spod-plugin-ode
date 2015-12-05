@@ -140,7 +140,8 @@ ODE.setDataletValues = function (data)
     ODE.dataletParameters.params    = JSON.stringify(data.params);
     ODE.dataletParameters.fields    = '"'+data.fields.join('","')+'"';
     ODE.dataletParameters.data      = data.staticData;
-    ODE.dataletParameters.comment   = data.comment;
+    ODE.dataletParameters.comment   = data.params.description;
+    ODE.dataletParameters.title     = data.params.title;
 };
 
 ODE.loadDatalet = function(component, params, fields, cache, placeholder)
