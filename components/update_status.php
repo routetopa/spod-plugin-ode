@@ -44,7 +44,7 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         parent::__construct($feedAutoId, $feedType, $feedId, $actionVisibility = null);
 
         if(OW::getPluginManager()->isPluginActive('spodpr'))
-            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn', array('datalet', 'link')));
     }
 
     /**
@@ -80,7 +80,7 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
             $('#{$odeButton->getId()}').click(function(e){
                 ODE.pluginPreview = 'newsfeed';
                 //$('#ode_controllet_placeholder').slideToggle('fast');
-                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'80vh', iconClass: 'ow_ic_add', title: ''});
+                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'90vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
         OW::getDocument()->addOnloadScript($script);

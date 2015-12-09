@@ -157,7 +157,7 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
 
         /* ODE */
         if(OW::getPluginManager()->isPluginActive('spodpr'))
-            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn'));
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn', array('datalet', 'link')));
         /* ODE */
 
         OW::getDocument()->addStyleDeclaration('
@@ -253,7 +253,7 @@ class ODE_CTRL_AddTopic extends OW_ActionController /*extends FORUM_CTRL_AddTopi
 
         $script = "ODE.pluginPreview = 'forum';
             $('#{$odeButton->getId()}').click(function(e){
-                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'80vh', iconClass: 'ow_ic_add', title: ''});
+                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {text:'testo'} , {width:'90%', height:'90vh', iconClass: 'ow_ic_add', title: ''});
         });";
 
         OW::getDocument()->addOnloadScript($script);

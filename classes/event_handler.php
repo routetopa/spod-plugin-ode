@@ -199,7 +199,7 @@ class ODE_CLASS_EventHandler
 
             $data = $event->getData();
 
-            if (!empty($datalet)) {
+            if(!empty($datalet)) {
 
                 switch($params["action"]["pluginKey"])
                 {
