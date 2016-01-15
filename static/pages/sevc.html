@@ -36,10 +36,10 @@
         {
             if(addedJs == (dynamicAddedJs.length-1))
             {
-                var languageLink = document.createElement("link");
-                languageLink.rel = "localization";
-                languageLink.href = parent.ODE.deep_url.replace("DEEP", "COMPONENTS") + "locales/" + parent.ODE.user_language + ".l20n";
-                document.getElementsByTagName("head")[0].appendChild(languageLink);
+                //var languageLink = document.createElement("link");
+                //languageLink.rel = "localization";
+                //languageLink.href = parent.ODE.deep_url.replace("DEEP", "COMPONENTS") + "locales/" + parent.ODE.user_language + ".l20n";
+                //document.getElementsByTagName("head")[0].appendChild(languageLink);
 
                 ComponentService.deep_url = parent.ODE.deep_url;
 
@@ -47,7 +47,8 @@
                 {
                     'deep-url'          : parent.ODE.deep_url,
                     'datalets-list-url' : parent.ODE.deep_datalet_list,
-                    'datasets'          : parent.ODE.ode_dataset_list
+                    'datasets'          : parent.ODE.ode_dataset_list,
+                    'localization'      : parent.ODE.user_language
                 };
 
                 // Modify existing datalet
