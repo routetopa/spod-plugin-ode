@@ -71,6 +71,9 @@ class ODE_CLASS_EventHandler
 
         // events raised when adding or deleting a comment
         OW::getEventManager()->bind('base_delete_comment', array($this, 'onDeleteComment'));
+
+        // event raised on top right menu creation
+        OW::getEventManager()->bind('console.collect_items', array($this, 'onCollectConsoleItems'));
     }
 
     // Add ODE Javascript, DEEP-CLIENT and set Javascript constant
@@ -275,6 +278,16 @@ class ODE_CLASS_EventHandler
         //Get parameter for check pluginKey for this event
         $params = $event->getParams();
         ODE_BOL_Service::getInstance()->deleteDataletsById($params['commentId'], 'comment');
+    }
+
+    // Handle top right menu creation
+    public function onCollectConsoleItems( BASE_CLASS_ConsoleItemCollector $event )
+    {
+        if (OW::getUser()->isAuthenticated())
+        {
+            $item = new ODE_CMP_Help();
+            $event->addItem($item, 0);
+        }
     }
 
 }
