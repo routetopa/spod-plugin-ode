@@ -346,5 +346,4 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         return $params;
     }
-
 }

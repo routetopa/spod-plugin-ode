@@ -384,3 +384,30 @@ ODE.reset = function()
     ODE.dataletParameters.comment   = "";
 
 };
+
+
+ODE.showHelper =  function() {
+
+    console.log(self.pluginKey);
+
+    var dialog = "";
+    var name = self.location.pathname;
+
+    switch(name){
+        case "/spodpr":
+            dialog = 'SPODPR_CMP_HelperMySpace';
+            break;
+        case "/whatsnew":
+            dialog = 'SPODPUBLIC_CMP_HelperPublicRoom';
+            break;
+        default:
+            if(name.match(/\/public-room\//)){
+                dialog = "SPODPUBLIC_CMP_HelperPublicRoom";
+            }else{
+                dialog = "SPODPUBLIC_CMP_HelperAgora";
+            }
+            break;
+    }
+
+    OW.ajaxFloatBox(dialog, {} , {width:'90%', height:'70vh', iconClass:'ow_ic_lens', title:''});
+};
