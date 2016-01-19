@@ -397,8 +397,8 @@ ODE.showHelper =  function() {
         case "/spodpr":
             dialog = 'SPODPR_CMP_HelperMySpace';
             break;
-        case "/whatsnew":
-            dialog = 'SPODPUBLIC_CMP_HelperPublicRoom';
+        case "/index":
+            dialog = 'ODE_CMP_HelperWhatsNew';
             break;
         default:
             if(name.match(/\/public-room\//)){

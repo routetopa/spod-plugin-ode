@@ -1,0 +1,90 @@
+<link rel="import" href="{$components_url}bower_components/paper-fab/paper-fab.html">
+
+<style>
+    #scroll_content{
+        position: relative;
+        overflow: auto;
+    }
+    div.cell{
+        padding: 20px;
+    }
+
+    ul.cell-list {
+        list-style-type: circle;
+        position: relative;
+        left: 40px;
+    }
+
+    li{
+        margin-left: 20px;
+    }
+
+    paper-fab.opinion-button{
+        background:#5B646A;
+    }
+</style>
+
+<h2>What's New helper</h2>
+<p><b>What's New</b> is the section of SPOD whe you can post a comment shared with all the community ...
+</p>
+<div id="scroll_content">
+    <div class="horizontal layout">
+        <div class="vertical layout cell">
+            <img src="{$staticResourcesUrl}images/myspace1.png" style="width: 100%; height: 100%;">
+        </div>
+        <div class="vetical layout cell">
+            <p>
+                By clicking on the Add Card button you can create a new card:
+                <ul class="cell-list">
+                    <li>
+                        Link card <paper-fab mini icon="link" aria-disabled="false" elevation="1"></paper-fab>
+                    </li>
+                    <li>
+                        Text card <paper-fab mini icon="text-format" aria-disabled="false" elevation="1"></paper-fab>
+                    </li>
+                    <li>
+                        OpenData Visualization <paper-fab mini icon="assessment" aria-disabled="false" elevation="1"></paper-fab>
+                    </li>
+                </ul>
+            </p>
+
+            <p>
+            On top-right corner you can:
+            <ul class="cell-list">
+                <li>
+                    Modify the related card <paper-fab mini icon="create" aria-disabled="false" elevation="1" class="opinion-button"></paper-fab>
+                </li>
+                <li>
+                    Delete the related card <paper-fab mini icon="delete" aria-disabled="false" elevation="1" class="opinion-button"></paper-fab>
+                </li>
+            </ul>
+            </p>
+
+            <p>
+               To display content just click on the blue button in the middle of the card. When a user tries to view its own datalets in their private space, SPOD does not contacts the actual data provider but retrieves the data from its own database.
+               This allows in a great speed improvement and in a better user experience
+            </p>
+        </div>
+    </div>
+    <div class="horizontal layout">
+        <div class="vertical layout cell">
+            <img src="{$staticResourcesUrl}images/myspace2.png" style="width: 100%; height: 100%;">
+        </div>
+        <div class="vetical layout cell">
+            <p>
+                The dimension of cards is fixed. The layout of cards comply with the temporal order.
+                It is possible create a datalet using the Controllet interface meanwhile for the creation of text and links there is a dedicated interface.
+            </p>
+        </div>
+    </div>
+    <div class="horizontal layout">
+        <div class="vertical layout cell">
+            <img src="{$staticResourcesUrl}images/myspace3.png" style="width: 100%; height: 100%;">
+        </div>
+        <div class="vetical layout cell">
+            <p>
+                You can use the contents created in the myspace area to post visualizations or links in the What's New area or in the threaded chat located in the Public Rooms
+            </p>
+        </div>
+    </div>
+</div>
