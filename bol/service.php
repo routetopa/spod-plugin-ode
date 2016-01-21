@@ -163,6 +163,8 @@ class ODE_BOL_Service
         $dtp->dataletId = $dt->id;
         $dtp->plugin    = $plugin;
         ODE_BOL_DataletPostDao::getInstance()->save($dtp);
+
+        return $dt->id;
     }
 
     public function deleteDataletsById($id, $plugin)

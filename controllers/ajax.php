@@ -231,7 +231,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         /* ODE */
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['params'], $_REQUEST['datalet']['fields']) )
         {
-            ODE_BOL_Service::getInstance()->addDatalet(
+            $dataletId = ODE_BOL_Service::getInstance()->addDatalet(
                 $_REQUEST['datalet']['component'],
                 $_REQUEST['datalet']['fields'],
                 OW::getUser()->getId(),
@@ -239,6 +239,23 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $comment->getId(),
                 $_REQUEST['plugin'],
                 $_REQUEST['datalet']['data']);
+
+            //Add post on What's New when user comment with a datalet
+            if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($_REQUEST['publicRoom'])) {
+                $event = new OW_Event('feed.action', array(
+                    'pluginKey' => 'spodpublic',
+                    'entityType' => 'spodpublic_public-room-comment',
+                    'entityId' => $_REQUEST['publicRoom'],
+                    'userId' => OW::getUser()->getId()
+                ), array(
+
+                    'time' => time(),
+                    'string' => array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $_REQUEST['publicRoom'], 'dataletId' => $dataletId))
+                ));
+                OW::getEventManager()->trigger($event);
+            }
+            //End add post on What's New
+
 
             if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
             {
