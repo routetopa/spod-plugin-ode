@@ -191,12 +191,18 @@ class ODE_CLASS_EventHandler
     {
         //Get parameter for check pluginKey for this event
         $params = $event->getParams();
+        $id = "";
 
         if($params["action"]["pluginKey"] == "newsfeed" ||
-            $params["action"]["pluginKey"] == "forum") {
+            $params["action"]["pluginKey"] == "forum" || $params["action"]["entityType"] == "spodpublic_public-room-comment"){
 
             //if the entity is a post then id = $params['action']['entityId'] otherwise is a topic then get i get the first post of the topic
-            $id = $params["action"]["pluginKey"] == "newsfeed" ? $params['action']['entityId'] : FORUM_BOL_ForumService::getInstance()->findTopicFirstPost($params['action']['entityId'])->id;
+            switch($params["action"]["pluginKey"])
+            {
+                case "newsfeed"   : $id = $params['action']['entityId']; break;
+                case "spodpublic" : $id = $params["action"]["data"]["commentId"]; $params["action"]["pluginKey"] = "public-room"; break;
+                case "forum"      : $id = FORUM_BOL_ForumService::getInstance()->findTopicFirstPost($params['action']['entityId'])->id; break;
+            }
 
             $datalet = ODE_BOL_Service::getInstance()->getDataletByPostId($id, $params["action"]["pluginKey"]);
 
@@ -206,8 +212,9 @@ class ODE_CLASS_EventHandler
 
                 switch($params["action"]["pluginKey"])
                 {
-                    case "newsfeed" : $content =  &$data['content']['vars']['status']; break;
-                    case "forum"    : $content =  &$data['content']['vars']['description']; break;
+                    case "newsfeed"     : $content =  &$data['content']['vars']['status']; break;
+                    case "forum"        : $content =  &$data['content']['vars']['description']; break;
+                    case "public-room"  : $content =  &$data['content']; break;
                 }
 
                 $content .= '<div id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';

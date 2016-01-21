@@ -225,13 +225,39 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
-        if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($_REQUEST['publicRoom']))
+        if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($_REQUEST['publicRoom']) && $params->getPluginKey() == 'spodpublic')
+        {
+            // Add sentiment to a comment
+            SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($_REQUEST['publicRoom'],$comment->getId(),$_REQUEST['sentiment']);
+
+            // Update Stat
             SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'comments');
+
+            //Add post on What's New when user comment with a datalet
+            $event = new OW_Event('feed.action', array(
+                'pluginKey' => 'spodpublic',
+                'entityType' => 'spodpublic_public-room-comment',
+                'entityId' => $comment->id,
+                'userId' => OW::getUser()->getId(),
+            ), array(
+                'time' => time(),
+                'roomId' => $_REQUEST['publicRoom'],
+                'commentId' => $comment->id,
+                'string' => !empty($_REQUEST['datalet']['component']) ?
+                        array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $_REQUEST['publicRoom'],
+                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($_REQUEST['publicRoom'])->subject)) :
+                        array('key' => 'spodpublic+post_comment', 'vars' => array('roomId' => $_REQUEST['publicRoom'],
+                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($_REQUEST['publicRoom'])->subject,
+                            'comment' => $comment->message))
+            ));
+            OW::getEventManager()->trigger($event);
+            //End add post on What's New
+        }
 
         /* ODE */
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['params'], $_REQUEST['datalet']['fields']) )
         {
-            $dataletId = ODE_BOL_Service::getInstance()->addDatalet(
+            ODE_BOL_Service::getInstance()->addDatalet(
                 $_REQUEST['datalet']['component'],
                 $_REQUEST['datalet']['fields'],
                 OW::getUser()->getId(),
@@ -240,36 +266,12 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $_REQUEST['plugin'],
                 $_REQUEST['datalet']['data']);
 
-            //Add post on What's New when user comment with a datalet
-            if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($_REQUEST['publicRoom'])) {
-                $event = new OW_Event('feed.action', array(
-                    'pluginKey' => 'spodpublic',
-                    'entityType' => 'spodpublic_public-room-comment',
-                    'entityId' => $_REQUEST['publicRoom'],
-                    'userId' => OW::getUser()->getId()
-                ), array(
-
-                    'time' => time(),
-                    'string' => array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $_REQUEST['publicRoom'], 'dataletId' => $dataletId))
-                ));
-                OW::getEventManager()->trigger($event);
-            }
-            //End add post on What's New
-
-
             if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
             {
                 SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'opendata');
             }
-
         }
         /* ODE */
-
-        /* SPODPUBLIC */
-        if(OW::getPluginManager()->isPluginActive('spodpublic') && $params->getPluginKey() == 'spodpublic')
-            SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($_REQUEST['publicRoom'],$comment->getId(),$_REQUEST['sentiment']);
-        /* SPODPUBLIC */
-
 
         // trigger event comment add
         $event = new OW_Event('base_add_comment', array(
