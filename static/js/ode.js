@@ -71,7 +71,7 @@ ODE.savedDataletListener = function(e)
     {
 
         case 'newsfeed' :
-            $('#ode_controllet_placeholder').slideToggle('fast');
+            $('#ode_controllet_placeholder').show('fast');
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData, 'ode_controllet_placeholder');
             break;
 

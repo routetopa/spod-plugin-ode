@@ -60,7 +60,8 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $form = parent::createForm($feedAutoId, $feedType, $feedId, $actionVisibility);
 
         $odeButton = new Button('ode_open_dialog');
-        $odeButton->setValue(OW::getLanguage()->text('ode', 'add_ode_button'));
+//        $odeButton->setValue(OW::getLanguage()->text('ode', 'add_ode_button'));
+        $odeButton->setValue("");
         $form->addElement($odeButton);
 
         $field = new HiddenField('ode_datalet');
