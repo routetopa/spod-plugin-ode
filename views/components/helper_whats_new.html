@@ -1,4 +1,4 @@
-<link rel="import" href="{$components_url}bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="{$components_url}bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <style>
     #scroll_content{
@@ -25,66 +25,94 @@
 </style>
 
 <h2>What's New helper</h2>
-<p><b>What's New</b> is the section of SPOD whe you can post a comment shared with all the community ...
+<p>
+    <b>What's new</b> page shows all the activities (e.g. posts, likes, photos etc...) to everybody chronologically ordered
+    even for users that are not my friends and it provides  a switch between the activities of all the users and only
+    the friends in the network, clicking on button, named  <b>Show only my friends' activities</b>.
 </p>
 <div id="scroll_content">
     <div class="horizontal layout">
-        <div class="vertical layout cell">
-            <img src="{$staticResourcesUrl}images/myspace1.png" style="width: 100%; height: 100%;">
-        </div>
+        <img src="{$staticResourcesUrl}images/whatsnew_posting_datalet.png" style="width: 60%; height: 60%;">
+
         <div class="vetical layout cell">
             <p>
-                By clicking on the Add Card button you can create a new card:
+                Whit Datalet button (circled in Figure.) near the post creation control, you can create new posts attaching a OpenData visualization(<b>Datalet</b>).
+            </p>
+        </div>
+    </div>
+    <div class="horizontal layout">
+        <img src="{$staticResourcesUrl}images/whatsnew_datalet_creator1.png" style="width: 60%; height: 60%;">
+
+        <div class="vetical layout cell">
+            <p>
+                Everyone can, without technical expertise, create and share visualisation of a chosen dataset with few simply steps using the wizard . The wizard assist the user step-by-step through the creation (or modification) of a datalet.
+                The first step is the dataset selection (to not to be confused with datalet) from a compatible provider. There are three methods the user can choose a dataset:
+
                 <ul class="cell-list">
                     <li>
-                        Link card <paper-fab mini icon="link" aria-disabled="false" elevation="1"></paper-fab>
+                        It can be selected from a searchable drop-down list of datasets available from one of the associated data providers.
                     </li>
                     <li>
-                        Text card <paper-fab mini icon="text-format" aria-disabled="false" elevation="1"></paper-fab>
+                        It can be selected while exploring interactively the datasets available from associated data providers using a treemap.
                     </li>
                     <li>
-                        OpenData Visualization <paper-fab mini icon="assessment" aria-disabled="false" elevation="1"></paper-fab>
+                        It can be manually entered as a URL.
                     </li>
                 </ul>
             </p>
+        </div>
+    </div>
+    <div class="horizontal layout cell">
+        <img src="{$staticResourcesUrl}images/whatsnew_datalet_creator2.png" style="width: 60%; height: 60%;">
 
+        <div class="vertical layout cell">
             <p>
-            On top-right corner you can:
-            <ul class="cell-list">
-                <li>
-                    Modify the related card <paper-fab mini icon="create" aria-disabled="false" elevation="1" class="opinion-button"></paper-fab>
-                </li>
-                <li>
-                    Delete the related card <paper-fab mini icon="delete" aria-disabled="false" elevation="1" class="opinion-button"></paper-fab>
-                </li>
-            </ul>
+                Once the user chose a dataset, he proceed to the second step: fields selection. The controllet downloads the dataset in a compatible format (for instance: JSON),
+                parses it and builds a treeview (a hierarchical list) of fields found in the dataset. The user can select the fields he wants to include into the datalet and
+                then proceeds to the last step. A preview of the data related to the selected fields will be shown on the table on the right side.
             </p>
+        </div>
+    </div>
 
+    <div class="horizontal layout cell">
+        <img src="{$staticResourcesUrl}images/whatsnew_datalet_creator3.png" style="width: 60%; height: 60%;">
+
+        <div class="vertical layout cell">
             <p>
-               To display content just click on the blue button in the middle of the card. When a user tries to view its own datalets in their private space, SPOD does not contacts the actual data provider but retrieves the data from its own database.
-               This allows in a great speed improvement and in a better user experience
+                In the final step the user has to setup the chart. The Wizard obtains the list of charts, also including name,
+                type and description of inputs and settings supported by each chart. The user must select, for each input required by the chart,
+                a corresponding field from the set he selected in step two. Optionally, the user can customize the chart by changing the settings
+                (e.g. he can set a title and a comment for the graph, put labels on the axes, and so on). While the user makes changes to the inputs or the settings,
+                the Wizard updates the chart preview. When the user is satisfied with the look of the chart, he clicks the "Add" button.
+            </p>
+        </div>
+    </div>
+
+    <div class="horizontal layout cell">
+        <img src="{$staticResourcesUrl}images/whatsnew_post_datalet.png" style="width: 40%; height: 40%;">
+
+        <div class="vertical layout cell">
+            <p>
+                The same feature is available when the user replies with a comment.
+            </p>
+        </div>
+    </div>
+
+    <div class="horizontal layout cell">
+        <img src="{$staticResourcesUrl}images/whatsnew_posting_from_my_space.png" style="width: 40%; height: 40%;">
+        <div class="vertical layout cell">
+            <p>
+                An user can post a Datalet previously created in the <b>MySpace</b> by using the related button.
             </p>
         </div>
     </div>
     <div class="horizontal layout">
-        <div class="vertical layout cell">
-            <img src="{$staticResourcesUrl}images/myspace2.png" style="width: 100%; height: 100%;">
-        </div>
-        <div class="vetical layout cell">
-            <p>
-                The dimension of cards is fixed. The layout of cards comply with the temporal order.
-                It is possible create a datalet using the Controllet interface meanwhile for the creation of text and links there is a dedicated interface.
-            </p>
-        </div>
+        <img src="{$staticResourcesUrl}images/whatsnew_post_my_space.png" style="width: 40%; height: 40%;">
     </div>
     <div class="horizontal layout">
-        <div class="vertical layout cell">
-            <img src="{$staticResourcesUrl}images/myspace3.png" style="width: 100%; height: 100%;">
-        </div>
-        <div class="vetical layout cell">
-            <p>
-                You can use the contents created in the myspace area to post visualizations or links in the What's New area or in the threaded chat located in the Public Rooms
-            </p>
-        </div>
+        <img src="{$staticResourcesUrl}images/whatsnew_privateroom_datalet.png" style="width: 40%; height: 40%;">
     </div>
+
+
+
 </div>
