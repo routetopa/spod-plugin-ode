@@ -2,7 +2,19 @@
 
 ODE = {};
 
-ODE.public_room_is_active = undefined;
+ODE.internationalization = {
+    "add_datalet_it"  : "Aggiungi datalet",
+    "open_my_space_it": "Apri My space",
+
+    "add_datalet_en"  : "Add datalet",
+    "open_my_space_en": "Open My space",
+
+    "add_datalet_fr"  : "Add datalet",
+    "open_my_space_fr": "Open My space",
+
+    "add_datalet_nl"  : "Add datalet",
+    "open_my_space_nl": "Open My space"
+};
 
 ODE.init = function()
 {
@@ -13,9 +25,9 @@ ODE.init = function()
         var fields = e.detail.selectedElement.getAttribute("fields");
 
         var data = {detail:{data:{datalet    : e.detail.selectedElement.getAttribute("datalet"),
-                                  fields     : fields.substring(1, fields.length-1).split('","'),
-                                  params     : JSON.parse(e.detail.selectedElement.getAttribute("preset")),
-                                  staticData : e.detail.selectedElement.getAttribute("static-data")}}};
+            fields     : fields.substring(1, fields.length-1).split('","'),
+            params     : JSON.parse(e.detail.selectedElement.getAttribute("preset")),
+            staticData : e.detail.selectedElement.getAttribute("static-data")}}};
 
         ODE.savedDataletListener(data);
 
@@ -39,7 +51,7 @@ ODE.addOdeOnComment = function()
         var id = obj.id;
 
         // Add ODE on Comment
-        var odeElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_lens.svg) no-repeat center;" data-id="' + id + '"></a>'));
+        var odeElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a title="'+ODE.internationalization["add_datalet_"+ODE.user_language]+'" href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'datalet_grey_rect.svg) no-repeat center;" data-id="' + id + '"></a>'));
         odeElem = odeElem.children().first();
         odeElem.click(function (e) {
             ODE.pluginPreview = 'comment';
@@ -50,7 +62,7 @@ ODE.addOdeOnComment = function()
         // Add PRIVATE_ROOM on Comment
         if(ODE.is_private_room_active)
         {
-            var prElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_attach.svg) no-repeat center;" data-id="' + id + '"></a>'));
+            var prElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a title="'+ODE.internationalization["open_my_space_"+ODE.user_language]+'" href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'myspace_grey_rect.svg) no-repeat center;" data-id="' + id + '"></a>'));
             prElem = prElem.children().first();
             prElem.click(function (e) {
                 ODE.pluginPreview = 'comment';
@@ -301,8 +313,8 @@ ODE.commentSendMessage = function(message, context)
 OwComments.prototype.initTextarea = function()
 {
     /* ODE */
-      ODE.reset();
-      ODE.addOdeOnComment();
+    ODE.reset();
+    ODE.addOdeOnComment();
     /* ODE */
 
     var self = this;
@@ -332,21 +344,21 @@ OwComments.prototype.initTextarea = function()
 
     this.$textarea
         .bind('keypress',
-        function(e){
-            if( e.which === 13 && !e.shiftKey ){
-                e.stopImmediatePropagation();
-                var textBody = $(this).val();
+            function(e){
+                if( e.which === 13 && !e.shiftKey ){
+                    e.stopImmediatePropagation();
+                    var textBody = $(this).val();
 
-                if ( $.trim(textBody) == '' && !self.attachmentInfo && !self.oembedInfo ){
-                    OW.error(self.labels.emptyCommentMsg);
+                    if ( $.trim(textBody) == '' && !self.attachmentInfo && !self.oembedInfo ){
+                        OW.error(self.labels.emptyCommentMsg);
+                        return false;
+                    }
+
+                    self.submitHandler();
                     return false;
                 }
-
-                self.submitHandler();
-                return false;
             }
-        }
-    )
+        )
         .one('focus', function(){$(this).removeClass('invitation').val('').autosize({callback:function(data){OW.trigger('base.comment_textarea_resize', self.eventParams);}});});
 
     this.$hiddenBtnCont.unbind('click').click(function(){self.submitHandler();});
@@ -386,7 +398,6 @@ ODE.reset = function()
     ODE.dataletParameters.comment   = "";
 
 };
-
 
 ODE.showHelper =  function()
 {
