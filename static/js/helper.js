@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#sroll_content').perfectScrollbar();
+    $('.floatbox_body').perfectScrollbar();
 });
 
 
