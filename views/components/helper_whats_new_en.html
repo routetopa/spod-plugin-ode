@@ -86,9 +86,14 @@
     <div class="tall">
         <div class="title">What's New helper</div>
         <div class="description">
-            <b>What's new</b> page shows all the activities (e.g. posts, likes, photos etc...) to everybody chronologically ordered
-            even for users that are not my friends and it provides  a switch between the activities of all the users and only
-            the friends in the network, clicking on button, named  <b>Show only my friends' activities</b>.
+            "What's New" helper
+
+            "What's new" page shows all the activities (e.g. posts, likes, photos etc...) to everybody, in chronological order,
+            from all users (included those that are not my friends). You can filter only the activities of your friends in the network,
+            clicking on button "Show only my friends' activities".
+            You can interact like in a traditional social network, by writing your status or commenting others' status.
+            The main difference is that you can attach to your comments a "Datalet", i.e. a component that interactively
+            loads Open datasets and visualise them. You can choose to insert a new Datalet, or to reuse one that you saved in your personal "My space".
         </div>
     </div>
 
@@ -100,11 +105,14 @@
 
                 <div class="cell">
                     <div class="horizontal layout cell">
-                        <div class="section-number">1</div>
-                        <div class="section-title">Post an OpenData visualization</div>
+                        <div class="section-title">
+                            Choose to attach a Datalet to a comment.
+                        </div>
                     </div>
                     <div>
-                        By Datalet button (circled in Figure.) near the post creation control, you can create new posts attaching an OpenData visualization(<b>Datalet</b>).
+                        By Datalet button (circled in Figure.) near the post creation control, you can attach to your comment/post a new Datalet.
+                        Everyone, even without technical expertise, can create and share visualisation of a chosen dataset with few simply steps using
+                        the wizard that assists you step-by-step, through the creation (or modification) of a Datalet.
                     </div>
                 </div>
             </div>
@@ -116,23 +124,16 @@
 
                 <div class="cell">
                     <div class="horizontal layout cell">
-                        <div class="section-number">2</div>
-                        <div class="section-title">Create a visualization</div>
+                        <div class="section-number">1</div>
+                        <div class="section-title">Wizard first step: select the dataset</div>
                     </div>
                     <div>
-                        Everyone can, without technical expertise, create and share visualisation of a chosen dataset with few simply steps using the wizard . The wizard assist the user step-by-step through the creation (or modification) of a datalet.
-                        The first step is the dataset selection (to not to be confused with datalet) from a compatible provider. There are three methods the user can choose a dataset:
-
+                        The first step of the wizard is the Dataset selection  from a compatible provider.
+                        There are three methods the user can choose a dataset (with increasing complexity):
                         <ul class="cell-list">
-                            <li>
-                                It can be selected from a searchable drop-down list of datasets available from one of the associated data providers.
-                            </li>
-                            <li>
-                                It can be selected while exploring interactively the datasets available from associated data providers using a treemap.
-                            </li>
-                            <li>
-                                It can be manually entered as a URL.
-                            </li>
+                            <li>It can be selected from a searchable drop-down list of datasets available from one of the associated data providers.</li>
+                            <li>It can be selected while exploring interactively the datasets available from associated data providers using a treemap.</li>
+                            <li>It can be manually entered as a URL (for advanced users).</li>
                         </ul>
                     </div>
                 </div>
@@ -145,13 +146,14 @@
 
                 <div class="cell">
                     <div class="horizontal layout cell">
-                        <div class="section-number">3</div>
-                        <div class="section-title">Fields selection</div>
+                        <div class="section-number">2</div>
+                        <div class="section-title">Wizard second step: select the fields to show</div>
                     </div>
                     <div>
-                        Once the user chose a dataset, he proceed to the second step: fields selection. The controllet downloads the dataset in a compatible format (for instance: JSON),
-                        parses it and builds a treeview (a hierarchical list) of fields found in the dataset. The user can select the fields he wants to include into the datalet and
-                        then proceeds to the last step. A preview of the data related to the selected fields will be shown on the table on the right side.
+                        Once you have chosen a dataset, you move to the second step (by using the arrows on top right) for selecting the fields.
+                        On the left, you can find the fields that are available. As you choose which field to select, a preview of the data is
+                        shown on the table to the right. When you are done with the field selection you can move forward by clicking on the arrow
+                        on the top right (or if you wish you can go back to the previous step with the arrow to the top left)
                     </div>
                 </div>
             </div>
@@ -163,15 +165,16 @@
 
                 <div class="cell">
                     <div class="horizontal layout cell">
-                        <div class="section-number">4</div>
-                        <div class="section-title">Select visualization</div>
+                        <div class="section-number">3</div>
+                        <div class="section-title">Wizard third step: select the visualization</div>
                     </div>
                     <div>
-                        In the final step the user has to setup the chart. The Wizard obtains the list of charts, also including name,
-                        type and description of inputs and settings supported by each chart. The user must select, for each input required by the chart,
-                        a corresponding field from the set he selected in step two. Optionally, the user can customize the chart by changing the settings
-                        (e.g. he can set a title and a comment for the graph, put labels on the axes, and so on). While the user makes changes to the inputs or the settings,
-                        the Wizard updates the chart preview. When the user is satisfied with the look of the chart, he clicks the "Add" button.
+                        Different charts are available, and are shown on the left, in a list that includes details like the name,
+                        type and description of inputs and settings supported by each chart. Once a chart is selected, you must choose,
+                        for each input required by the chart, the corresponding  field from the set you selected in step two.
+                        You can also customize the chart by setting a title, comments, labels on the axes, and so on.
+                        While you make changes, the preview is shown on the right, so that you can control the effect of your choice right away.
+                        When you are satisfied, you can add the Datalet by clicking on the "Add" button.
                     </div>
                 </div>
             </div>
@@ -183,11 +186,10 @@
 
                 <div class="cell">
                     <div class="horizontal layout cell">
-                        <div class="section-number">5</div>
-                        <div class="section-title">Post visualization in a comment</div>
+                        <div class="section-title">You can post Datalets also when you reply</div>
                     </div>
                     <div>
-                        The same feature is available when the user replies with a comment.
+                        The same feature is available when the user replies with a comment. Simply use the same small button shown in the figure
                     </div>
                 </div>
             </div>
@@ -197,11 +199,11 @@
             <div class="horizontal layout cell">
                 <div class="cell">
                     <div class="horizontal layout cell">
-                        <div class="section-number">6</div>
-                        <div class="section-title">Use MySpace contents</div>
+                        <div class="section-title">Datalets coming from "My Space"</div>
                     </div>
                     <div>
-                        An user can post a Datalet previously created in the <b>MySpace</b> by using the related button.
+                        You can also re-use the Datalets that you placed in "My Space".
+                        By clicking on the button shown, a pop-up shows all the existing Datalets that you can choose from.
                     </div>
                 </div>
             </div>
