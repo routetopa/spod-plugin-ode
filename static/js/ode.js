@@ -425,7 +425,7 @@ ODE.showHelper =  function()
             break;
     }
 
-    var d = dialog + "It";
-    OW.ajaxFloatBox(d, {} , {width:'90%', height:'70vh', iconClass:'ow_ic_lens', title:''});
-    //OW.ajaxFloatBox(dialog +  ODE.user_language.charAt(0).toUpperCase() +  ODE.user_language.slice(1) , {} , {width:'90%', height:'70vh', iconClass:'ow_ic_lens', title:''});
+    //var d = dialog + "It";
+    //OW.ajaxFloatBox(d, {} , {width:'90%', height:'70vh', iconClass:'ow_ic_lens', title:''});
+    OW.ajaxFloatBox(dialog +  ODE.user_language.charAt(0).toUpperCase() +  ODE.user_language.slice(1) , {} , {width:'90%', height:'70vh', iconClass:'ow_ic_lens', title:''});
 };
