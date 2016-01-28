@@ -71,7 +71,7 @@ class ODE_BOL_Service
 
     public function getDataletsById($id, $plugin)
     {
-        $query = "SELECT * FROM ow_ode_datalet JOIN ow_ode_datalet_post ON ow_ode_datalet.id = dataletId ";
+        $query = "SELECT ow_ode_datalet.id FROM ow_ode_datalet JOIN ow_ode_datalet_post ON ow_ode_datalet.id = dataletId ";
 
         switch($plugin)
         {
@@ -111,7 +111,7 @@ class ODE_BOL_Service
         $query .= " ORDER BY dataletId DESC;";
 
         $dbo = OW::getDbo();
-
+echo ($query);
         return $dbo->queryForList($query);
     }
 
@@ -173,6 +173,7 @@ class ODE_BOL_Service
 
         foreach($datalets as &$dt)
         {
+            echo('--'.$dt['id'].'--');
             ODE_BOL_DataletDao::getInstance()->deleteById($dt['id']);
 
             $ex = new OW_Example();

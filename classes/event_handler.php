@@ -275,6 +275,7 @@ class ODE_CLASS_EventHandler
     public function onBeforePostDelete(OW_Event $event)
     {
         //Get parameter for check pluginKey for this event
+        var_dump($event);
         $params = $event->getParams();
         ODE_BOL_Service::getInstance()->deleteDataletsById($params['entityId'], 'newsfeed');
     }
