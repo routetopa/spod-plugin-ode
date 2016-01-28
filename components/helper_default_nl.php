@@ -1,5 +1,5 @@
 <?php
-class ODE_CMP_HelperWhatsNewIt extends ODE_CMP_Helper
+class ODE_CMP_HelperDefaultNl extends ODE_CMP_Helper
 {
     public function __construct()
     {
