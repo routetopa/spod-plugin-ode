@@ -41,11 +41,11 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
     public function privateRoomDatalet()
     {
         /* ODE */
-        $id = '';
+        $results = '';
 
         if( ODE_CLASS_Helper::validateDatalet($_REQUEST['component'], $_REQUEST['params'], $_REQUEST['fields']) )
         {
-            $id = SPODPR_BOL_Service::getInstance()->dataletCard(OW::getUser()->getId(),
+            $results = SPODPR_BOL_Service::getInstance()->dataletCard(OW::getUser()->getId(),
                                                               $_REQUEST['component'],
                                                               $_REQUEST['fields'],
                                                               $_REQUEST['params'],
@@ -56,7 +56,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         }
         /* ODE */
 
-        echo json_encode(array("status" => "ok", "id" => $id));
+        echo json_encode(array("status" => "ok", "cardId" => $results["card-id"], "dataletId" => $results["datalet-id"]));
         exit;
     }
 

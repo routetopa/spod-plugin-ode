@@ -132,9 +132,9 @@ ODE.privateRoomDatalet = function ()
             previewFloatBox.close();
 
             if(ODE.dataletParameters.cardId == undefined)
-                add_card(ODE.dataletParameters,data.id);
+                add_card(ODE.dataletParameters,data.cardId, data.dataletId);
             else
-                replace_datalet_card(ODE.dataletParameters, SPODPR.cardOpened);
+                replace_datalet_card(ODE.dataletParameters);
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
             OW.error(textStatus);
