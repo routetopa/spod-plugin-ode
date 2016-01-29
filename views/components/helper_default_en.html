@@ -57,6 +57,7 @@
         /*width: 30%;*/
         position: relative;
         float: left;
+        width: 100%;
     }
 
     .tall .description{
@@ -79,12 +80,19 @@
     .section-title{
         font-size: 22px; padding-top: 18px; color: #888;margin-left: 20px;
     }
+
+    .manual_link{
+        font-size: large;
+        color: #ffffff;
+        position: relative;
+        left: 50%;
+    }
 </style>
 
 <div class="layout vertical">
 
     <div class="tall">
-        <div class="title">SPOD Helper</div>
+        <div class="title">SPOD Helper <a href="http://spod.routetopa.eu/Manual/SPODManualCurrentVersion.pdf" target="_blank" class="manual_link">For a complete manual please click here</a></div>
         <div class="description">
             This is the Helper for <b>SPOD</b>(<b>S</b>ocial <b>P</b>latform for <b>O</b>pen<b>D</b>ata) platform.
             The main objective of SPOD is to improve comprehension and increase accessibility of Open Data and,
@@ -97,7 +105,7 @@
 
         <div class="sect">
             <div class="horizontal layout cell">
-                <iframe src="{$staticResourcesUrl}pages/spod_manual/TestingManual_20160119_v1.0.htm"
+                <iframe src="{$staticResourcesUrl}pages/spod_manual/SPODHelperv0.1.html"
                         style="height: 48vh;"></iframe>
             </div>
         </div>
