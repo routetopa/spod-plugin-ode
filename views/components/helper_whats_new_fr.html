@@ -1,0 +1,220 @@
+<link rel="import" href="{$components_url}bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="{$components_url}bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="{$components_url}bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="{$components_url}bower_components/paper-styles/color.html">
+<link rel="import" href="{$components_url}bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<style>
+    .floatbox_header{
+        display: none;
+    }
+
+    .floatbox_body{
+        font-family: 'Roboto', sans-serif;
+        background-color: #eeeeee;
+        padding : 3px;
+    }
+
+    paper-fab.opinion-button{
+        background:#5B646A;
+        left: 15px;
+    }
+
+    #scroll_content{
+        position: relative;
+        overflow: scroll;
+    }
+    div.cell{
+        padding: 20px;
+        margin-left: 20px;
+    }
+
+    ul.cell-list {
+        list-style-type: circle;
+    }
+
+    li{
+        margin-left: 20px;
+    }
+
+    paper-scroll-header-panel {
+        /*position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;*/
+        height: 70vh;
+    }
+
+    .tall {
+        background-color: #2196F3;
+    }
+
+    .tall .title {
+        padding: 20px;
+        font-size: 40px;
+        color: #ffffff;
+        /*width: 30%;*/
+        position: relative;
+        float: left;
+    }
+
+    .tall .description{
+        padding: 20px;
+        font-size: 15px;
+        color: #ffffff;
+        /*width: 70%;*/
+        position: relative;
+        float: left;
+    }
+
+    .sect{
+        border: 1px solid #bebebe; padding: 16px; margin: 16px; border-radius: 5px; background-color: #fff; color: #555;
+    }
+
+    .section-number{
+        display: inline-block; height: 64px; width: 64px; border-radius: 50%; background: #ddd; line-height: 64px; font-size: 30px; color: #666; text-align: center;
+    }
+
+    .section-title{
+        font-size: 22px; padding-top: 18px; color: #888;margin-left: 20px;
+    }
+</style>
+
+<div class="layout vertical">
+
+    <div class="tall">
+        <div class="title">Quoi de nouveau dans l'assistance</div>
+        <div class="description">
+            La page &quot;Quoi de nouveau ?&quot; montre toutes les activit&eacute;s (ex: posts, &quot;likes&quot;, photos etc&#x2026;)
+            dans l'ordre chronologique, pour tous les utilisateurs (incluant ceux qui ne sont pas vos amis). Vous pouvez filtrer uniquement
+            les activit&eacute;s de vos amis dans le r&eacute;seau, en cliquant sur le bouton &quot;Montrer seulement l'activit&eacute; de mes amis&quot;
+            Laissez nous vous montrer comment associer un commentaire au datalet.
+        </div>
+    </div>
+
+    <div class="content" id="scroll_content">
+
+        <div class="sect">
+            <div class="horizontal layout cell">
+                <img src="{$staticResourcesUrl}images/whatsnew_posting_datalet.png" style="width: 60%; height: 60%;">
+
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-title">
+                            Choisir d'associer un datalet au commentaire.
+                        </div>
+                    </div>
+                    <div>
+                        Gr&acirc;ce au bouton datalet (entour&eacute; dans la figure), &agrave; cot&eacute; de la fonction de cr&eacute;ation des posts,
+                        vous pouvez associer vos commentaires/posts &agrave; un nouveau datalet. Vous n'avez besoin d'aucune expertise technique pour
+                        cr&eacute;er et partager des visualisations d'un jeu de donn&eacute;es choisi. C'est simple, il vous suffit d'utiliser l'assistant
+                        &quot;&eacute;tape par &eacute;tape&quot;, lors de la cr&eacute;ation (ou la modification) d'un datalet.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sect">
+            <div class="horizontal layout cell">
+                <img src="{$staticResourcesUrl}images/whatsnew_datalet_creator1.png" style="width: 60%; height: 60%;">
+
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-number">1</div>
+                        <div class="section-title">Assistant Premi&egrave;re &eacute;tape: selectionner les jeux de donn&eacute;es.</div>
+                    </div>
+                    <div>
+                        La premi&egrave;re &eacute;tape de l'assistant est la selection des jeux de donn&eacute;es &agrave; partir de fournisseurs compatibles.
+                        Il y a trois m&eacute;thodes qu'un utilisateur peut adopter dans le choix des jeux de donn&eacute;es (complexit&eacute; croissante):
+                        <ul class="cell-list">
+                            <li>Il peut &ecirc;tre selectionn&eacute; &agrave; partir d'une liste d&eacute;roulante de jeux de donn&eacute;es propos&eacute;s par l'un des fournisseurs associ&eacute;s.</li>
+                            <li>Il peut &ecirc;tre selectionn&eacute; &agrave; partir d'une liste d&eacute;roulante de jeux de donn&eacute;es tout en explorant interactivement les jeux disponibles propos&eacute;s par les fournisseurs de donn&eacute;es utilisant l'arborescence.</li>
+                            <li>Il peut &ecirc;tre entr&eacute; manuellement comme un URL (pour utilisateurs avanc&eacute;s).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sect">
+            <div class="horizontal layout cell">
+                <img src="{$staticResourcesUrl}images/whatsnew_datalet_creator2.png" style="width: 60%; height: 60%;">
+
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-number">2</div>
+                        <div class="section-title"> Assistant deuxi&egrave;me &eacute;tape: s&eacute;lectionner les champs &agrave; montrer.</div>
+                    </div>
+                    <div>
+                        Une fois que vous avez choisi un jeu de donn&eacute;es, vous pouvez passer &agrave; la seconde &eacute;tape
+                        (en utilisant les fl&egrave;ches en haut &agrave; droite) pour selectionner les champs que vous souhaitez.
+                        Sur la gauche, vous disposez des champs disponibles. Lorsque vous avez choisi le champ &agrave; selectionner,
+                        un aper&ccedil;u des donn&eacute;es est propos&eacute; sur le tableau &agrave; droite. Lorsque vous avez termin&eacute;
+                        vous pouvez passer &agrave; la suite en cliquant sur la fl&egrave;che en haut &agrave; droite (ou si vous le souhaitez
+                        vous pouvez revenir &agrave; l'&eacute;tape pr&eacute;c&eacute;dente avec la fl&egrave;che en haut &agrave; gauche)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sect">
+            <div class="horizontal layout cell">
+                <img src="{$staticResourcesUrl}images/whatsnew_datalet_creator3.png" style="width: 60%; height: 60%;">
+
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-number">3</div>
+                        <div class="section-title">Assistant troisi&egrave;me &eacute;tape: s&eacute;lectionner la visualisation.</div>
+                    </div>
+                    <div>
+                        Diff&eacute;rents graphiques sont disponibles et sont pr&eacute;sent&eacute;s &agrave; gauche, dans une liste qui propose
+                        des informations d&eacute;taill&eacute;es comme le nom, le type et la pr&eacute;sentation des contributions ainsi que les
+                        r&eacute;glages pris en charge par chaque graphique. Une fois le graphique s&eacute;lectionn&eacute;, vous devez choisir,
+                        pour chaque contribution, les champs correspondants &agrave; partir des ensembles s&eacute;lectionn&eacute;s en &eacute;tape 2.
+                        Vous pouvez &eacute;galement personnaliser les graphiques en ajoutant un titre, des commentaires, des l&eacute;gendes sur les
+                        axes etc.. Lorsque vous effectuez ces changements, l'aper&ccedil;u apparait sur la droite, et ainsi vous pouvez contr&ocirc;ler
+                        les effets de vos choix tout de suite. Lorsque vous &ecirc;tes satisfait, vous pouvez ajouter des &quot;datalets&quot; en cliquant
+                        sur le bouton &quot;ajouter&quot;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sect">
+            <div class="horizontal layout cell">
+                <img src="{$staticResourcesUrl}images/whatsnew_post_datalet.png" style="width: 40%; height: 40%;">
+
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-title">Vous pouvez poster des &quot;datalets&quot; &eacute;galement lorsque vous r&eacute;pondez</div>
+                    </div>
+                    <div>
+                        Les m&ecirc;mes caract&eacute;ristiques sont disponibles lorsque l'utilisateur repond avec un commentaire.
+                        Il faut simplement utiliser le m&ecirc;me bouton qui est pr&eacute;sent&eacute; sur la figure.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sect">
+            <div class="horizontal layout cell">
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-title">Datalets issus de &quot;Mon espace&quot;</div>
+                    </div>
+                    <div>
+                        Vous pouvez &eacute;galement r&eacute;-utiliser des &quot;datalets&quot; que vous avez plac&eacute; dans &quot;mon espace&quot;.
+                        En cliquant sur le bouton pr&eacute;sent&eacute;, une fen&ecirc;tre pop-up r&eacute;v&egrave;le l'ensemble des datalets existants que vous pouvez choisir
+                    </div>
+                </div>
+            </div>
+            <img src="{$staticResourcesUrl}images/whatsnew_posting_from_my_space.png" style="width: 40%; height: 40%;">
+            <img src="{$staticResourcesUrl}images/whatsnew_post_my_space.png" style="width: 40%; height: 40%;">
+            <img src="{$staticResourcesUrl}images/whatsnew_privateroom_datalet.png" style="width: 40%; height: 40%;">
+        </div>
+
+    </div>
+
+
+</div>
