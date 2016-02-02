@@ -291,7 +291,7 @@ class ODE_CLASS_EventHandler
     // Handle top right menu creation
     public function onCollectConsoleItems( BASE_CLASS_ConsoleItemCollector $event )
     {
-        if (OW::getUser()->isAuthenticated())
+        /*if (OW::getUser()->isAuthenticated())*/
         {
             $item = new ODE_CMP_Help();
             $event->addItem($item, 0);
