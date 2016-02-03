@@ -36,11 +36,6 @@
         {
             if(addedJs == (dynamicAddedJs.length-1))
             {
-                //var languageLink = document.createElement("link");
-                //languageLink.rel = "localization";
-                //languageLink.href = parent.ODE.deep_url.replace("DEEP", "COMPONENTS") + "locales/" + parent.ODE.user_language + ".l20n";
-                //document.getElementsByTagName("head")[0].appendChild(languageLink);
-
                 ComponentService.deep_url = parent.ODE.deep_url;
 
                 var params =
@@ -54,7 +49,7 @@
                 // Modify existing datalet
                 if(parent.SPODPR != undefined && parent.SPODPR.ControlletPresets != undefined)
                 {
-                  params["selected-fields"]  = '[' + parent.SPODPR.ControlletPresets["selected-fields"] + ']';
+                  params["selected-fields"]  = '[' + parent.SPODPR.ControlletPresets["selected-fields"].replace("'", "&#39;") + ']';
                   params["selected-datalet"] = parent.SPODPR.ControlletPresets["selected-datalet"];
                   params["datalet-preset"]   = parent.SPODPR.ControlletPresets["datalet-preset"];
 

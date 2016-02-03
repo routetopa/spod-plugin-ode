@@ -160,7 +160,7 @@ ODE.setDataletValues = function (data)
 
 ODE.loadDatalet = function(component, params, fields, cache, placeholder)
 {
-    $.extend(params, {data:cache});
+    $.extend(params, {data:(typeof cache == 'undefined') ? '' : cache.replace("'", "&#39;")});
 
     ComponentService.getComponent({
         component   : component,
