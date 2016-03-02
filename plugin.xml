@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
     <name>SPOD Open Data Enabler</name>
-    <key>splod_plugin_ode</key>
+    <key>ode</key>
     <description>OPEN DATA OXWALL ENABLER</description>
     <author>ISISLab</author>
     <authorEmail>isislab@routetopa.eu</authorEmail>
