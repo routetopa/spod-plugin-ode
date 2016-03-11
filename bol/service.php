@@ -111,7 +111,6 @@ class ODE_BOL_Service
         $query .= " ORDER BY dataletId DESC;";
 
         $dbo = OW::getDbo();
-echo ($query);
         return $dbo->queryForList($query);
     }
 
