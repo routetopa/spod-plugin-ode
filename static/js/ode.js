@@ -103,6 +103,10 @@ ODE.savedDataletListener = function(e)
             ODE.privateRoomDatalet();
             break;
 
+        case 'cocreation':
+            ODE.cocreationRoomDatalet();
+            break;
+
         default : break;
 
     }
@@ -110,6 +114,25 @@ ODE.savedDataletListener = function(e)
     if(typeof previewFloatBox != 'undefined')
         previewFloatBox.close();
 };
+
+ODE.cocreationRoomDatalet = function(){
+
+    $.ajax({
+        type: 'post',
+        url: ODE.ajax_coocreation_room_add_datalet,
+        data: ODE.dataletParameters,
+        dataType: 'JSON',
+        success: function(data){
+            previewFloatBox.close();
+            //window.location = ODE.current_room_url;
+            window.dispatchEvent(new CustomEvent('ode-datalet-added-cocreation-room',{ detail : {'datalet_params' : ODE.dataletParameters, 'dataletId' : data.dataletId}}));
+        },
+        error: function( XMLHttpRequest, textStatus, errorThrown ){
+            OW.error(textStatus);
+        },
+        complete: function(){}
+    });
+}
 
 ODE.privateRoomDatalet = function ()
 {

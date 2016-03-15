@@ -143,6 +143,25 @@ echo ($query);
         return $dt->id;
     }
 
+    /*FOR COCREATION ROOM*/
+
+    public function saveDatalet($datalet, $fields, $ownerId, $params, $cache=""){
+        ODE_CLASS_Helper::sanitizeDataletInput($datalet, $dataset, $fields);
+
+        $dt            = new ODE_BOL_Datalet();
+        $dt->component = $datalet;
+        $dt->fields    = $fields;
+        $dt->ownerId   = $ownerId;
+        $dt->params    = $params;
+        $dt->status    = 'approved';
+        $dt->privacy   = 'everybody';
+        $dt->data      = $cache;
+        ODE_BOL_DataletDao::getInstance()->save($dt);
+
+        return $dt;
+    }
+    /*END COCREATION ROOM*/
+
 
     public function addDatalet($datalet, $fields, $ownerId, $params, $postId, $plugin, $cache="")
     {
