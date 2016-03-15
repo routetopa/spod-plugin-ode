@@ -62,6 +62,9 @@
                     params["suggested-datasets"] = parent.SPODPUBLICROOM.suggested_datasets;
                 }
 
+                var iframe = parent.document.getElementById("ode_controllet_iframe_placeholder");
+                params["data"] = iframe.attributes["cache"].value;
+
                 ComponentService.getComponent({
                     component   : "data-sevc-controllet",
                     params      : params,
