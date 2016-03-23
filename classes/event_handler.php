@@ -166,7 +166,7 @@ class ODE_CLASS_EventHandler
 
             if (!empty($datalet))
             {
-                $data['content']['vars']['activity']['description'] .= '<div id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
+                $data['content']['vars']['activity']['description'] .= '<div class="datalet_placeholder" id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
 
                 //CACHE
 /*                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
@@ -217,7 +217,7 @@ class ODE_CLASS_EventHandler
                     case "public-room"  : $content =  &$data['content']; break;
                 }
 
-                $content .= '<div id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
+                $content .= '<div class="datalet_placeholder" id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
 
                  // CACHE
 /*                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
@@ -251,7 +251,7 @@ class ODE_CLASS_EventHandler
         if(!empty($datalet))
         {
             $content = $event->getDataProp('content');
-            $content .= '<div id="datalet_placeholder_' . $id . '_comment"></div>';
+            $content .= '<div class="datalet_placeholder" id="datalet_placeholder_' . $id . '_comment"></div>';
 
             // CACHE
 /*            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",

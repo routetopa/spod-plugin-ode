@@ -18,6 +18,9 @@ ODE.internationalization = {
 
 ODE.init = function()
 {
+    //Disable show/hide behaviour in newsfeed post
+    $('.ow_newsfeed_context_menu_wrap, .ow_newsfeed_line').unbind("hover");
+
     ComponentService.deep_url = ODE.deep_url;
 
     window.addEventListener('generic-cards-container-controllet_card-selected', function(e){
@@ -86,7 +89,7 @@ ODE.savedDataletListener = function(e)
 
         case 'newsfeed' :
             $('#ode_controllet_placeholder').show('fast');
-            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData, 'ode_controllet_placeholder');
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), 'ode_controllet_placeholder');
             break;
 
         case 'public-room' :
