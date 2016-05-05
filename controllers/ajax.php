@@ -231,27 +231,28 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($_REQUEST['publicRoom'],$comment->getId(),$_REQUEST['sentiment']);
 
             // Update Stat
-            SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'comments');
-
-            //Add post on What's New when user comment with a datalet
-            $event = new OW_Event('feed.action', array(
-                'pluginKey' => 'spodpublic',
-                'entityType' => 'spodpublic_public-room-comment',
-                'entityId' => $comment->id,
-                'userId' => OW::getUser()->getId(),
-            ), array(
-                'time' => time(),
-                'roomId' => $_REQUEST['publicRoom'],
-                'commentId' => $comment->id,
-                'string' => !empty($_REQUEST['datalet']['component']) ?
+            if( $delta = SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'comments') )
+            {
+                //Add post on What's New when user comment with a datalet
+                $event = new OW_Event('feed.action', array(
+                    'pluginKey' => 'spodpublic',
+                    'entityType' => 'spodpublic_public-room-comment',
+                    'entityId' => $comment->id,
+                    'userId' => OW::getUser()->getId(),
+                ), array(
+                    'time' => time(),
+                    'roomId' => $_REQUEST['publicRoom'],
+                    'commentId' => $comment->id,
+                    'string' => !empty($_REQUEST['datalet']['component']) ?
                         array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $_REQUEST['publicRoom'],
-                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($_REQUEST['publicRoom'])->subject)) :
+                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($_REQUEST['publicRoom'])->subject, 'post' => $delta)) :
                         array('key' => 'spodpublic+post_comment', 'vars' => array('roomId' => $_REQUEST['publicRoom'],
                             'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($_REQUEST['publicRoom'])->subject,
-                            'comment' => $comment->message))
-            ));
-            OW::getEventManager()->trigger($event);
-            //End add post on What's New
+                            'comment' => $comment->message, 'post' => $delta))
+                ));
+                OW::getEventManager()->trigger($event);
+                //End add post on What's New
+            }
         }
 
         /* ODE */

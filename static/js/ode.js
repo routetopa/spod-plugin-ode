@@ -18,6 +18,10 @@ ODE.internationalization = {
 
 ODE.init = function()
 {
+    //Hide like comment on Agora notification post (check if remove is faster than hide)
+    $('.agora_notification').parent().parent().parent().find('.ow_newsfeed_left').css("display", "none");
+    //$('.agora_notification').parent().parent().parent().find('.ow_newsfeed_left').remove();
+
     //Disable show/hide behaviour in newsfeed post
     $('.ow_newsfeed_context_menu_wrap, .ow_newsfeed_line').unbind("hover");
 
@@ -86,32 +90,30 @@ ODE.savedDataletListener = function(e)
 
     switch(ODE.pluginPreview)
     {
-
         case 'newsfeed' :
             $('#ode_controllet_placeholder').show('fast');
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), 'ode_controllet_placeholder');
             break;
-
-        case 'public-room' :
         case 'comment' :
-            $(ODE.commentTarget).parent().first().prepend($('<a class="ode_done" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center;"></a>'));
+            $(ODE.commentTarget).closest(".ow_tooltip_body").append($('<div class="comment_datalet_placeholder" id="'+$(ODE.commentTarget).attr("data-id")+'_placeholder" />'));
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
+            //$(ODE.commentTarget).parent().first().prepend($('<a class="ode_done" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center;"></a>'));
             break;
-
+        case 'public-room' :
+            $(ODE.commentTarget).closest(".ow_comments_form_wrap").append($('<div class="comment_datalet_placeholder" id="'+$(ODE.commentTarget).attr("data-id")+'_placeholder" />'));
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
+            break;
         case 'event' :
         case 'forum' :
             $('.ode_done').first().append($('<div class="ode_done" style="background:url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center; height:20px; width:20px; float:left"></div>'));
             break;
-
         case 'private-room' :
             ODE.privateRoomDatalet();
             break;
-
         case 'cocreation':
             ODE.cocreationRoomDatalet();
             break;
-
         default : break;
-
     }
 
     if(typeof previewFloatBox != 'undefined')
@@ -135,7 +137,7 @@ ODE.cocreationRoomDatalet = function(){
         },
         complete: function(){}
     });
-}
+};
 
 ODE.privateRoomDatalet = function ()
 {
@@ -320,6 +322,7 @@ ODE.commentSendMessage = function(message, context)
             /* ODE */
             // Remove ic_ok icon from comment field
             $(ODE.commentTarget).parent().find('.ode_done').remove();
+            $("#" + $(ODE.commentTarget).attr("data-id") + '_placeholder').remove();
             ODE.commentTarget = null;
             ODE.reset();
             /* ODE */
