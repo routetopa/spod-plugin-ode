@@ -254,7 +254,7 @@ class ODE_CLASS_EventHandler
             $content .= '<div class="agora_notification">';
 
             $room_id = $params["action"]["data"]["roomId"];
-            $post = $params["action"]["data"]["string"]["vars"]["post"];
+            $post = !empty($params["action"]["data"]["string"]["vars"]["post"]) ? $params["action"]["data"]["string"]["vars"]["post"] : "";
             $users = SPODPUBLIC_BOL_Service::getInstance()->getOrderedComments($room_id, $post);
             $different_users = [];
 
