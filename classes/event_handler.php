@@ -62,6 +62,7 @@ class ODE_CLASS_EventHandler
         // event raised just before rendering a feed item (= an Action)
         OW::getEventManager()->bind('feed.on_item_render', array($this, 'onItemRender'));
         OW::getEventManager()->bind('feed.on_item_render', array($this, 'onLastReplyForumRender'));
+        OW::getEventManager()->bind('feed.on_item_render', array($this, 'onAgoraNotificationRender'));
 
         // event raised just before rendering a comment
         OW::getEventManager()->bind('base.comment_item_process', array($this, 'onCommentItemProcess'), 10000);
@@ -234,7 +235,40 @@ class ODE_CLASS_EventHandler
                                                                     "datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'");');
 
             }
+            
+            $event->setData($data);
+        }
+    }
 
+    // Render Agora Notification post
+    public function onAgoraNotificationRender(OW_Event $event)
+    {
+        //Get parameter for check pluginKey for this event
+        $params = $event->getParams();
+        //$id = $params["action"]["data"]["commentId"];
+
+        if($params["action"]["entityType"] == "spodpublic_public-room-comment")
+        {
+            $data = $event->getData();
+            $content =  &$data['content'];
+            $content .= '<div class="agora_notification">';
+
+            $room_id = $params["action"]["data"]["roomId"];
+            $post = !empty($params["action"]["data"]["string"]["vars"]["post"]) ? $params["action"]["data"]["string"]["vars"]["post"] : "";
+            $users = SPODPUBLIC_BOL_Service::getInstance()->getOrderedComments($room_id, $post);
+            $different_users = [];
+
+            foreach($users as $user)
+            {
+                if(!in_array($user->userId, $different_users))
+                {
+                    $avatar = BOL_AvatarService::getInstance()->getDataForUserAvatars(array($user->userId));
+                    $different_users[] = $user->userId;
+                    $content .= '<div class="ow_newsfeed_agora_notification_avatar"><div class="ow_avatar"><a href="' . $avatar[$user->userId]["url"] . '"><img alt="" src="' . $avatar[$user->userId]["src"] . '" style="max-width: 100%;"></a></div></div>';
+                }
+            }
+
+            $content .= '</div>';
             $event->setData($data);
         }
     }
