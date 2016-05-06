@@ -252,27 +252,28 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($clean['publicRoom'],$comment->getId(),$clean['sentiment']);
 
             // Update Stat
-            SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'comments');
-
-            //Add post on What's New when user comment with a datalet
-            $event = new OW_Event('feed.action', array(
-                'pluginKey' => 'spodpublic',
-                'entityType' => 'spodpublic_public-room-comment',
-                'entityId' => $comment->id,
-                'userId' => OW::getUser()->getId(),
-            ), array(
-                'time' => time(),
-                'roomId' => $clean['publicRoom'],
-                'commentId' => $comment->id,
-                'string' => !empty($clean['datalet']['component']) ?
+            if( $delta = SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'comments') )
+            {
+                //Add post on What's New when user comment with a datalet
+                $event = new OW_Event('feed.action', array(
+                    'pluginKey' => 'spodpublic',
+                    'entityType' => 'spodpublic_public-room-comment',
+                    'entityId' => $comment->id,
+                    'userId' => OW::getUser()->getId(),
+                ), array(
+                    'time' => time(),
+                    'roomId' => $clean['publicRoom'],
+                    'commentId' => $comment->id,
+                    'string' => !empty($clean['datalet']['component']) ?
                         array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $clean['publicRoom'],
-                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject)) :
+                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject, 'post' => $delta)) :
                         array('key' => 'spodpublic+post_comment', 'vars' => array('roomId' => $clean['publicRoom'],
                             'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject,
-                            'comment' => $comment->message))
-            ));
-            OW::getEventManager()->trigger($event);
-            //End add post on What's New
+                            'comment' => $comment->message, 'post' => $delta))
+                ));
+                OW::getEventManager()->trigger($event);
+                //End add post on What's New
+            }
         }
 
         /* ODE */
