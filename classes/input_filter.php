@@ -53,7 +53,7 @@ class ODE_CLASS_InputFilter
                                     "regexp"=>"#^(((?:0?[1-9]|1[012])|(?:0?[1-9]|[12][0-9]|3[01])|([a-zA-Z]+))([.,]?[-.\\\/\s]))?(((?:0?[1-9]|1[012])|(?:0?[1-9]|[12][0-9]|3[01])|([a-zA-Z]+))([.,]?[-.\\\/\s]))?((?:20|19)[0-9]{2})$#")))){
             $cleanParam = date("Y-m-d", strtotime($param));
         }else{
-            if( preg_match("#^{#",$param) || preg_match("#^[#",$param) || preg_match('#^"#',$param)){
+            if( preg_match("#^\\{#",$param) || preg_match("#^\\[#",$param) || preg_match('#^"#',$param)){
                 $cleanParam = $param;
             }else{
                 $cleanParam = filter_var($param, FILTER_SANITIZE_STRING);
@@ -69,7 +69,7 @@ class ODE_CLASS_InputFilter
             return null;
         } else {
             $arrayParam = array_filter(explode("#######", $value));
-            if (count($arrayParam) == 1) {
+            if (count($arrayParam) <= 1) {
                 $clean[$key] = $this->filterParam($value);
             } else {
                 $cleanArrayParam = array();
