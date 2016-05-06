@@ -40,19 +40,26 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
     public function privateRoomDatalet()
     {
+        $clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
+        if ($clean == null){
+            /*echo json_encode(array("status" => "error", "massage" => 'Insane inputs detected'));*/
+            OW::getFeedback()->info(OW::getLanguage()->text('cocreationep', 'insane_user_email_value'));
+            exit;
+        }
+
         /* ODE */
         $results = '';
 
-        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['component'], $_REQUEST['params'], $_REQUEST['fields']) )
+        if( ODE_CLASS_Helper::validateDatalet($clean['component'], $clean['params'], $clean['fields']) )
         {
             $results = SPODPR_BOL_Service::getInstance()->dataletCard(OW::getUser()->getId(),
-                                                              $_REQUEST['component'],
-                                                              $_REQUEST['fields'],
-                                                              $_REQUEST['params'],
-                                                              $_REQUEST['data'],
+                                                              $clean['component'],
+                                                              $clean['fields'],
+                                                              $clean['params'],
+                                                              $clean['data'],
                                                               //isset($_REQUEST['comment']) ? $_REQUEST['comment'] : '',
-                                                              isset($_REQUEST['dataletId']) ? $_REQUEST['dataletId'] : '',
-                                                              isset($_REQUEST['cardId']) ? $_REQUEST['cardId'] : '');
+                                                              isset($clean['dataletId']) ? $clean['dataletId'] : '',
+                                                              isset($clean['cardId']) ? $clean['cardId'] : '');
         }
         /* ODE */
 
@@ -75,7 +82,14 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
     public function statusUpdate()
     {
-        if ( empty($_POST['status']) && empty($_POST['attachment']) )
+        $clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
+        if ($clean == null){
+            /*echo json_encode(array("status" => "error", "massage" => 'Insane inputs detected'));*/
+            OW::getFeedback()->info(OW::getLanguage()->text('cocreationep', 'insane_user_email_value'));
+            exit;
+        }
+
+        if ( empty($clean['status']) && empty($clean['attachment']) )
         {
             echo json_encode(array(
                 "error" => OW::getLanguage()->text('base', 'form_validate_common_error_message')
@@ -91,12 +105,12 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $oembed = null;
         $attachId = null;
-        $status = empty($_POST['status']) ? '' : strip_tags($_POST['status']);
+        $status = empty($clean['status']) ? '' : strip_tags($clean['status']);
         $content = array();
 
-        if ( !empty($_POST['attachment']) )
+        if ( !empty($clean['attachment']) )
         {
-            $content = json_decode($_POST['attachment'], true);
+            $content = json_decode($clean['attachment'], true);
 
             if ( !empty($content) )
             {
@@ -121,9 +135,9 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         $userId = OW::getUser()->getId();
 
         $event = new OW_Event("feed.before_content_add", array(
-            "feedType" => $_POST['feedType'],
-            "feedId" => $_POST['feedId'],
-            "visibility" => $_POST['visibility'],
+            "feedType" => $clean['feedType'],
+            "feedId" => $clean['feedId'],
+            "visibility" => $clean['visibility'],
             "userId" => $userId,
             "status" => $status,
             "type" => empty($content["type"]) ? "text" : $content["type"],
@@ -158,16 +172,16 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $status = UTIL_HtmlTag::autoLink($status);
         $out = NEWSFEED_BOL_Service::getInstance()
-            ->addStatus(OW::getUser()->getId(), $_POST['feedType'], $_POST['feedId'], $_POST['visibility'], $status, array(
+            ->addStatus(OW::getUser()->getId(), $clean['feedType'], $clean['feedId'], $clean['visibility'], $status, array(
                 "content" => $content,
                 "attachmentId" => $attachId
             ));
 
         /* ODE */
-        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_params'], $_REQUEST['ode_fields']) )
+        if( ODE_CLASS_Helper::validateDatalet($clean['ode_datalet'], $clean['ode_params'], $clean['ode_fields']) )
         {
-            ODE_BOL_Service::getInstance()->addDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_fields'],
-                OW::getUser()->getId(), $_REQUEST['ode_params'], $out['entityId'], 'newsfeed', $_REQUEST['ode_data']);
+            ODE_BOL_Service::getInstance()->addDatalet($clean['ode_datalet'], $clean['ode_fields'],
+                OW::getUser()->getId(), $clean['ode_params'], $out['entityId'], 'newsfeed', $clean['ode_data']);
         }
         /* ODE */
 
@@ -179,11 +193,18 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
     public function addComment()
     {
+        $clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
+        if ($clean == null){
+            /*echo json_encode(array("status" => "error", "massage" => 'Insane inputs detected'));*/
+            OW::getFeedback()->info(OW::getLanguage()->text('cocreationep', 'insane_user_email_value'));
+            exit;
+        }
+
         $errorMessage = false;
-        $isMobile = !empty($_POST['isMobile']) && (bool) $_POST['isMobile'];
+        $isMobile = !empty($clean['isMobile']) && (bool) $clean['isMobile'];
         $params = $this->getParamsObject();
 
-        if ( empty($_POST['commentText']) && empty($_POST['attachmentInfo']) && empty($_POST['oembedInfo']) )
+        if ( empty($clean['commentText']) && empty($clean['attachmentInfo']) && empty($clean['oembedInfo']) )
         {
             $errorMessage = OW::getLanguage()->text('base', 'comment_required_validator_message');
         }
@@ -202,22 +223,22 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             exit(json_encode(array('error' => $errorMessage)));
         }
 
-        $commentText = empty($_POST['commentText']) ? '' : trim($_POST['commentText']);
+        $commentText = empty($clean['commentText']) ? '' : trim($clean['commentText']);
         $attachment = null;
 
         if ( BOL_TextFormatService::getInstance()->isCommentsRichMediaAllowed() && !$isMobile )
         {
-            if ( !empty($_POST['attachmentInfo']) )
+            if ( !empty($clean['attachmentInfo']) )
             {
-                $tempArr = json_decode($_POST['attachmentInfo'], true);
+                $tempArr = json_decode($clean['attachmentInfo'], true);
                 OW::getEventManager()->call('base.attachment_save_image', array('uid' => $tempArr['uid'], 'pluginKey' => $tempArr['pluginKey']));
                 $tempArr['href'] = $tempArr['url'];
                 $tempArr['type'] = 'photo';
                 $attachment = json_encode($tempArr);
             }
-            else if ( !empty($_POST['oembedInfo']) )
+            else if ( !empty($clean['oembedInfo']) )
             {
-                $tempArr = json_decode($_POST['oembedInfo'], true);
+                $tempArr = json_decode($clean['oembedInfo'], true);
                 // add some actions
                 $attachment = json_encode($tempArr);
             }
@@ -225,13 +246,13 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
-        if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($_REQUEST['publicRoom']) && $params->getPluginKey() == 'spodpublic')
+        if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($clean['publicRoom']) && $params->getPluginKey() == 'spodpublic')
         {
             // Add sentiment to a comment
-            SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($_REQUEST['publicRoom'],$comment->getId(),$_REQUEST['sentiment']);
+            SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($clean['publicRoom'],$comment->getId(),$clean['sentiment']);
 
             // Update Stat
-            SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'comments');
+            SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'comments');
 
             //Add post on What's New when user comment with a datalet
             $event = new OW_Event('feed.action', array(
@@ -241,13 +262,13 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 'userId' => OW::getUser()->getId(),
             ), array(
                 'time' => time(),
-                'roomId' => $_REQUEST['publicRoom'],
+                'roomId' => $clean['publicRoom'],
                 'commentId' => $comment->id,
-                'string' => !empty($_REQUEST['datalet']['component']) ?
-                        array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $_REQUEST['publicRoom'],
-                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($_REQUEST['publicRoom'])->subject)) :
-                        array('key' => 'spodpublic+post_comment', 'vars' => array('roomId' => $_REQUEST['publicRoom'],
-                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($_REQUEST['publicRoom'])->subject,
+                'string' => !empty($clean['datalet']['component']) ?
+                        array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $clean['publicRoom'],
+                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject)) :
+                        array('key' => 'spodpublic+post_comment', 'vars' => array('roomId' => $clean['publicRoom'],
+                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject,
                             'comment' => $comment->message))
             ));
             OW::getEventManager()->trigger($event);
@@ -255,20 +276,20 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         }
 
         /* ODE */
-        if( ODE_CLASS_Helper::validateDatalet($_REQUEST['datalet']['component'], $_REQUEST['datalet']['params'], $_REQUEST['datalet']['fields']) )
+        if( ODE_CLASS_Helper::validateDatalet($clean['datalet']['component'], $clean['datalet']['params'], $clean['datalet']['fields']) )
         {
             ODE_BOL_Service::getInstance()->addDatalet(
-                $_REQUEST['datalet']['component'],
-                $_REQUEST['datalet']['fields'],
+                $clean['datalet']['component'],
+                $clean['datalet']['fields'],
                 OW::getUser()->getId(),
-                $_REQUEST['datalet']['params'],
+                $clean['datalet']['params'],
                 $comment->getId(),
-                $_REQUEST['plugin'],
-                $_REQUEST['datalet']['data']);
+                $clean['plugin'],
+                $clean['datalet']['data']);
 
-            if(OW::getPluginManager()->isPluginActive('spodpublic') && $_REQUEST['plugin'] == "public-room")
+            if(OW::getPluginManager()->isPluginActive('spodpublic') && $clean['plugin'] == "public-room")
             {
-                SPODPUBLIC_BOL_Service::getInstance()->addStat($_REQUEST['publicRoom'], 'opendata');
+                SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'opendata');
             }
         }
         /* ODE */
@@ -289,15 +310,15 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         if ( $isMobile )
         {
-            $commentListCmp = new BASE_MCMP_CommentsList($params, $_POST['cid']);
+            $commentListCmp = new BASE_MCMP_CommentsList($params, $clean['cid']);
         }
         else
         {
             if($params->getPluginKey() == "spodpublic")
             {
-                $commentListCmp = new SPODPUBLIC_CMP_CommentsList($params, $_POST['cid']);
+                $commentListCmp = new SPODPUBLIC_CMP_CommentsList($params, $clean['cid']);
             }else{
-                $commentListCmp = new BASE_CMP_CommentsList($params, $_POST['cid']);
+                $commentListCmp = new BASE_CMP_CommentsList($params, $clean['cid']);
             }
         }
 
@@ -315,11 +336,18 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
     private function getParamsObject()
     {
+        $clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
+        if ($clean == null){
+            /*echo json_encode(array("status" => "error", "massage" => 'Insane inputs detected'));*/
+            OW::getFeedback()->info(OW::getLanguage()->text('cocreationep', 'insane_user_email_value'));
+            exit;
+        }
+
         $errorMessage = false;
 
-        $entityType = !isset($_POST['entityType']) ? null : trim($_POST['entityType']);
-        $entityId = !isset($_POST['entityId']) ? null : (int) $_POST['entityId'];
-        $pluginKey = !isset($_POST['pluginKey']) ? null : trim($_POST['pluginKey']);
+        $entityType = !isset($clean['entityType']) ? null : trim($clean['entityType']);
+        $entityId = !isset($clean['entityId']) ? null : (int) $clean['entityId'];
+        $pluginKey = !isset($clean['pluginKey']) ? null : trim($clean['pluginKey']);
 
         if ( !$entityType || !$entityId || !$pluginKey )
         {
@@ -329,29 +357,29 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         $params = new BASE_CommentsParams($pluginKey, $entityType);
         $params->setEntityId($entityId);
 
-        if ( isset($_POST['ownerId']) )
+        if ( isset($clean['ownerId']) )
         {
-            $params->setOwnerId((int) $_POST['ownerId']);
+            $params->setOwnerId((int) $clean['ownerId']);
         }
 
-        if ( isset($_POST['commentCountOnPage']) )
+        if ( isset($clean['commentCountOnPage']) )
         {
-            $params->setCommentCountOnPage((int) $_POST['commentCountOnPage']);
+            $params->setCommentCountOnPage((int) $clean['commentCountOnPage']);
         }
 
-        if ( isset($_POST['displayType']) )
+        if ( isset($clean['displayType']) )
         {
-            $params->setDisplayType($_POST['displayType']);
+            $params->setDisplayType($clean['displayType']);
         }
 
-        if ( isset($_POST['initialCount']) )
+        if ( isset($clean['initialCount']) )
         {
-            $params->setInitialCommentsCount((int) $_POST['initialCount']);
+            $params->setInitialCommentsCount((int) $clean['initialCount']);
         }
 
-        if ( isset($_POST['loadMoreCount']) )
+        if ( isset($clean['loadMoreCount']) )
         {
-            $params->setLoadMoreCount((int) $_POST['loadMoreCount']);
+            $params->setLoadMoreCount((int) $clean['loadMoreCount']);
         }
 
         if ( $errorMessage )
