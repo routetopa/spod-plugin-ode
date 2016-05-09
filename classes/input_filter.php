@@ -80,9 +80,9 @@ class ODE_CLASS_InputFilter
         }
     }
 
-    private function sanitizeArrayParam(array &$clean, $key, $value){
+    private function sanitizeArrayParam(array &$clean, $value){
         foreach($value as $k => $v) {
-            $this->sanitizeFlatParam($clean[$key], $k, $v);
+            $this->sanitizeFlatParam($clean, $k, $v);
         }
     }
 
@@ -91,7 +91,8 @@ class ODE_CLASS_InputFilter
         foreach($params as $key => $value)
         {
             if(is_array($value)){
-                $this->sanitizeArrayParam($clean, $key, $value);
+                $clean[$key] = [];
+                $this->sanitizeArrayParam($clean[$key], $value);
             }else {
                 /*if ($this->validateTextInputVsSqlInjection($value)) {
                     return null;
