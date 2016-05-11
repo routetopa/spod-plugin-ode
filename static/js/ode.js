@@ -58,7 +58,7 @@ ODE.addOdeOnComment = function()
         var id = obj.id;
 
         // Add ODE on Comment
-        var odeElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a title="'+ODE.internationalization["add_datalet_"+ODE.user_language]+'" href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'datalet_grey_rect.svg) no-repeat center;" data-id="' + id + '"></a>'));
+        var odeElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a title="'+ODE.internationalization["add_datalet_"+ODE.user_language]+'" href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'datalet_blue_rect.svg) no-repeat center;" data-id="' + id + '"></a>'));
         odeElem = odeElem.children().first();
         odeElem.click(function (e) {
             ODE.pluginPreview = 'comment';
@@ -69,7 +69,7 @@ ODE.addOdeOnComment = function()
         // Add PRIVATE_ROOM on Comment
         if(ODE.is_private_room_active)
         {
-            var prElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a title="'+ODE.internationalization["open_my_space_"+ODE.user_language]+'" href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'myspace_grey_rect.svg) no-repeat center;" data-id="' + id + '"></a>'));
+            var prElem = $(obj).parent().find('.ow_attachments').first().prepend($('<a title="'+ODE.internationalization["open_my_space_"+ODE.user_language]+'" href="javascript://" style="background: url(' + ODE.THEME_IMAGES_URL + 'myspace_blue_rect.svg) no-repeat center;" data-id="' + id + '"></a>'));
             prElem = prElem.children().first();
             prElem.click(function (e) {
                 ODE.pluginPreview = 'comment';
