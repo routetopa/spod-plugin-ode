@@ -69,7 +69,7 @@ class ODE_CLASS_InputFilter
             return null;
         } else {
             $arrayParam = array_filter(explode("#######", $value));
-            if (count($arrayParam) <= 1) {
+            if (count($arrayParam) <= 1 && !preg_match('/#######/',$value)) {
                 $clean[$key] = $this->filterParam($value);
             } else {
                 $cleanArrayParam = array();
