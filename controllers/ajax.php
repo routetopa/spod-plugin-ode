@@ -251,10 +251,10 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             // Add sentiment to a comment
             SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($clean['publicRoom'],$comment->getId(),$clean['sentiment']);
 
-            // Update Stat
-            if( $delta = SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'comments') )
+            // Update Stat for comment
+            if( empty($clean['datalet']['component']) && ($delta = SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'comments')) )
             {
-                //Add post on What's New when user comment with a datalet
+                //Add post on What's New when users add more than $delta comments
                 $event = new OW_Event('feed.action', array(
                     'pluginKey' => 'spodpublic',
                     'entityType' => 'spodpublic_public-room-comment',
@@ -264,10 +264,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                     'time' => time(),
                     'roomId' => $clean['publicRoom'],
                     'commentId' => $comment->id,
-                    'string' => !empty($clean['datalet']['component']) ?
-                        array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $clean['publicRoom'],
-                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject, 'post' => $delta)) :
-                        array('key' => 'spodpublic+post_comment', 'vars' => array('roomId' => $clean['publicRoom'],
+                    'string' => array('key' => 'spodpublic+post_comment', 'vars' => array('roomId' => $clean['publicRoom'],
                             'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject,
                             'comment' => $comment->message, 'post' => $delta))
                 ));
@@ -290,7 +287,24 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
             if(OW::getPluginManager()->isPluginActive('spodpublic') && $clean['plugin'] == "public-room")
             {
-                SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'opendata');
+                if( $delta = SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'opendata') )
+                {
+                    //Add post on What's New when users add more than $delta datalets
+                    $event = new OW_Event('feed.action', array(
+                        'pluginKey' => 'spodpublic',
+                        'entityType' => 'spodpublic_public-room-comment',
+                        'entityId' => $comment->id,
+                        'userId' => OW::getUser()->getId(),
+                    ), array(
+                        'time' => time(),
+                        'roomId' => $clean['publicRoom'],
+                        'commentId' => $comment->id,
+                        'string' => array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $clean['publicRoom'],
+                                'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject, 'post' => $delta))
+                    ));
+                    OW::getEventManager()->trigger($event);
+                    //End add post on What's New
+                }
             }
         }
         /* ODE */

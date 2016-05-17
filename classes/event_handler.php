@@ -255,7 +255,8 @@ class ODE_CLASS_EventHandler
 
             $room_id = $params["action"]["data"]["roomId"];
             $post = !empty($params["action"]["data"]["string"]["vars"]["post"]) ? $params["action"]["data"]["string"]["vars"]["post"] : "";
-            $users = SPODPUBLIC_BOL_Service::getInstance()->getOrderedComments($room_id, $post);
+            $datalet_user = $params["action"]["data"]["string"]["key"] == 'spodpublic+post_comment_datalet' ? true : false;
+            $users = SPODPUBLIC_BOL_Service::getInstance()->getOrderedComments($room_id, $post, $datalet_user);
             $different_users = [];
 
             foreach($users as $user)
