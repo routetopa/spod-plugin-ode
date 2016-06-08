@@ -65,10 +65,11 @@
                 }
 
                 var iframe = parent.document.getElementById("ode_controllet_iframe_placeholder");
+                var component  = iframe.attributes["component"].value;
                 params["data"] = iframe.attributes["cache"].value;
 
                 ComponentService.getComponent({
-                    component   : "data-sevc-controllet",
+                    component   : component,
                     params      : params,
                     fields      : Array(),
                     placeHolder : "ode_controllet_placeholder_float"
