@@ -51,8 +51,8 @@
                 // Modify existing datalet
                 if(parent.SPODPR != undefined && parent.SPODPR.ControlletPresets != undefined)
                 {
-                  params["selected-fields"]  = '[' + parent.SPODPR.ControlletPresets["selected-fields"].replace("'", "&#39;") + ']';
                   params["selected-datalet"] = parent.SPODPR.ControlletPresets["selected-datalet"];
+                  params["selected-fields"]  = '[' + parent.SPODPR.ControlletPresets["selected-fields"].replace("'", "&#39;") + ']';
                   params["datalet-preset"]   = parent.SPODPR.ControlletPresets["datalet-preset"];
 
                   //Reset controllet presets
@@ -66,7 +66,7 @@
 
                 var iframe = parent.document.getElementById("ode_controllet_iframe_placeholder");
                 var component  = iframe.attributes["component"].value;
-                params["data"] = iframe.attributes["cache"].value;
+//                params["data"] = iframe.attributes["cache"].value;
 
                 ComponentService.getComponent({
                     component   : component,
