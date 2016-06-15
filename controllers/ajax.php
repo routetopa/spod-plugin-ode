@@ -193,7 +193,8 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
     public function addComment()
     {
-        $clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
+        //$clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
+        $clean = $_REQUEST;
         if ($clean == null){
             /*echo json_encode(array("status" => "error", "massage" => 'Insane inputs detected'));*/
             OW::getFeedback()->info(OW::getLanguage()->text('cocreationep', 'insane_user_email_value'));
