@@ -32,7 +32,7 @@ class ODE_CLASS_InputFilter
         return preg_match("/(script)|(&lt;)|(&gt;)|(%3c)|(%3e)" .
             "|(SELECT)|(UPDATE)|(INSERT)|(DELETE)|(GRANT)|(REVOKE)|(UNION)" .
             "|(select)|(update)|(insert)|(delete)|(grant)|(revoke)|(union)|(database)" .
-            "|(--)|(;)" .
+            "|(--)" .
             "|(&amp;lt;)|(&amp;gt;)/", $input);
     }
 
