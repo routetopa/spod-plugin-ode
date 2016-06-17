@@ -8,7 +8,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `' . OW_DB_PREFIX . 'ode_datalet` (
   `ownerId` int(11) NOT NULL,
   `post` text,
   `component` text,
-  `data` text,
+  `data` mediumtext,
   `fields` text,
   `params` text,
   `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
