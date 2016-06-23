@@ -142,6 +142,30 @@ class ODE_BOL_Service
         return $dt->id;
     }
 
+    public function getDataletInfo($id_post, $id_datalet)
+    {
+        $dbo = OW::getDbo();
+
+        if(!empty($id_datalet))
+            $sql = "select * from " . OW_DB_PREFIX . "ode_datalet where id = " . $id_datalet;
+        else
+            $sql = "select * from " . OW_DB_PREFIX . "ode_datalet where id = (select dataletId from ow_ode_datalet_post where postId = " . $id_post . ")";
+
+        return $dbo->queryForRow($sql);
+    }
+
+    public function getPostInfo($postId, $isPublicRoom)
+    {
+        $dbo = OW::getDbo();
+
+        if($isPublicRoom == "true")
+            $sql = "select * from " . OW_DB_PREFIX . "base_comment where id = " . $postId;
+        else
+            $sql = "select * from " . OW_DB_PREFIX . "newsfeed_action where entityId = " . $postId;
+
+        return $dbo->queryForRow($sql);
+    }
+
     /*FOR COCREATION ROOM*/
 
     public function saveDatalet($datalet, $fields, $ownerId, $params, $cache=""){
@@ -191,7 +215,7 @@ class ODE_BOL_Service
 
         foreach($datalets as &$dt)
         {
-            echo('--'.$dt['id'].'--');
+            //echo('--'.$dt['id'].'--');
             ODE_BOL_DataletDao::getInstance()->deleteById($dt['id']);
 
             $ex = new OW_Example();

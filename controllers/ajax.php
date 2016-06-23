@@ -409,4 +409,39 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         return $params;
     }
+
+    public function getDataletInfo()
+    {
+        $clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
+        if ($clean == null){
+            echo json_encode(array("status" => "error", "massage" => 'Insane inputs detected'));
+            exit;
+        }
+
+        $id_post    = $clean["post_id"];
+        $id_datalet = $clean["datalet_id"];
+
+        $datalet_info = ODE_BOL_Service::getInstance()->getDataletInfo($id_post, $id_datalet);
+        $user         = BOL_UserService::getInstance()->getDisplayName($datalet_info["ownerId"]);
+
+        if(!empty($id_post))
+        {
+            $post_info = ODE_BOL_Service::getInstance()->getPostInfo($id_post, $clean["is_public_room"]);
+
+            if($clean["is_public_room"] == "true")
+            {
+                // Public room
+                echo json_encode(array("timestamp" => $datalet_info["timestamp"], "user" => $user, "comment" => $post_info["message"]));
+            }else{
+                // Newsfeed
+                $post_info = json_decode($post_info["data"]);
+                echo json_encode(array("timestamp" => $datalet_info["timestamp"], "user" => $user, "comment" => $post_info->status));
+            }
+        }else {
+            // My Space
+            echo json_encode(array("timestamp" => $datalet_info["timestamp"], "user" => $user));
+        }
+
+        exit;
+    }
 }
