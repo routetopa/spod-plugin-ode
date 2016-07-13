@@ -22,7 +22,7 @@ class ODE_CLASS_InputFilter
 
     private function validateTextInputVsSqlInjection($input)
     {
-        if(preg_match("#^{#",$input)){
+        if(preg_match("#^{#",$input) || preg_match("#^\[#",$input) ){
             if(json_decode($input) == FALSE)
                 return true;
             else
