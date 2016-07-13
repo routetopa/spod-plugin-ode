@@ -1,5 +1,11 @@
 <?php
 
+require_once OW::getPluginManager()->getPlugin('spodnotification')->getRootDir()
+    . 'lib/vendor/autoload.php';
+
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version1X;
+
 /**
  * This software is intended for use with Oxwall Free Community Software http://www.oxwall.org/ and is
  * licensed under The BSD license.
@@ -247,8 +253,73 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
+        /* */
+        // trigger event comment add
+        $event = new OW_Event('base_add_comment', array(
+            'entityType' => $params->getEntityType(),
+            'entityId' => $params->getEntityId(),
+            'userId' => OW::getUser()->getId(),
+            'commentId' => $comment->getId(),
+            'pluginKey' => $params->getPluginKey(),
+            'attachment' => json_decode($attachment, true)
+        ));
+
+        OW::getEventManager()->trigger($event);
+
+        BOL_AuthorizationService::getInstance()->trackAction($params->getPluginKey(), 'add_comment');
+
+        if ( $isMobile )
+        {
+            $commentListCmp = new BASE_MCMP_CommentsList($params, $clean['cid']);
+        }
+        else
+        {
+            if($params->getPluginKey() == "spodpublic")
+            {
+                $commentListCmp = new SPODPUBLIC_CMP_CommentsList($params, $clean['cid']);
+            }else{
+                $commentListCmp = new BASE_CMP_CommentsList($params, $clean['cid']);
+            }
+        }
+        /* */
+
         if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($clean['publicRoom']) && $params->getPluginKey() == 'spodpublic')
         {
+            /* Send realtime notification */
+            try
+            {
+                $last_comment = end($commentListCmp->components);
+                /*$a = $last_comment->render();
+                $b = $commentListCmp->render();*/
+
+                $client = new Client(new Version1X('http://localhost:3000'));
+                $client->initialize();
+                $client->emit('realtime_notification', ['plugin' => $params->getPluginKey(),
+                              'room_id' => $clean['publicRoom'],
+                              'message' => $comment->message,
+                              'message_id' => $comment->id,
+                              'parent_id' => $params->getEntityId(),
+                              'user_id' => OW::getUser()->getId(),
+                              'user_display_name' => $last_comment->assignedVars["currentUserInfo"]["title"],
+                              'user_avatar' => $last_comment->assignedVars["currentUserInfo"]["src"],
+                              'user_url' => $last_comment->assignedVars["currentUserInfo"]["url"],
+                              'comment_level' => $last_comment->params->level,
+                              'sentiment' => $clean['sentiment'],
+                              'component' => $clean['datalet']['component'],
+                              'params' => $clean['datalet']['params'],
+                              'fields' => $clean['datalet']['fields'],
+
+                              'contextId'  => $last_comment->cmpContextId,
+                              'uid'        => $last_comment->id,
+                              'textAreaId' => $last_comment->assignedVars["taId"],
+                              'attchId'    => $last_comment->assignedVars["attchId"],
+                              'attchUid'   => $last_comment->components["attch"]->assignedVars["previewId"]]);
+                $client->close();
+            }
+            catch(Exception $e)
+            {}
+            /* Send realtime notification */
+
             // Add sentiment to a comment
             SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($clean['publicRoom'],$comment->getId(),$clean['sentiment']);
 
@@ -309,34 +380,6 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             }
         }
         /* ODE */
-
-        // trigger event comment add
-        $event = new OW_Event('base_add_comment', array(
-            'entityType' => $params->getEntityType(),
-            'entityId' => $params->getEntityId(),
-            'userId' => OW::getUser()->getId(),
-            'commentId' => $comment->getId(),
-            'pluginKey' => $params->getPluginKey(),
-            'attachment' => json_decode($attachment, true)
-        ));
-
-        OW::getEventManager()->trigger($event);
-
-        BOL_AuthorizationService::getInstance()->trackAction($params->getPluginKey(), 'add_comment');
-
-        if ( $isMobile )
-        {
-            $commentListCmp = new BASE_MCMP_CommentsList($params, $clean['cid']);
-        }
-        else
-        {
-            if($params->getPluginKey() == "spodpublic")
-            {
-                $commentListCmp = new SPODPUBLIC_CMP_CommentsList($params, $clean['cid']);
-            }else{
-                $commentListCmp = new BASE_CMP_CommentsList($params, $clean['cid']);
-            }
-        }
 
         exit(json_encode(array(
                 'newAttachUid' => BOL_CommentService::getInstance()->generateAttachmentUid($params->getEntityType(), $params->getEntityId()),
