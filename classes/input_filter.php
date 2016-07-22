@@ -56,7 +56,8 @@ class ODE_CLASS_InputFilter
             if( preg_match("#^\\{#",$param) || preg_match("#^\\[#",$param) || preg_match('#^"#',$param)){
                 $cleanParam = $param;
             }else{
-                $cleanParam = filter_var($param, FILTER_SANITIZE_STRING);
+                $cleanParam = $param;
+                //$cleanParam = filter_var($param, FILTER_SANITIZE_STRING);
                 //$cleanParam = filter_var($cleanParam, FILTER_SANITIZE_SPECIAL_CHARS);
                 //$cleanParam = filter_var($cleanParam, FILTER_SANITIZE_MAGIC_QUOTES);
             }
