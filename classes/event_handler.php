@@ -283,7 +283,7 @@ class ODE_CLASS_EventHandler
         $id = $comment->getId();
 
         //$datalet = ODE_BOL_Service::getInstance()->getDataletByPostId($id, "comment");
-        $datalet = ODE_BOL_Service::getInstance()->getDataletByPostIdWhereArray($id, array("comment", "public-room"));
+        $datalet = ODE_BOL_Service::getInstance()->getDataletByPostIdWhereArray($id, array("comment", "public-room", "tchat"));
 
         if(!empty($datalet))
         {

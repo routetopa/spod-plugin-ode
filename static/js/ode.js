@@ -99,6 +99,10 @@ ODE.savedDataletListener = function(e)
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
             //$(ODE.commentTarget).parent().first().prepend($('<a class="ode_done" style="background: url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center;"></a>'));
             break;
+        case 'tchat' :
+            $(ODE.commentTarget).closest(".ow_comments_form_wrap").append($('<div class="comment_datalet_placeholder" id="'+$(ODE.commentTarget).attr("data-id")+'_placeholder" />'));
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
+            break;
         case 'public-room' :
             $(ODE.commentTarget).closest(".ow_comments_form_wrap").append($('<div class="comment_datalet_placeholder" id="'+$(ODE.commentTarget).attr("data-id")+'_placeholder" />'));
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
