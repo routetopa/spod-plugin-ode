@@ -253,6 +253,42 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         $comment = BOL_CommentService::getInstance()->addComment($params->getEntityType(), $params->getEntityId(), $params->getPluginKey(), OW::getUser()->getId(), $commentText, $attachment);
 
+        /* ODE */
+        if( ODE_CLASS_Helper::validateDatalet($clean['datalet']['component'], $clean['datalet']['params'], $clean['datalet']['fields']) )
+        {
+            ODE_BOL_Service::getInstance()->addDatalet(
+                $clean['datalet']['component'],
+                $clean['datalet']['fields'],
+                OW::getUser()->getId(),
+                $clean['datalet']['params'],
+                $comment->getId(),
+                $clean['plugin'],
+                $clean['datalet']['data']);
+
+            if(OW::getPluginManager()->isPluginActive('spodpublic') && $clean['plugin'] == "public-room")
+            {
+                if( $delta = SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'opendata') )
+                {
+                    //Add post on What's New when users add more than $delta datalets
+                    $event = new OW_Event('feed.action', array(
+                        'pluginKey' => 'spodpublic',
+                        'entityType' => 'spodpublic_public-room-comment',
+                        'entityId' => $comment->id,
+                        'userId' => OW::getUser()->getId(),
+                    ), array(
+                        'time' => time(),
+                        'roomId' => $clean['publicRoom'],
+                        'commentId' => $comment->id,
+                        'string' => array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $clean['publicRoom'],
+                            'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject, 'post' => $delta))
+                    ));
+                    OW::getEventManager()->trigger($event);
+                    //End add post on What's New
+                }
+            }
+        }
+        /* ODE */
+
         /* */
         // trigger event comment add
         $event = new OW_Event('base_add_comment', array(
@@ -345,42 +381,6 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             }
         }
 
-        /* ODE */
-        if( ODE_CLASS_Helper::validateDatalet($clean['datalet']['component'], $clean['datalet']['params'], $clean['datalet']['fields']) )
-        {
-            ODE_BOL_Service::getInstance()->addDatalet(
-                $clean['datalet']['component'],
-                $clean['datalet']['fields'],
-                OW::getUser()->getId(),
-                $clean['datalet']['params'],
-                $comment->getId(),
-                $clean['plugin'],
-                $clean['datalet']['data']);
-
-            if(OW::getPluginManager()->isPluginActive('spodpublic') && $clean['plugin'] == "public-room")
-            {
-                if( $delta = SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'opendata') )
-                {
-                    //Add post on What's New when users add more than $delta datalets
-                    $event = new OW_Event('feed.action', array(
-                        'pluginKey' => 'spodpublic',
-                        'entityType' => 'spodpublic_public-room-comment',
-                        'entityId' => $comment->id,
-                        'userId' => OW::getUser()->getId(),
-                    ), array(
-                        'time' => time(),
-                        'roomId' => $clean['publicRoom'],
-                        'commentId' => $comment->id,
-                        'string' => array('key' => 'spodpublic+post_comment_datalet', 'vars' => array('roomId' => $clean['publicRoom'],
-                                'roomSubject' => SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($clean['publicRoom'])->subject, 'post' => $delta))
-                    ));
-                    OW::getEventManager()->trigger($event);
-                    //End add post on What's New
-                }
-            }
-        }
-        /* ODE */
-
         exit(json_encode(array(
                 'newAttachUid' => BOL_CommentService::getInstance()->generateAttachmentUid($params->getEntityType(), $params->getEntityId()),
                 'entityType' => $params->getEntityType(),
@@ -389,7 +389,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 'onloadScript' => OW::getDocument()->getOnloadScript(),
                 'commentCount' => BOL_CommentService::getInstance()->findCommentCount($params->getEntityType(), $params->getEntityId())
             )
-        )
+          )
         );
     }
 
