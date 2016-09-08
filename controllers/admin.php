@@ -20,7 +20,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         /* DEEP ULR */
         $deepUrl = new TextField('deep_url');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_url');
-        $ode_deep_url = empty($preference) ? "http://192.168.37.145/DEEalerProvider/DEEP/" : $preference->defaultValue;
+        $ode_deep_url = empty($preference) ? "http://deep.routetopa.eu/DEEP/" : $preference->defaultValue;
         $deepUrl->setValue($ode_deep_url);
         $deepUrl->setRequired();
         $form->addElement($deepUrl);
@@ -28,7 +28,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         /* DEEP DATALET LIST */
         $deepDataletList = new TextField('deep_datalet_list');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_datalet_list');
-        $ode_deep_datalet_list = empty($preference) ? "http://192.168.37.145/DEEalerProvider/DEEP/datalets-list" :  $preference->defaultValue;
+        $ode_deep_datalet_list = empty($preference) ? "http://deep.routetopa.eu/DEEP/datalets-list" :  $preference->defaultValue;
         $deepDataletList->setValue($ode_deep_datalet_list);
         $deepDataletList->setRequired();
         $form->addElement($deepDataletList);
@@ -36,7 +36,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         /* DEEP CLIENT */
         $deepClient = new TextField('deep_client');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_deep_client');
-        $ode_deep_client = empty($preference) ? "http://192.168.37.145/DEEalerProvider/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
+        $ode_deep_client = empty($preference) ? "http://deep.routetopa.eu/DEEPCLIENT/js/deepClient.js" : $preference->defaultValue;
         $deepClient->setValue($ode_deep_client);
         $deepClient->setRequired();
         $form->addElement($deepClient);
@@ -44,7 +44,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         /* WEBCOMPONENT JS */
         $webcomponents = new TextField('webcomponents_js');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcomponents_js');
-        $ode_webcomponents_js = empty($preference) ? "http://192.168.37.145/DEEalerProvider/COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js" : $preference->defaultValue;
+        $ode_webcomponents_js = empty($preference) ? "http://deep.routetopa.eu/COMPONENTS/bower_components/webcomponentsjs/webcomponents-lite.js" : $preference->defaultValue;
         $webcomponents->setValue($ode_webcomponents_js);
         $webcomponents->setRequired();
         $form->addElement($webcomponents);
@@ -203,8 +203,8 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
                 $name = str_replace("'", "", $res->body->result->results[0]->resources[$i]->name);
 
                 array_push($datasets, array("name" => $name,
-                                            "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
-                                            "description" => ""));
+                    "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
+                    "description" => ""));
 
             }
         }
@@ -212,31 +212,31 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         return $datasets;
     }
 
-/*    protected function getCKANDatasetList($odProvider, $organization="")
-    {
-        $datasets = Array();
-
-        $odProvider = rtrim($odProvider,"/");
-
-        $res = \Httpful\Request::get($odProvider . '/api/3/action/package_search')->send();
-
-        for($j=0; $j<count($res->body->result->results); $j++)
+    /*    protected function getCKANDatasetList($odProvider, $organization="")
         {
-            for ($i = 0; $i < count($res->body->result->results[$j]->resources); $i++)
+            $datasets = Array();
+
+            $odProvider = rtrim($odProvider,"/");
+
+            $res = \Httpful\Request::get($odProvider . '/api/3/action/package_search')->send();
+
+            for($j=0; $j<count($res->body->result->results); $j++)
             {
-                if(!empty($organization) && $res->body->result->results[$j]->resources[$i]->organization->title != $organization) continue;
+                for ($i = 0; $i < count($res->body->result->results[$j]->resources); $i++)
+                {
+                    if(!empty($organization) && $res->body->result->results[$j]->resources[$i]->organization->title != $organization) continue;
 
-                $name = str_replace("'", "", isset($res->body->result->results[$j]->resources[$i]->name) ? $res->body->result->results[$j]->resources[$i]->name : $res->body->result->results[$j]->resources[$i]->description);
+                    $name = str_replace("'", "", isset($res->body->result->results[$j]->resources[$i]->name) ? $res->body->result->results[$j]->resources[$i]->name : $res->body->result->results[$j]->resources[$i]->description);
 
-                array_push($datasets, array("name" => $name,
-                    "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[$j]->resources[$i]->id,
-                    "description" => ""));
+                    array_push($datasets, array("name" => $name,
+                        "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[$j]->resources[$i]->id,
+                        "description" => ""));
 
+                }
             }
-        }
 
-        return $datasets;
-    }*/
+            return $datasets;
+        }*/
 
     function getISSYDatasetList($odProvider)
     {
