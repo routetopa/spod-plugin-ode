@@ -376,9 +376,9 @@ OwComments.prototype.initTextarea = function()
     this.submitHandler = this.realSubmitHandler;
 
     this.$textarea
-        .bind('keypress',
+        .bind('keypress comment.test',
             function(e){
-                if( e.which === 13 && !e.shiftKey ){
+                if( e.isButton || (e.which === 13 && !e.shiftKey) ){
                     e.stopImmediatePropagation();
                     var textBody = $(this).val();
 
