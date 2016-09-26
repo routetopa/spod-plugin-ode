@@ -457,6 +457,9 @@ ODE.showHelper =  function()
         case "/users/search":
             dialog = 'ODE_CMP_HelperUsers';
             break;
+        case "/cocreation":
+            dialog = "COCREATION_CMP_HelperCocreation";
+            break;
         case "/public-room":
             var frame_body = $("#public_room_iframe").contents().find("body").html();
             if(frame_body == undefined || frame_body == ""){
