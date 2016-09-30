@@ -438,7 +438,7 @@ ODE.showHelper =  function()
     var name = self.location.pathname;
     if(name.match(/\/public-room*/)) name = "/public-room";
     if(name.match(/\/*data-room*/)) name = "/cocreation/data-room";
-    if(name.match(/\/*knowledge*/)) name = "/cocreation/knowledge-room";
+    if(name.match(/\/*knowledge*/)) name = "/cocreation/knowledge-room"; 
 
     switch(name){
         case "/spodpr":
