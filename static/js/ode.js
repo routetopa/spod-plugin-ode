@@ -437,6 +437,8 @@ ODE.showHelper =  function()
     var dialog = "";
     var name = self.location.pathname;
     if(name.match(/\/public-room*/)) name = "/public-room";
+    if(name.match(/\/*data-room*/)) name = "/cocreation/data-room";
+    if(name.match(/\/*knowledge*/)) name = "/cocreation/knowledge-room";
 
     switch(name){
         case "/spodpr":
@@ -458,7 +460,13 @@ ODE.showHelper =  function()
             dialog = 'ODE_CMP_HelperUsers';
             break;
         case "/cocreation":
-            dialog = "COCREATION_CMP_HelperCocreation";
+            dialog = 'COCREATION_CMP_HelperCocreation';
+            break;
+        case "/cocreation/knowledge-room":
+            dialog = 'COCREATION_CMP_HelperCocreationKnowledgeRoom';
+            break;
+        case "/cocreation/data-room":
+            dialog = 'COCREATION_CMP_HelperCocreationDataRoom';
             break;
         case "/public-room":
             var frame_body = $("#public_room_iframe").contents().find("body").html();
