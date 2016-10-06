@@ -9,8 +9,8 @@ ODE.internationalization = {
     "add_datalet_en"  : "Add datalet",
     "open_my_space_en": "Open My space",
 
-    "add_datalet_fr"  : "Add datalet",
-    "open_my_space_fr": "Open My space",
+    "add_datalet_fr"  : "Ajouter visualisation",
+    "open_my_space_fr": "Ouvrir mon espace",
 
     "add_datalet_nl"  : "Add datalet",
     "open_my_space_nl": "Open My space"
@@ -438,7 +438,7 @@ ODE.showHelper =  function()
     var name = self.location.pathname;
     if(name.match(/\/public-room*/)) name = "/public-room";
     if(name.match(/\/*data-room*/)) name = "/cocreation/data-room";
-    if(name.match(/\/*knowledge*/)) name = "/cocreation/knowledge-room"; 
+    if(name.match(/\/*knowledge*/)) name = "/cocreation/knowledge-room";
 
     switch(name){
         case "/spodpr":
