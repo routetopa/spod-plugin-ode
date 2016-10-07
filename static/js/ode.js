@@ -10,7 +10,7 @@ ODE.internationalization = {
     "open_my_space_en": "Open My space",
 
     "add_datalet_fr"  : "Ajouter visualisation",
-    "open_my_space_fr": "Ouvrir mon espace",
+    "open_my_space_fr": "Ouvrir Mon espace",
 
     "add_datalet_nl"  : "Add datalet",
     "open_my_space_nl": "Open My space"
