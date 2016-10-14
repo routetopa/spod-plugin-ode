@@ -84,16 +84,16 @@ text-align:center;
     {if !empty($inviteLink)}<div class="inviteLink ow_std_margin">{decorator name='button' class='ow_ic_add' type='button' langLabel='event+invite_btn_label' id='inviteLink'}</div>{/if}
     <div class="userList">{$userListCmp}</div>
 </div>
-<div class="ow_right ow_superwide">
+<div class="ow_right ow_superwide ow_events_right">
 
     {block_decorator name='box' type='empty' iconClass='ow_ic_picture' langLabel='event+view_page_image_block_cap_label' addClass="ow_std_margin clearfix"}
     {if !empty($info.image)}<img src="{$info.image}" alt="" style="float: right;margin: 5px;" />{/if}{$info.desc}
 
     <!-- ODE -->
-    <div>
-    {if isset($private_room)}
+    <div style="display: none">
+    {* {if isset($private_room)}
         {$private_room}
-    {/if}
+    {/if} *}
     </div>
     <!-- ODE -->
 

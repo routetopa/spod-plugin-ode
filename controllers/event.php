@@ -241,7 +241,7 @@ class ODE_CTRL_Event extends OW_ActionController
 
         /* ODE */
         if(OW::getPluginManager()->isPluginActive('spodpr'))
-            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn', array('datalet', 'link')));
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn_event', array('datalet', 'link')));
         /* ODE */
 
         if ( date('n', time()) == 12 && date('j', time()) == 31 )
@@ -466,6 +466,214 @@ class ODE_CTRL_Event extends OW_ActionController
         $this->redirect(OW::getRouter()->urlForRoute('event.main_menu_route'));
     }
 
+    public function edit( $params )
+    {
+        $event = $this->getEventForParams($params);
+        $datalet = ODE_BOL_Service::getInstance()->getDataletByPostId($params['eventId'], "event");
+        $language = OW::getLanguage();
+        $form = new ODEEventAddForm('event_edit');
+
+        $form->getElement('title')->setValue($event->getTitle());
+        $form->getElement('desc')->setValue($event->getDescription());
+        $form->getElement('location')->setValue($event->getLocation());
+        $form->getElement('who_can_view')->setValue($event->getWhoCanView());
+        $form->getElement('who_can_invite')->setValue($event->getWhoCanInvite());
+        $form->getElement('who_can_invite')->setValue($event->getWhoCanInvite());
+
+        $startTimeArray = array('hour' => date('G', $event->getStartTimeStamp()), 'minute' => date('i', $event->getStartTimeStamp()));
+        $form->getElement('start_time')->setValue($startTimeArray);
+
+        $startDate = date('Y', $event->getStartTimeStamp()) . '/' . date('n', $event->getStartTimeStamp()) . '/' . date('j', $event->getStartTimeStamp());
+        $form->getElement('start_date')->setValue($startDate);
+
+        if ( $event->getEndTimeStamp() !== null )
+        {
+            $endTimeArray = array('hour' => date('G', $event->getEndTimeStamp()), 'minute' => date('i', $event->getEndTimeStamp()));
+            $form->getElement('end_time')->setValue($endTimeArray);
+
+
+            $endTimeStamp = $event->getEndTimeStamp();
+            if ( $event->getEndTimeDisable() )
+            {
+                $endTimeStamp = strtotime("-1 day", $endTimeStamp);
+            }
+
+            $endDate = date('Y', $endTimeStamp) . '/' . date('n', $endTimeStamp) . '/' . date('j', $endTimeStamp);
+            $form->getElement('end_date')->setValue($endDate);
+        }
+
+        if ( $event->getStartTimeDisable() )
+        {
+            $form->getElement('start_time')->setValue('all_day');
+        }
+
+        if ( $event->getEndTimeDisable() )
+        {
+            $form->getElement('end_time')->setValue('all_day');
+        }
+
+        $form->getSubmitElement('submit')->setValue(OW::getLanguage()->text('event', 'edit_form_submit_label'));
+
+        $checkboxId = UTIL_HtmlTag::generateAutoId('chk');
+        $tdId = UTIL_HtmlTag::generateAutoId('td');
+        $this->assign('tdId', $tdId);
+        $this->assign('chId', $checkboxId);
+
+        OW::getDocument()->addScript(OW::getPluginManager()->getPlugin("event")->getStaticJsUrl() . 'event.js');
+        OW::getDocument()->addOnloadScript("new eventAddForm(". json_encode(array('checkbox_id' => $checkboxId, 'end_date_id' => $form->getElement('end_date')->getId(), 'tdId' => $tdId )) .")");
+
+        if ( $event->getImage() )
+        {
+            $this->assign('imgsrc', $this->eventService->generateImageUrl($event->getImage(), true));
+        }
+
+        $endDateFlag = $event->getEndDateFlag();
+
+        if ( OW::getRequest()->isPost() )
+        {
+            $endDateFlag = !empty($_POST['endDateFlag']);
+
+            //$this->assign('endDateFlag', !empty($_POST['endDateFlag']));
+
+            if ( $form->isValid($_POST) )
+            {
+                $data = $form->getValues();
+
+                $serviceEvent = new OW_Event(EVENT_BOL_EventService::EVENT_BEFORE_EVENT_EDIT, array('eventId' => $event->id), $data);
+                OW::getEventManager()->trigger($serviceEvent);
+                $data = $serviceEvent->getData();
+
+                $dateArray = explode('/', $data['start_date']);
+
+                $startStamp = mktime(0, 0, 0, $dateArray[1], $dateArray[2], $dateArray[0]);
+
+                if ( $data['start_time'] != 'all_day' )
+                {
+                    $startStamp = mktime($data['start_time']['hour'], $data['start_time']['minute'], 0, $dateArray[1], $dateArray[2], $dateArray[0]);
+                }
+
+                if ( !empty($_POST['endDateFlag']) && !empty($data['end_date']) )
+                {
+                    $dateArray = explode('/', $data['end_date']);
+                    $endStamp = mktime(0, 0, 0, $dateArray[1], $dateArray[2], $dateArray[0]);
+                    $endStamp = strtotime("+1 day", $endStamp);
+
+                    if ( $data['end_time'] != 'all_day' )
+                    {
+                        $hour = 0;
+                        $min = 0;
+
+                        if( $data['end_time'] != 'all_day' )
+                        {
+                            $hour = $data['end_time']['hour'];
+                            $min = $data['end_time']['minute'];
+                        }
+
+                        $dateArray = explode('/', $data['end_date']);
+                        $endStamp = mktime($hour, $min, 0, $dateArray[1], $dateArray[2], $dateArray[0]);
+                    }
+                }
+
+                $event->setStartTimeStamp($startStamp);
+
+                if ( empty($endStamp) )
+                {
+                    $endStamp = strtotime("+1 day", $startStamp);
+                    $endStamp = mktime(0, 0, 0, date('n',$endStamp), date('j',$endStamp), date('Y',$endStamp));
+                }
+
+                if ( $startStamp > $endStamp )
+                {
+                    OW::getFeedback()->error($language->text('event', 'add_form_invalid_end_date_error_message'));
+                    $this->redirect();
+                }
+                else
+                {
+                    $event->setEndTimeStamp($endStamp);
+
+                    if ( !empty($_FILES['image']['name']) )
+                    {
+                        if ( (int) $_FILES['image']['error'] !== 0 || !is_uploaded_file($_FILES['image']['tmp_name']) || !UTIL_File::validateImage($_FILES['image']['name']) )
+                        {
+                            OW::getFeedback()->error($language->text('base', 'not_valid_image'));
+                            $this->redirect();
+                        }
+                        else
+                        {
+                            $event->setImage(uniqid());
+                            $this->eventService->saveEventImage($_FILES['image']['tmp_name'], $event->getImage());
+
+                        }
+                    }
+
+                    $event->setTitle(htmlspecialchars($data['title']));
+                    $event->setLocation(UTIL_HtmlTag::autoLink(strip_tags($data['location'])));
+                    $event->setWhoCanView((int) $data['who_can_view']);
+                    $event->setWhoCanInvite((int) $data['who_can_invite']);
+                    $event->setDescription($data['desc']);
+                    $event->setEndDateFlag(!empty($_POST['endDateFlag']));
+                    $event->setStartTimeDisable( $data['start_time'] == 'all_day' );
+                    $event->setEndTimeDisable( $data['end_time'] == 'all_day' );
+
+                    $this->eventService->saveEvent($event);
+
+                    $e = new OW_Event(EVENT_BOL_EventService::EVENT_AFTER_EVENT_EDIT, array('eventId' => $event->id));
+                    OW::getEventManager()->trigger($e);
+
+                    OW::getFeedback()->info($language->text('event', 'edit_form_success_message'));
+
+                    /* ODE */
+                    if (ODE_CLASS_Helper::validateDatalet($_REQUEST['ode_datalet'], $_REQUEST['ode_params'], $_REQUEST['ode_fields']))
+                    {
+                        ODE_BOL_Service::getInstance()->privateRoomDatalet(
+                            $_REQUEST['ode_datalet'],
+                            $_REQUEST['ode_fields'],
+                            OW::getUser()->getId(),
+                            $_REQUEST['ode_params'],
+                            '',
+                            $datalet['dataletId']);
+                    }
+                    /* ODE */
+
+                    $this->redirect(OW::getRouter()->urlForRoute('event.view', array('eventId' => $event->getId())));
+                }
+            }
+        }
+
+        if( !$endDateFlag )
+        {
+            // $form->getElement('start_time')->addAttribute('disabled', 'disabled');
+            // $form->getElement('start_time')->addAttribute('style', 'display:none;');
+
+            $form->getElement('end_date')->addAttribute('disabled', 'disabled');
+            $form->getElement('end_date')->addAttribute('style', 'display:none;');
+
+            $form->getElement('end_time')->addAttribute('disabled', 'disabled');
+            $form->getElement('end_time')->addAttribute('style', 'display:none;');
+        }
+
+        $this->assign('endDateFlag', $endDateFlag);
+
+        $this->setPageHeading($language->text('event', 'edit_page_heading'));
+        $this->setPageTitle($language->text('event', 'edit_page_title'));
+        OW::getNavigation()->activateMenuItem(OW_Navigation::MAIN, 'event', 'main_menu_item');
+        $this->addForm($form);
+
+        if($datalet)
+        {
+            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
+                                                                    '.$datalet["params"].',
+                                                                    ['.$datalet["fields"].'],
+                                                                    undefined,
+                                                                    "datalet_placeholder");');
+        }
+
+        /* ODE */
+        if(OW::getPluginManager()->isPluginActive('spodpr'))
+            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn_event', array('datalet', 'link')));
+        /* ODE */
+    }
+
     private function getEventForParams( $params )
     {
         if ( empty($params['eventId']) )
@@ -482,6 +690,7 @@ class ODE_CTRL_Event extends OW_ActionController
 
         return $event;
     }
+    
 }
 
 class ODEEventAddForm extends Form
@@ -619,7 +828,8 @@ class ODEEventAddForm extends Form
 
         /* ODE */
         $odeButton = new Button('ode_open_dialog');
-        $odeButton->setValue(OW::getLanguage()->text('ode', 'add_ode_button'));
+        //$odeButton->setValue(OW::getLanguage()->text('ode', 'add_ode_button'));
+        $odeButton->setValue('');
         $this->addElement($odeButton);
 
         $field = new HiddenField('ode_datalet');

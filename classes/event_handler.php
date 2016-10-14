@@ -53,6 +53,10 @@ class ODE_CLASS_EventHandler
         OW::getRouter()->removeRoute('event.delete');
         OW::getRouter()->addRoute(new OW_Route('event.delete', 'event/delete/:eventId', 'ODE_CTRL_Event', 'delete'));
 
+        // Remove default event.edit route from Event plugin and replace with a custom one
+        OW::getRouter()->removeRoute('event.edit');
+        OW::getRouter()->addRoute(new OW_Route('event.edit', 'event/edit/:eventId', 'ODE_CTRL_Event', 'edit'));
+
         // event triggered when receiving a request, just after the base system initialization
         OW::getEventManager()->bind(OW_EventManager::ON_APPLICATION_INIT, array($this, 'onApplicationInit'));
 

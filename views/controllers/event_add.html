@@ -70,7 +70,9 @@ padding-left: 3px;
         <tr class="ow_alt1">
             <td class="ow_label ode_done">{text key='ode+event_post_od'}</td>
             <td class="ow_value">
-                <span class="ow_attachment_btn">{submit name="ode_open_dialog"}</span>
+                <span class="ow_attachment_btn ow_attachment_btn_event ow_event_add_datalet">{submit name="ode_open_dialog"}</span>
+                {$private_room}
+                <div id="datalet_placeholder" class="datalet_placeholder_event"></div>
             </td>
             <td></td>
         </tr>
@@ -78,18 +80,18 @@ padding-left: 3px;
 
         <!-- ODE -->
         {if isset($private_room)}
-        <tr class="ow_alt1">
+        <!--<tr class="ow_alt1">
             <td class="ow_label ode_done">{text key='ode+event_post_od_private_room'}</td>
             <td class="ow_value">
-                    {$private_room}
+
             </td>
             <td></td>
-        </tr>
+        </tr>-->
         {/if}
         <!-- ODE -->
 
     </table>
-    <div class="clearfix ow_submit ow_stdmargin">
+    <div class="clearfix ow_submit">
         <div class="ow_right">{submit name='submit' class='ow_ic_add ow_positive'}</div>
     </div>
     {/form}
