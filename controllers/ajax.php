@@ -56,11 +56,11 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         /* ODE */
         $results = '';
 
-        if( ODE_CLASS_Helper::validateDatalet($clean['component'], $clean['params'], $clean['fields']) )
+        if( ODE_CLASS_Helper::validateDatalet($clean['component'], $clean['params'], $_REQUEST['fields']) )
         {
             $results = SPODPR_BOL_Service::getInstance()->dataletCard(OW::getUser()->getId(),
                                                               $clean['component'],
-                                                              $clean['fields'],
+                                                              $_REQUEST['fields'],
                                                               $clean['params'],
                                                               $clean['data'],
                                                               //isset($_REQUEST['comment']) ? $_REQUEST['comment'] : '',
