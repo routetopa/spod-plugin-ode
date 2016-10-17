@@ -50,19 +50,19 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $form->addElement($webcomponents);
 
         /* OD PROVIDER */
-        $provider = new TextField('od_provider');
+        /*$provider = new TextField('od_provider');
         $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
         $odProvider = empty($preference) ? "http://ckan.routetopa.eu" : $preference->defaultValue;
         $provider->setValue($odProvider);
         $provider->setRequired();
-        $form->addElement($provider);
+        $form->addElement($provider);*/
 
         /* OD ORGANIZATION */
-        $organization = new TextField('organization');
+        /*$organization = new TextField('organization');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
         $orgPref = empty($preference) ? "" : $preference->defaultValue;
         $organization->setValue($orgPref);
-        $form->addElement($organization);
+        $form->addElement($organization);*/
 
         $submit = new Submit('add');
         $submit->setValue(OW::getLanguage()->text('ode', 'add_key_submit'));
@@ -121,7 +121,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
             /* od_provider */
-            $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
+            /*$preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
 
             if(empty($preference))
                 $preference = new BOL_Preference();
@@ -130,10 +130,10 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sectionName = 'general';
             $preference->defaultValue = $data['od_provider'];
             $preference->sortOrder = 5;
-            BOL_PreferenceService::getInstance()->savePreference($preference);
+            BOL_PreferenceService::getInstance()->savePreference($preference);*/
 
             /* ode_organization */
-            $preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
+            /*$preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
 
             if(empty($preference))
                 $preference = new BOL_Preference();
@@ -142,11 +142,11 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sectionName = 'general';
             $preference->defaultValue = $data['organization'];
             $preference->sortOrder = 6;
-            BOL_PreferenceService::getInstance()->savePreference($preference);
+            BOL_PreferenceService::getInstance()->savePreference($preference);*/
 
             /*LOAD DATASET*/
 
-            $odProvider = explode(",",$data['od_provider']);
+            /*$odProvider = explode(",",$data['od_provider']);
             $odOrganization = explode(",", $data['organization']);
             $odCount = 0;
             $datasetArray = array();
@@ -176,7 +176,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
                 $datasetArray = array_merge($datasetArray, $res);
             }
 
-            ODE_BOL_Service::getInstance()->saveSetting('ode_dataset_list', json_encode($datasetArray));
+            ODE_BOL_Service::getInstance()->saveSetting('ode_dataset_list', json_encode($datasetArray));*/
 
         }
     }
