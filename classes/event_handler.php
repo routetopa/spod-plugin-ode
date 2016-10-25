@@ -89,8 +89,8 @@ class ODE_CLASS_EventHandler
         {
             // TODO try to bind this js inclusion to an event
             // Load polyfill for browser not web-component ready
-            // Load in ow_core -> application.php #528
-            //OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . '/webcomponentsjs-0.7.12/webcomponents.js', 'text/javascript', (-101));
+            // Moved from ow_core/application.php#571 to here
+            OW::getDocument()->addScript(ODE_WEBCOMPONENTS_JS, 'text/javascript', (-100));
 
             //Add ODE.JS script to all the Oxwall pages and set THEME_IMAGES_URL variable with theme image url
             OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . 'ode.js', 'text/javascript');
