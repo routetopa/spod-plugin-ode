@@ -21,8 +21,8 @@
     }
 
     #scroll_content{
+        clear: both;
         position: relative;
-        overflow: scroll;
     }
     div.cell{
         padding: 20px;
@@ -69,35 +69,79 @@
     }
 
     .sect{
-        border: 1px solid #bebebe; padding: 16px; margin: 16px; border-radius: 5px; background-color: #fff; color: #555;
+        border: 1px solid #bebebe;
+        padding: 8px;
+        margin: 8px;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #555;
     }
 
-    .section-number{
-        display: inline-block; height: 64px; width: 64px; border-radius: 50%; background: #ddd; line-height: 64px; font-size: 30px; color: #666; text-align: center;
+    .members_helper_text_container div.section-number{
+        display: inline-block;
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        background: #ddd;
+        line-height: 64px;
+        font-size: 30px;
+        color: #666;
+        text-align: center;
+        margin-left: 0px;
     }
 
     .section-title{
-        font-size: 22px; padding-top: 18px; color: #888;margin-left: 20px;
+        font-size: 22px;
+        color: #888;
     }
+
+
+    .members_helper_text_container{
+        overflow:auto;
+        padding: 8px;
+    }
+
+    .members_helper_text_container div {
+        float: left;
+        height: 64px;
+        line-height: 64px;
+        margin-left: 16px;
+    }
+
+    .members_helper_image_container {
+        padding: 8px;
+        clear: left;
+    }
+
 </style>
 
 <div class="layout vertical">
 
     <div class="tall">
         <div class="title">Members helper</div>
-                    <div class="description">
+            <div class="description">
+                Members page permits active or registered user visualization/exploration and several types of search on SPOD platform.
+                There are three sections  to explore the users including: <i>All</i>, <i>On line </i> and <i>Search</i>.
+            </div>
+    </div>
 
-                        Members page permits active or registered user visualization/exploration and several types of search on SPOD platform.
-                        There are three sections  to explore the users including: <i>All</i>, <i>On line </i> and <i>Search</i>.
-                    </div>
-                </div>
+
 
                 <div class="content" id="scroll_content">
 
                     <div class="sect">
-                        <div class="horizontal layout cell">
-                            <img src="{$staticResourcesUrl}images/members_en.PNG" style="width: 60%; height: 60%;">
+                        <div class="members_helper_text_container">
+                            <div class="section-number">1.</div>
+                            <div class="section-title"> All</div>
+                            <div>“All” page shows all users who signed up on the SPOD platform.</div>
+                        </div>
+                        <div class="members_helper_image_container">
+                            <img src="{$staticResourcesUrl}images/members_en.png" style="width: 60%; height: 60%;">
+                        </div>
+                    </div>
 
+                    <div class="sect">
+                        <div class="horizontal layout cell">
                             <div class="cell">
                                 <div class="horizontal layout cell">
                                     <div class="section-number">1.</div>
@@ -107,12 +151,13 @@
                                     “All” page shows all users who signed up on the SPOD platform.
                                 </div>
                             </div>
+                            <img src="{$staticResourcesUrl}images/members_en.png" style="width: 60%; height: 60%;">
                         </div>
                     </div>
 
                     <div class="sect">
                         <div class="horizontal layout cell">
-                            <img src="{$staticResourcesUrl}images/online_en.PNG" style="width: 60%; height: 60%;">
+                            <img src="{$staticResourcesUrl}images/online_en.png" style="width: 60%; height: 60%;">
 
                             <div class="cell">
                                 <div class="horizontal layout cell">
@@ -128,7 +173,7 @@
 
                     <div class="sect">
                         <div class="horizontal layout cell">
-                            <img src="{$staticResourcesUrl}images/search_en.PNG" style="width: 60%; height: 60%;">
+                            <img src="{$staticResourcesUrl}images/search_en.png" style="width: 60%; height: 60%;">
 
                             <div class="cell">
                                 <div class="horizontal layout cell">
