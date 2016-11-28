@@ -35,7 +35,17 @@ CREATE TABLE IF NOT EXISTS `' . OW_DB_PREFIX . 'ode_settings` (
   `key` TEXT,
   `value` MEDIUMTEXT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;';
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `' . OW_DB_PREFIX . 'ode_provider` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NOT NULL,
+	`url` VARCHAR(255) NOT NULL,
+	PRIMARY KEY (`id`)
+)
+ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `' . OW_DB_PREFIX . 'ode_provider` (`name`, `url`) VALUES (\'ROUTE-TO-PA\', \'http://ckan.routetopa.eu\');';
 
 OW::getDbo()->query($sql);
 

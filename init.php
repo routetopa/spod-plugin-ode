@@ -21,5 +21,6 @@ $ode_webcomponents_js = empty($preference) ? "" : $preference->defaultValue;
 define("ODE_WEBCOMPONENTS_JS", $ode_webcomponents_js);
 
 OW::getRouter()->addRoute(new OW_Route('ode-settings', '/ode/settings', 'ODE_CTRL_Admin', 'settings'));
+OW::getRouter()->addRoute(new OW_Route('ode-providers', '/ode/providers', 'ODE_CTRL_Admin', 'providers'));
 
 ODE_CLASS_EventHandler::getInstance()->init();

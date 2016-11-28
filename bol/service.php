@@ -268,4 +268,25 @@ class ODE_BOL_Service
         return false;*/
         return true;
     }
+
+    /**** PROVIDERS ****/
+
+    public function getProviderList()
+    {
+        return ODE_BOL_ProviderDao::getInstance()->findAll();
+    }
+
+    public function addProvider($name, $url)
+    {
+        $provider = new ODE_BOL_Provider();
+        $provider->name = trim($name);
+        $provider->url = trim($url);
+        ODE_BOL_ProviderDao::getInstance()->save($provider);
+    }
+
+    public function deleteProvider($id)
+    {
+        ODE_BOL_ProviderDao::getInstance()->deleteById($id);
+    }
+
 }
