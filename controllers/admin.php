@@ -232,7 +232,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
     public function datasetsListBuilder()
     {
-        $step = 1;
+        $step = 100;
         $maxDatasetPerProvider = isset($_REQUEST['maxDataset']) ? $_REQUEST['maxDataset'] : 1;
 
         $providersDatasets = [];
@@ -263,7 +263,14 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
                     if(count($data["result"]["results"]))
                     {
-                        $providersDatasets[$p->id]['p_datasets'] = array_merge($providersDatasets[$p->id]['p_datasets'], $this->getCkanDatasets($data, $p->id));
+//                        $providersDatasets[$p->id]['p_datasets'] = array_merge($providersDatasets[$p->id]['p_datasets'], $this->getCkanDatasets($data, $p->id));
+
+                        $a = $this->getCkanDatasets($data, $p->id);
+                        $l_a = count($a);
+                        for($j = 0; $j < $l_a; $j++) {
+                            $providersDatasets[$p->id]['p_datasets'][] = $a[$j];
+                        }
+
                         $start += $step;
                         $providerDatasetCounter += count($data["result"]["results"]);
                     }
@@ -290,7 +297,13 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             curl_close($ch);
             if (200 == $retcode) {
                 $data = json_decode( $res, true );
-                $providersDatasets[$p->id]['p_datasets'] = array_merge($providersDatasets[$p->id]['p_datasets'], $this->getOpenDataSoftDatasets($data, $p->id));
+//                $providersDatasets[$p->id]['p_datasets'] = array_merge($providersDatasets[$p->id]['p_datasets'], $this->getOpenDataSoftDatasets($data, $p->id));
+
+                $a = $this->getOpenDataSoftDatasets($data, $p->id);
+                $l_a = count($a);
+                for($j = 0; $j < $l_a; $j++) {
+                    $providersDatasets[$p->id]['p_datasets'][] = $a[$j];
+                }
                 continue;
             }
         }
