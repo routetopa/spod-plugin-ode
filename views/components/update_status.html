@@ -47,13 +47,13 @@ background-repeat: no-repeat;
             <span class="ow_attachment_icons" style="margin-left: 6px;">
                 <span class="ow_attachments" id="{$uniqId}-btn-cont" >
                     <span class="clearfix">
-                        <a class="image" id="{$uniqId}-btn" href="javascript://"></a>
+                        <a class="image attachment_intro_placeholder" id="{$uniqId}-btn" href="javascript://"></a>
                     </span>
                 </span>
             </span>
             <!-- ODE -->
-            <span class="ow_attachment_btn rounded_attachment_btn" data-step="2" data-intro="Hello step two!" title="{text key="ode+add_datalet"}">{submit name="ode_open_dialog"}</span>
-            <span class="ow_attachment_btn rounded_attachment_btn" data-step="1" data-intro="Hello step one!" title="{text key="ode+add_datalet"}">{submit name="map_open_dialog"}</span>
+            <span class="ow_attachment_btn rounded_attachment_btn" title="{text key="ode+add_datalet"}">{submit name="ode_open_dialog"}</span>
+            <span class="ow_attachment_btn rounded_attachment_btn" title="{text key="ode+add_datalet"}">{submit name="map_open_dialog"}</span>
             {if isset($private_room)}
                 {$private_room}
             {/if}
