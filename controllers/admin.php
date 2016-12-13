@@ -350,16 +350,18 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             for ($j = 0; $j < $resourcesCnt; $j++)
                 if (strcasecmp($ds['resources'][$j]['format'], 'csv') == 0)
                     $resources[] = $ds['resources'][$j]['name'];
+                else
+                    $resources[] = [$ds['resources'][$j]['name'], 'disabled'];
 
                 if (count($resources) == 1)
                     $treemapdata[] = array(
-                        'name' => $ds['name'],
+                        'name' => $ds['title'] ? $this->sanitizeInput($ds['title']) : $this->sanitizeInput($ds['name']),
                         'id' => $ds['id'],
                         'p' => 'CKAN_' . $provider_id
                     );
                 else if(count($resources) > 1)
                     $treemapdata[] = array(
-                        'name' => $ds['name'],
+                        'name' => $ds['title'] ? $this->sanitizeInput($ds['title']) : $this->sanitizeInput($ds['name']),
                         'id' => $ds['id'],
                         'p' => 'CKAN_' . $provider_id,
                         'resources' => $resources
