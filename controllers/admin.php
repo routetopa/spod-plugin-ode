@@ -340,6 +340,8 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 //    }
 
     private function getCkanDatasets($data, $provider_id) {
+//        $filter = ['csv', 'ods', 'xls', 'xlsx'];
+
         $treemapdata = array();
         $datasets = $data['result']['results'];
         $datasetsCnt = count( $datasets );
@@ -348,10 +350,14 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $resourcesCnt = count($ds['resources']);
             $resources = array();
             for ($j = 0; $j < $resourcesCnt; $j++)
-                if (strcasecmp($ds['resources'][$j]['format'], 'csv') == 0)
-                    $resources[] = $ds['resources'][$j]['name'];
-                else
-                    $resources[] = [$ds['resources'][$j]['name'], 'disabled'];
+//                if (strcasecmp($ds['resources'][$j]['format'], 'csv') == 0)
+
+//                if (in_array(strtolower($ds['resources'][$j]['format']), $filter))
+//                    $resources[] = $ds['resources'][$j]['name'];
+//                else
+//                    $resources[] = [$ds['resources'][$j]['name'], 'disabled'];
+
+                $resources[] = $ds['resources'][$j]['name'];
 
                 if (count($resources) == 1)
                     $treemapdata[] = array(
