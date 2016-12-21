@@ -357,7 +357,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 //                else
 //                    $resources[] = [$ds['resources'][$j]['name'], 'disabled'];
 
-                $resources[] = $ds['resources'][$j]['name'];
+                $resources[] =  $this->sanitizeInput($ds['resources'][$j]['name']);
 
                 if (count($resources) == 1)
                     $treemapdata[] = array(
