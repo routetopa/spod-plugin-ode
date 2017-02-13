@@ -163,24 +163,51 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         exit;
     }
 
-    private function sendProcess( $roomId )
+    private function getEmailContentHtml($roomId)
+    {
+        $date = getdate();
+        $time = mktime(0, 0, 0, $date['mon'], $date['mday'], $date['year']);
+
+        //SET EMAIL TEMPLETE
+        $template = OW::getPluginManager()->getPlugin('spodpublic')->getCmpViewDir() . 'email_notification_template_html.html';
+        $this->setTemplate($template);
+
+        //USER AVATAR FOR THE NEW MAIL
+        $avatar = BOL_AvatarService::getInstance()->getDataForUserAvatars(array(ow::getUser()->getId()))[ow::getUser()->getId()];
+
+        $this->assign('userName', BOL_UserService::getInstance()->getDisplayName(OW::getUser()->getId()));
+        $this->assign('string', " has commented on a discussion in the room <b>" . SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->name . "</b>");
+
+        return parent::render();
+
+    }
+
+    private function getEmailContentText($roomId){
+        $date = getdate();
+        $time = mktime(0, 0, 0, $date['mon'], $date['mday'], $date['year']);
+
+        $template = OW::getPluginManager()->getPlugin('spodpublic')->getCmpViewDir() . 'email_notification_template_text.html';
+        $this->setTemplate($template);
+
+        $this->assign('nl', '%%%nl%%%');
+        $this->assign('tab', '%%%tab%%%');
+        $this->assign('space', '%%%space%%%');
+        $this->assign('string', " has commented on a discussion in the room <b>" . SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->name . "</b>");
+
+        $content = parent::render();
+        $search = array('%%%nl%%%', '%%%tab%%%', '%%%space%%%');
+        $replace = array("\n", '    ', ' ');
+
+        return str_replace($search, $replace, $content);
+    }
+
+    private function sendEmailNotificationProcess( $roomId )
     {
 
+        //GET ALL SUBSCRIBED USERS
         $users = SPODPUBLIC_BOL_Service::getInstance()->getSubscribedNotificationUsersForRoom($roomId);
 
-        $email = array("luigser@gmail.com", "andrpet@gmail.com", "rended83@gmail.com");
-        foreach($email as $m){
-            $mail = OW::getMailer()->createMail()
-                ->addRecipientEmail($m)
-                ->setTextContent("El domandero")
-                ->setHtmlContent("<h1>Quiero piderte un information</h1>")
-                ->setSubject("El domandero rompe i cojon");
-
-            OW::getMailer()->send($mail);
-        }
-
-
-        /*foreach($users as $user){
+        foreach($users as $user){
 
             $userId = $user->userId;
             $userService = BOL_UserService::getInstance();
@@ -191,25 +218,14 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 return false;
             }
 
-            $cmp = new NOTIFICATIONS_CMP_Notification($userId);
-
-            //$email = $user->email;
-            $unsubscribeCode = NOTIFICATIONS_BOL_Service::getInstance()->generateUnsubscribeCode($user);
-
-            $cmp->setUnsubscribeCode($unsubscribeCode);
-
-            $txt = "El domandero";//$cmp->getTxt();
-            $html = $cmp->getHtml();
-
-            $subject = $cmp->getSubject();
-
+            $email = $user->email;
             try
             {
                 $mail = OW::getMailer()->createMail()
-                    ->addRecipientEmail($emails)
-                    ->setTextContent($txt)
-                    ->setHtmlContent($html)
-                    ->setSubject($subject);
+                    ->addRecipientEmail($email)
+                    ->setTextContent($this->getEmailContentText($roomId))
+                    ->setHtmlContent($this->getEmailContentHtml($roomId))
+                    ->setSubject("Something interesting is happening on Agora");
 
                 OW::getMailer()->send($mail);
             }
@@ -218,7 +234,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 //Skip invalid notification
             }
 
-        }*/
+        }
     }
 
     public function addComment()
@@ -315,7 +331,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 
         /*SEND EMAIL TO SUBSCRIBED USERS*/
 
-        $this->sendProcess($clean['publicRoom']);
+        $this->sendEmailNotificationProcess($clean['publicRoom']);
 
         /*END SEND EMAIL TO SUBSCRIBED USERS*/
 
