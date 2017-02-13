@@ -109,7 +109,8 @@ ODE.savedDataletListener = function(e)
             break;
         case 'event' :
         case 'forum' :
-            $('.ode_done').first().append($('<div class="ode_done" style="background:url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center; height:20px; width:20px; float:left"></div>'));
+            //$('.ode_done').first().append($('<div class="ode_done" style="background:url(' + ODE.THEME_IMAGES_URL + 'ic_ok_gray.svg) no-repeat center; height:20px; width:20px; float:left"></div>'));
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), 'datalet_placeholder');
             break;
         case 'private-room' :
             ODE.privateRoomDatalet();

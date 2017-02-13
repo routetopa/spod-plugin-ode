@@ -6,13 +6,29 @@ use Httpful\Request;
 use Httpful\Http;
 use Httpful\Mime;
 
-
 class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 {
     public function settings($params)
     {
-        $this->setPageTitle(OW::getLanguage()->text('ode', 'settings_title'));
-        $this->setPageHeading(OW::getLanguage()->text('ode', 'settings_heading'));
+        $settingsItem = new BASE_MenuItem();
+        $settingsItem->setLabel('SETTINGS');
+        $settingsItem->setUrl( OW::getRouter()->urlForRoute( 'ode-settings' ) );
+        $settingsItem->setKey( 'settings' );
+        $settingsItem->setIconClass( 'ow_ic_gear_wheel' );
+        $settingsItem->setOrder( 0 );
+
+        $providersItem = new BASE_MenuItem();
+        $providersItem->setLabel('PROVIDERS');
+        $providersItem->setUrl( OW::getRouter()->urlForRoute( 'ode-providers' ) );
+        $providersItem->setKey( 'providers' );
+//        $providersItem->setIconClass( 'ow_ic_help' );
+        $providersItem->setOrder( 1 );
+
+        $menu = new BASE_CMP_ContentMenu( array( $settingsItem, $providersItem ) );
+        $this->addComponent( 'menu', $menu );
+
+        $this->setPageTitle('ODE SETTINGS');
+        $this->setPageHeading('ODE SETTINGS');
 
         $form = new Form('settings');
         $this->addForm($form);
@@ -41,6 +57,14 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $deepClient->setRequired();
         $form->addElement($deepClient);
 
+        /* DEEP COMPONENTS */
+        $componentsUrl = new TextField('components_url');
+        $preference = BOL_PreferenceService::getInstance()->findPreference('spodpr_components_url');
+        $spodpr_components_url = empty($preference) ? "http://deep.routetopa.eu/COMPONENTS/" : $preference->defaultValue;
+        $componentsUrl->setValue($spodpr_components_url);
+        $componentsUrl->setRequired();
+        $form->addElement($componentsUrl);
+
         /* WEBCOMPONENT JS */
         $webcomponents = new TextField('webcomponents_js');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcomponents_js');
@@ -49,23 +73,8 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $webcomponents->setRequired();
         $form->addElement($webcomponents);
 
-        /* OD PROVIDER */
-        $provider = new TextField('od_provider');
-        $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
-        $odProvider = empty($preference) ? "http://ckan.routetopa.eu" : $preference->defaultValue;
-        $provider->setValue($odProvider);
-        $provider->setRequired();
-        $form->addElement($provider);
-
-        /* OD ORGANIZATION */
-        $organization = new TextField('organization');
-        $preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
-        $orgPref = empty($preference) ? "" : $preference->defaultValue;
-        $organization->setValue($orgPref);
-        $form->addElement($organization);
-
         $submit = new Submit('add');
-        $submit->setValue(OW::getLanguage()->text('ode', 'add_key_submit'));
+        $submit->setValue('SUBMIT');
         $form->addElement($submit);
 
         if ( OW::getRequest()->isPost() && $form->isValid($_POST))
@@ -108,6 +117,18 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sortOrder = 3;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
+            /* spodpr_components_url */
+            $preference = BOL_PreferenceService::getInstance()->findPreference('spodpr_components_url');
+
+            if(empty($preference))
+                $preference = new BOL_Preference();
+
+            $preference->key = 'spodpr_components_url';
+            $preference->sectionName = 'general';
+            $preference->defaultValue = $data['components_url'];
+            $preference->sortOrder = 1;
+            BOL_PreferenceService::getInstance()->savePreference($preference);
+
             /* ode_webcomponents_js */
             $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcomponents_js');
 
@@ -120,171 +141,260 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sortOrder = 4;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
-            /* od_provider */
-            $preference = BOL_PreferenceService::getInstance()->findPreference('od_provider');
+        }
+    }
 
-            if(empty($preference))
-                $preference = new BOL_Preference();
+    public function providers()
+    {
+        $settingsItem = new BASE_MenuItem();
+        $settingsItem->setLabel('SETTINGS');
+        $settingsItem->setUrl( OW::getRouter()->urlForRoute( 'ode-settings' ) );
+        $settingsItem->setKey( 'settings' );
+        $settingsItem->setIconClass( 'ow_ic_gear_wheel' );
+        $settingsItem->setOrder( 0 );
 
-            $preference->key = 'od_provider';
-            $preference->sectionName = 'general';
-            $preference->defaultValue = $data['od_provider'];
-            $preference->sortOrder = 5;
-            BOL_PreferenceService::getInstance()->savePreference($preference);
+        $providersItem = new BASE_MenuItem();
+        $providersItem->setLabel('PROVIDERS');
+        $providersItem->setUrl( OW::getRouter()->urlForRoute( 'ode-providers' ) );
+        $providersItem->setKey( 'providers' );
+//        $providersItem->setIconClass( 'ow_ic_help' );
+        $providersItem->setOrder( 1 );
 
-            /* ode_organization */
-            $preference = BOL_PreferenceService::getInstance()->findPreference('ode_organization');
+        $menu = new BASE_CMP_ContentMenu( array( $settingsItem, $providersItem ) );
+        $this->addComponent( 'menu', $menu );
 
-            if(empty($preference))
-                $preference = new BOL_Preference();
+        $this->setPageTitle('ODE PROVIDERS');
+        $this->setPageHeading('ODE PROVIDERS');
 
-            $preference->key = 'ode_organization';
-            $preference->sectionName = 'general';
-            $preference->defaultValue = $data['organization'];
-            $preference->sortOrder = 6;
-            BOL_PreferenceService::getInstance()->savePreference($preference);
+        $form = new Form('providers');
+        $this->addForm($form);
 
-            /*LOAD DATASET*/
+        $name = new TextField('name');
+        $name->setRequired();
+        $form->addElement($name);
 
-            $odProvider = explode(",",$data['od_provider']);
-            $odOrganization = explode(",", $data['organization']);
-            $odCount = 0;
-            $datasetArray = array();
+        $url = new TextField('url');
+        $url->setRequired();
+        $form->addElement($url);
 
-            for($j=0; $j<count($odProvider); $j++)
-            {
-                $odProvider[$j] = trim($odProvider[$j]);
+        $submit = new Submit('addProvider');
+        $submit->setValue('ADD');
+        $form->addElement($submit);
 
-                if($this->isCkan($odProvider[$j]))
+        if ( OW::getRequest()->isPost() && $form->isValid($_POST))
+        {
+            $data = $form->getValues();
+
+            ODE_BOL_Service::getInstance()->addProvider($data['name'], $data['url']);
+
+            $this->redirect(OW::getRouter()->urlForRoute('ode-providers'));
+        }
+
+        $providersList = array();
+        $deleteUrls = array();
+        $providers = ODE_BOL_Service::getInstance()->getProviderList();
+        foreach ( $providers as $provider )
+        {
+            /* @var $contact ODE_BOL_Provider */
+            $providersList[$provider->id]['name'] = $provider->name;
+            $providersList[$provider->id]['url'] = $provider->url;
+            $deleteUrls[$provider->id] = OW::getRouter()->urlFor(__CLASS__, 'delete', array('id' => $provider->id));
+        }
+        $this->assign('providersList', $providersList);
+        $this->assign('deleteUrls', $deleteUrls);
+        $this->assign('createDatasetCache', OW::getRouter()->urlFor(__CLASS__, 'createDatasetCache'));
+    }
+
+    public function delete( $params )
+    {
+        if ( isset($params['id']) )
+        {
+            ODE_BOL_Service::getInstance()->deleteProvider((int) $params['id']);
+        }
+        $this->redirect(OW::getRouter()->urlForRoute('ode-providers'));
+    }
+
+    public function createDatasetCache()
+    {
+        ODE_BOL_Service::getInstance()->saveSetting('ode_datasets_list', $this->datasetsListBuilder());
+        $this->redirect(OW::getRouter()->urlForRoute('ode-providers'));
+    }
+
+    /**** GET DATASETS LIST ****/
+
+//    public function datasetTree()
+//    {
+//        header('content-type: application/json');
+//        header("Access-Control-Allow-Origin: *");
+//        echo $this->datasetTreeBuilder();
+//        die();
+//    }
+
+    public function datasetsListBuilder()
+    {
+        $step = 100;
+        $maxDatasetPerProvider = isset($_REQUEST['maxDataset']) ? $_REQUEST['maxDataset'] : 1;
+
+        $providersDatasets = [];
+        $providers = ODE_BOL_Service::getInstance()->getProviderList();
+
+        foreach ($providers as $p) {
+
+            $providerDatasetCounter = 0;
+            $start = 0;
+
+            // Build providers
+            $providersDatasets[$p->id] = ['p_name' => $p->name, 'p_url' => $p->url, 'p_datasets' => []];
+
+            // Try CKAN
+            while($providerDatasetCounter < $maxDatasetPerProvider) {
+                $ch = curl_init($p->url . "/api/3/action/package_search?start=" . $start . "&rows=" . $step);//1000 limit!
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                $res = curl_exec($ch);
+                $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
+                if (200 == $retcode)
                 {
-                    if(!empty($odOrganization[$odCount]))
+                    $data = json_decode($res, true);
+
+                    if(count($data["result"]["results"]))
                     {
-                        $res = $this->getCKANDatasetList($odProvider[$j], $odOrganization[$odCount]);
-                        $odCount++;
+//                        $providersDatasets[$p->id]['p_datasets'] = array_merge($providersDatasets[$p->id]['p_datasets'], $this->getCkanDatasets($data, $p->id));
+
+                        $a = $this->getCkanDatasets($data, $p->id);
+                        $l_a = count($a);
+                        for($j = 0; $j < $l_a; $j++) {
+                            $providersDatasets[$p->id]['p_datasets'][] = $a[$j];
+                        }
+
+                        $start += $step;
+                        $providerDatasetCounter += count($data["result"]["results"]);
                     }
                     else
                     {
-                        $res = $this->getCKANDatasetList($odProvider[$j]);
+                        break;
                     }
                 }
-
-                if($this->isOpenDataSoft($odProvider[$j]))
+                else
                 {
-                    $res = $this->getISSYDatasetList($odProvider[$j]);
-                }
-
-                $datasetArray = array_merge($datasetArray, $res);
-            }
-
-            ODE_BOL_Service::getInstance()->saveSetting('ode_dataset_list', json_encode($datasetArray));
-
-        }
-    }
-
-    protected function getCKANDatasetList($odProvider, $organization="")
-    {
-        $datasets = Array();
-
-        $odProvider = rtrim($odProvider,"/");
-        $response = \Httpful\Request::get($odProvider . '/api/3/action/package_list')->send();
-
-        for($j=0; $j<count($response->body->result); $j++)
-        {
-            $res = \Httpful\Request::get($odProvider . '/api/3/action/package_search?q=' . $response->body->result[$j])->send();
-
-            for ($i = 0; $i < count($res->body->result->results[0]->resources); $i++)
-            {
-                if(!empty($organization) && $res->body->result->results[0]->organization->title != $organization) continue;
-
-                //array_push($datasets, array("name" => $res->body->result->results[0]->resources[$i]->name,
-                //    "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
-                //    "description" => str_replace("'", "", isset($res->body->result->results[0]->resources[$i]->description) ? $res->body->result->results[0]->resources[$i]->description : "")));
-
-                $name = str_replace("'", "", $res->body->result->results[0]->resources[$i]->name);
-
-                array_push($datasets, array("name" => $name,
-                    "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[0]->resources[$i]->id,
-                    "description" => ""));
-
-            }
-        }
-
-        return $datasets;
-    }
-
-    /*    protected function getCKANDatasetList($odProvider, $organization="")
-        {
-            $datasets = Array();
-
-            $odProvider = rtrim($odProvider,"/");
-
-            $res = \Httpful\Request::get($odProvider . '/api/3/action/package_search')->send();
-
-            for($j=0; $j<count($res->body->result->results); $j++)
-            {
-                for ($i = 0; $i < count($res->body->result->results[$j]->resources); $i++)
-                {
-                    if(!empty($organization) && $res->body->result->results[$j]->resources[$i]->organization->title != $organization) continue;
-
-                    $name = str_replace("'", "", isset($res->body->result->results[$j]->resources[$i]->name) ? $res->body->result->results[$j]->resources[$i]->name : $res->body->result->results[$j]->resources[$i]->description);
-
-                    array_push($datasets, array("name" => $name,
-                        "url" => $odProvider . '/api/action/datastore_search?resource_id=' . $res->body->result->results[$j]->resources[$i]->id,
-                        "description" => ""));
-
+                    break;
                 }
             }
 
-            return $datasets;
-        }*/
+            // Try ODS
+            $ch = curl_init($p->url . "/api/datasets/1.0/search/?rows=-1");
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            $res = curl_exec($ch);
+            $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            if (200 == $retcode) {
+                $data = json_decode( $res, true );
+//                $providersDatasets[$p->id]['p_datasets'] = array_merge($providersDatasets[$p->id]['p_datasets'], $this->getOpenDataSoftDatasets($data, $p->id));
 
-    function getISSYDatasetList($odProvider)
-    {
-        $datasets = Array();
-
-        $odProvider = rtrim($odProvider,"/");
-        $response = \Httpful\Request::get($odProvider . '/api/datasets/1.0/search/?rows=10000')->send();
-
-        for($i=0; $i<count($response->body->datasets); $i++)
-        {
-            // Sanitize dataset title and description
-            $response->body->datasets[$i]->metas->title = str_replace("'", "", $response->body->datasets[$i]->metas->title);
-            $response->body->datasets[$i]->metas->description = str_replace("'", "", isset($response->body->datasets[$i]->metas->description) ? $response->body->datasets[$i]->metas->description : "");
-
-            array_push($datasets, array("name" => $response->body->datasets[$i]->metas->title,
-                "url" => $odProvider . '/api/records/1.0/search/?dataset=' . $response->body->datasets[$i]->datasetid,
-                "description" => $response->body->datasets[$i]->metas->description));
-
+                $a = $this->getOpenDataSoftDatasets($data, $p->id);
+                $l_a = count($a);
+                for($j = 0; $j < $l_a; $j++) {
+                    $providersDatasets[$p->id]['p_datasets'][] = $a[$j];
+                }
+                continue;
+            }
         }
 
-        return $datasets;
+        return json_encode($providersDatasets);
     }
 
-    protected function isCkan($odProvider)
-    {
-        try
-        {
-            $odProvider = rtrim($odProvider,"/");
-            $res = \Httpful\Request::get($odProvider . '/api/3/')->followRedirects(true)->expectsJson()->send();
-            if(!empty($res->body->version))
-                return true;
+//    private function getCkanDatasets($data, $provider_id) {
+//        $treemapdata = array();
+//        $datasets = $data['result']['results'];
+//        $datasetsCnt = count( $datasets );
+//        for ($i = 0; $i < $datasetsCnt; $i++) {
+//            $ds = $datasets[$i];
+//            $resourcesCnt = count($ds['resources']);
+//            if($resourcesCnt > 1) {
+//                $resources = array();
+//                for ($j = 0; $j < $resourcesCnt; $j++)
+//                    $resources[] = $ds['resources'][$j]['name'];
+//                $treemapdata[] = array(
+//                    'name' => $ds['name'],
+//                    'id' => $ds['id'],
+//                    'p' => 'CKAN_' . $provider_id,
+//                    'resources' => $resources
+//                );
+//            }
+//            else
+//                $treemapdata[] = array(
+//                    'name' => $ds['name'],
+//                    'id' => $ds['id'],
+//                    'p' => 'CKAN_' . $provider_id
+//                );
+//        }
+//        return $treemapdata;
+//    }
+
+    private function getCkanDatasets($data, $provider_id) {
+//        $filter = ['csv', 'ods', 'xls', 'xlsx'];
+
+        $treemapdata = array();
+        $datasets = $data['result']['results'];
+        $datasetsCnt = count( $datasets );
+        for ($i = 0; $i < $datasetsCnt; $i++) {
+            $ds = $datasets[$i];
+            $resourcesCnt = count($ds['resources']);
+            $resources = array();
+            for ($j = 0; $j < $resourcesCnt; $j++)
+//                if (strcasecmp($ds['resources'][$j]['format'], 'csv') == 0)
+
+//                if (in_array(strtolower($ds['resources'][$j]['format']), $filter))
+//                    $resources[] = $ds['resources'][$j]['name'];
+//                else
+//                    $resources[] = [$ds['resources'][$j]['name'], 'disabled'];
+
+                $resources[] =  $this->sanitizeInput($ds['resources'][$j]['name']);
+
+                if (count($resources) == 1)
+                    $treemapdata[] = array(
+                        'name' => $ds['title'] ? $this->sanitizeInput($ds['title']) : $this->sanitizeInput($ds['name']),
+                        'id' => $ds['id'],
+                        'p' => 'CKAN_' . $provider_id
+                    );
+                else if(count($resources) > 1)
+                    $treemapdata[] = array(
+                        'name' => $ds['title'] ? $this->sanitizeInput($ds['title']) : $this->sanitizeInput($ds['name']),
+                        'id' => $ds['id'],
+                        'p' => 'CKAN_' . $provider_id,
+                        'resources' => $resources
+                    );
         }
-        catch(Exception $e){}
-
-        return false;
+        return $treemapdata;
     }
 
-    protected function isOpenDataSoft($odProvider)
-    {
-        try
-        {
-            $odProvider = rtrim($odProvider,"/");
-            $res = \Httpful\Request::get($odProvider . '/api/records/1.0/search/')->followRedirects(true)->expectsJson()->send();
-            if(!empty($res->body->error))
-                return true;
+    private function getOpenDataSoftDatasets($data, $provider_id) {
+        $treemapdata = array();
+        $datasets = $data['datasets'];
+        $datasetsCnt = count( $datasets );
+        for ($i = 0; $i < $datasetsCnt; $i++) {
+            $ds = $datasets[$i];
+
+            @$treemapdata[] = array(
+                'name' => $this->sanitizeInput($ds['metas']['title']),
+                'id' => $this->sanitizeInput($ds['datasetid']),
+                'p' => 'ODS_' . $provider_id
+            );
         }
-        catch(Exception $e){}
-
-        return false;
+        return $treemapdata;
     }
+
+    protected function sanitizeInput($str)
+    {
+        return str_replace("'", "&#39;", !empty($str) ? $str : "");
+    }
+
 }

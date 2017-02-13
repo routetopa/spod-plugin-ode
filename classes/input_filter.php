@@ -20,8 +20,10 @@ class ODE_CLASS_InputFilter
         return !empty($string) && is_string($string) && preg_match('/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/',$string);
     }
 
-    private function validateTextInputVsSqlInjection($input)
+    private function validateTextInputVsSqlInjection($key, $input)
     {
+        //todo 'Improve this security check !!'
+        /*
         if(preg_match("#^{#",$input) || preg_match("#^\[#",$input) ){
             if(json_decode($input) == FALSE)
                 return true;
@@ -34,6 +36,8 @@ class ODE_CLASS_InputFilter
             "|(select)|(update)|(insert)|(delete)|(grant)|(revoke)|(union)|(database)" .
             "|(--)" .
             "|(&amp;lt;)|(&amp;gt;)/", $input);
+        */
+        return false;
     }
 
     private function filterParam($param){
@@ -66,7 +70,7 @@ class ODE_CLASS_InputFilter
     }
 
     private function sanitizeFlatParam(array &$clean, $key, $value){
-        if ($this->validateTextInputVsSqlInjection($value)) {
+        if ($this->validateTextInputVsSqlInjection($key, $value)) {
             return null;
         } else {
             $arrayParam = array_filter(explode("#######", $value));

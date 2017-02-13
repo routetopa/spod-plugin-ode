@@ -53,6 +53,10 @@ class ODE_CLASS_EventHandler
         OW::getRouter()->removeRoute('event.delete');
         OW::getRouter()->addRoute(new OW_Route('event.delete', 'event/delete/:eventId', 'ODE_CTRL_Event', 'delete'));
 
+        // Remove default event.edit route from Event plugin and replace with a custom one
+        OW::getRouter()->removeRoute('event.edit');
+        OW::getRouter()->addRoute(new OW_Route('event.edit', 'event/edit/:eventId', 'ODE_CTRL_Event', 'edit'));
+
         // event triggered when receiving a request, just after the base system initialization
         OW::getEventManager()->bind(OW_EventManager::ON_APPLICATION_INIT, array($this, 'onApplicationInit'));
 
@@ -85,8 +89,8 @@ class ODE_CLASS_EventHandler
         {
             // TODO try to bind this js inclusion to an event
             // Load polyfill for browser not web-component ready
-            // Load in ow_core -> application.php #528
-            //OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . '/webcomponentsjs-0.7.12/webcomponents.js', 'text/javascript', (-101));
+            // Moved from ow_core/application.php#571 to here
+            OW::getDocument()->addScript(ODE_WEBCOMPONENTS_JS, 'text/javascript', (-100));
 
             //Add ODE.JS script to all the Oxwall pages and set THEME_IMAGES_URL variable with theme image url
             OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . 'ode.js', 'text/javascript');
@@ -114,7 +118,7 @@ class ODE_CLASS_EventHandler
                 'ajax_add_comment' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'addComment'),
                 'ajax_private_room_datalet' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'privateRoomDatalet'),
                 'ode_deep_datalet_list' => ODE_DEEP_DATALET_LIST,
-                'ode_dataset_list' => ODE_BOL_Service::getInstance()->getSettingByKey('openwall_dataset_list'),//ODE_DATASET_LIST,
+                'ode_dataset_list' => ODE_BOL_Service::getInstance()->getSettingByKey('ode_datasets_list'),
                 'ode_deep_client' => ODE_DEEP_CLIENT,
                 'ode_webcomponents_js' => ODE_WEBCOMPONENTS_JS,
                 'is_private_room_active' => OW::getPluginManager()->isPluginActive('spodpr'),
