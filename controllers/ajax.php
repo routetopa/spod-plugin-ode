@@ -6,41 +6,7 @@ require_once OW::getPluginManager()->getPlugin('spodnotification')->getRootDir()
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version1X;
 
-/**
- * This software is intended for use with Oxwall Free Community Software http://www.oxwall.org/ and is
- * licensed under The BSD license.
 
- * ---
- * Copyright (c) 2011, Oxwall Foundation
- * All rights reserved.
-
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
- * following conditions are met:
- *
- *  - Redistributions of source code must retain the above copyright notice, this list of conditions and
- *  the following disclaimer.
- *
- *  - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and
- *  the following disclaimer in the documentation and/or other materials provided with the distribution.
- *
- *  - Neither the name of the Oxwall Foundation nor the names of its contributors may be used to endorse or promote products
- *  derived from this software without specific prior written permission.
-
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-/**
- *
- * @author Sergey Kambalin <greyexpert@gmail.com>
- * @package ow_plugins.newsfeed.controllers
- * @since 1.0
- */
 class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 {
 
@@ -197,6 +163,54 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         exit;
     }
 
+    private function sendProcess( $roomId )
+    {
+
+        $users = SPODPUBLIC_BOL_Service::getInstance()->getSubscribedNotificationUsersForRoom($roomId);
+
+        $email = array("luigser@gmail.com", "andrpet@gmail.com", "rended83@gmail.com");
+        $i = 0;
+        foreach($users as $user){
+
+            $userId = $user->userId;
+            $userService = BOL_UserService::getInstance();
+            $user = $userService->findUserById($userId);
+
+            if ( empty($user) )
+            {
+                return false;
+            }
+
+            $cmp = new NOTIFICATIONS_CMP_Notification($userId);
+
+            //$email = $user->email;
+            $unsubscribeCode = NOTIFICATIONS_BOL_Service::getInstance()->generateUnsubscribeCode($user);
+
+            $cmp->setUnsubscribeCode($unsubscribeCode);
+
+            $txt = "El domandero";//$cmp->getTxt();
+            $html = $cmp->getHtml();
+
+            $subject = $cmp->getSubject();
+
+            try
+            {
+                $mail = OW::getMailer()->createMail()
+                    ->addRecipientEmail($email[$i++])
+                    ->setTextContent($txt)
+                    ->setHtmlContent($html)
+                    ->setSubject($subject);
+
+                OW::getMailer()->send($mail);
+            }
+            catch ( Exception $e )
+            {
+                //Skip invalid notification
+            }
+
+        }
+    }
+
     public function addComment()
     {
         //$clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
@@ -240,7 +254,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $tempArr = json_decode($clean['attachmentInfo'], true);
                 OW::getEventManager()->call('base.attachment_save_image', array('uid' => $tempArr['uid'], 'pluginKey' => $tempArr['pluginKey']));
                 $tempArr['href'] = $tempArr['url'];
-                $tempArr['type'] = 'photo';
+                //$tempArr['type'] = 'photo';
                 $attachment = json_encode($tempArr);
             }
             else if ( !empty($clean['oembedInfo']) )
@@ -288,6 +302,12 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             }
         }
         /* ODE */
+
+        /*SEND EMAIL TO SUBSCRIBED USERS*/
+
+        $this->sendProcess($clean['publicRoom']);
+
+        /*END SEND EMAIL TO SUBSCRIBED USERS*/
 
         /* */
         // trigger event comment add
