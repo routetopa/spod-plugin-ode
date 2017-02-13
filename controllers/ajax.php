@@ -169,8 +169,18 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         $users = SPODPUBLIC_BOL_Service::getInstance()->getSubscribedNotificationUsersForRoom($roomId);
 
         $email = array("luigser@gmail.com", "andrpet@gmail.com", "rended83@gmail.com");
-        $i = 0;
-        foreach($users as $user){
+        foreach($email as $m){
+            $mail = OW::getMailer()->createMail()
+                ->addRecipientEmail($m)
+                ->setTextContent("El domandero")
+                ->setHtmlContent("<h1>Quiero piderte un information</h1>")
+                ->setSubject("El domandero rompe i cojon");
+
+            OW::getMailer()->send($mail);
+        }
+
+
+        /*foreach($users as $user){
 
             $userId = $user->userId;
             $userService = BOL_UserService::getInstance();
@@ -196,7 +206,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             try
             {
                 $mail = OW::getMailer()->createMail()
-                    ->addRecipientEmail($email[$i++])
+                    ->addRecipientEmail($emails)
                     ->setTextContent($txt)
                     ->setHtmlContent($html)
                     ->setSubject($subject);
@@ -208,7 +218,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 //Skip invalid notification
             }
 
-        }
+        }*/
     }
 
     public function addComment()
