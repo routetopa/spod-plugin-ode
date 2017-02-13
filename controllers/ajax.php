@@ -176,7 +176,9 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         $avatar = BOL_AvatarService::getInstance()->getDataForUserAvatars(array(ow::getUser()->getId()))[ow::getUser()->getId()];
 
         $this->assign('userName', BOL_UserService::getInstance()->getDisplayName(OW::getUser()->getId()));
-        $this->assign('string', " has commented on a discussion in the room <b>" . SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->name . "</b>");
+        $this->assign('string', " has commented in the room <b>" . SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->subject . "</b>");
+        $this->assign('avatar', $avatar);
+        $this->assign('time', $time);
 
         return parent::render();
 
