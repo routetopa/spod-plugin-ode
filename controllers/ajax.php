@@ -175,8 +175,8 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         //USER AVATAR FOR THE NEW MAIL
         $avatar = BOL_AvatarService::getInstance()->getDataForUserAvatars(array(OW::getUser()->getId()))[OW::getUser()->getId()];
         $this->assign('userName', BOL_UserService::getInstance()->getDisplayName($userId));
-        $this->assign('string', " has commented in the room <b><a href=\"" .
-            OW::getRouter()->urlForRoute('spodpublic.main')  . "#!/" . $roomId . "\">" .
+        $this->assign('string', OW::getLanguage()->text('spodpublic', 'email_txt_comment') . " <b><a href=\"" .
+            OW::getRouter()->urlForRoute('spodpublic.main')  . "/#!/" . $roomId . "\">" .
            SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->subject . "</a></b>");
         $this->assign('avatar', $avatar);
         $this->assign('time', $time);
