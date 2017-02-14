@@ -163,7 +163,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         exit;
     }
 
-    private function getEmailContentHtml($roomId)
+    private function getEmailContentHtml($roomId, $userId)
     {
         $date = getdate();
         $time = mktime(0, 0, 0, $date['mon'], $date['mday'], $date['year']);
@@ -173,10 +173,11 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         $this->setTemplate($template);
 
         //USER AVATAR FOR THE NEW MAIL
-        $avatar = BOL_AvatarService::getInstance()->getDataForUserAvatars(array(ow::getUser()->getId()))[ow::getUser()->getId()];
-
-        $this->assign('userName', BOL_UserService::getInstance()->getDisplayName(OW::getUser()->getId()));
-        $this->assign('string', " has commented in the room <b>" . SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->subject . "</b>");
+        $avatar = BOL_AvatarService::getInstance()->getDataForUserAvatars(array(OW::getUser()->getId()))[OW::getUser()->getId()];
+        $this->assign('userName', BOL_UserService::getInstance()->getDisplayName($userId));
+        $this->assign('string', " has commented in the room <b><a href=\"" .
+            OW::getRouter()->urlForRoute('spodpublic.main')  . "#!/" . $roomId . "\"" .
+           SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->subject . "</b>");
         $this->assign('avatar', $avatar);
         $this->assign('time', $time);
 
@@ -226,7 +227,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $mail = OW::getMailer()->createMail()
                     ->addRecipientEmail($email)
                     ->setTextContent($this->getEmailContentText($roomId))
-                    ->setHtmlContent($this->getEmailContentHtml($roomId))
+                    ->setHtmlContent($this->getEmailContentHtml($roomId, $userId))
                     ->setSubject("Something interesting is happening on Agora");
 
                 OW::getMailer()->send($mail);
