@@ -324,7 +324,10 @@ ODE.commentSendMessage = function(message, context)
         dataType: 'JSON',
         success: function(data){
             self.repaintCommentsList(data);
-            OW.trigger('base.photo_attachment_uid_update', {uid:self.attchUid, newUid:data.newAttachUid});
+
+            //OW.trigger('base.photo_attachment_uid_update', {uid:self.attchUid, newUid:data.newAttachUid});
+            OW.trigger('base.file_attachment', {uid:self.attchUid, newUid:data.newAttachUid});
+
             self.eventParams.commentCount = data.commentCount;
             OW.trigger('base.comment_added', self.eventParams);
             self.attchUid = data.newAttachUid;
@@ -340,6 +343,8 @@ ODE.commentSendMessage = function(message, context)
             ODE.reset();
             /* ODE */
 
+            $('.ow_file_attachment_preview').html("");
+
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
             OW.error(textStatus);
@@ -354,6 +359,17 @@ ODE.commentSendMessage = function(message, context)
 
 OwComments.prototype.initTextarea = function()
 {
+    OW.bind('base.update_attachment',
+        function(data){
+            if( data.uid == self.attchUid ){
+                self.attachmentInfo = data;
+                self.$textarea.focus();
+                self.submitHandler = self.realSubmitHandler;
+                OW.trigger('base.comment_attachment_added', self.eventParams);
+            }
+        }
+    );
+
     /* ODE */
     ODE.reset();
     ODE.addOdeOnComment();

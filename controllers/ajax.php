@@ -6,41 +6,7 @@ require_once OW::getPluginManager()->getPlugin('spodnotification')->getRootDir()
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version1X;
 
-/**
- * This software is intended for use with Oxwall Free Community Software http://www.oxwall.org/ and is
- * licensed under The BSD license.
 
- * ---
- * Copyright (c) 2011, Oxwall Foundation
- * All rights reserved.
-
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
- * following conditions are met:
- *
- *  - Redistributions of source code must retain the above copyright notice, this list of conditions and
- *  the following disclaimer.
- *
- *  - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and
- *  the following disclaimer in the documentation and/or other materials provided with the distribution.
- *
- *  - Neither the name of the Oxwall Foundation nor the names of its contributors may be used to endorse or promote products
- *  derived from this software without specific prior written permission.
-
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-/**
- *
- * @author Sergey Kambalin <greyexpert@gmail.com>
- * @package ow_plugins.newsfeed.controllers
- * @since 1.0
- */
 class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
 {
 
@@ -197,6 +163,83 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         exit;
     }
 
+    private function getEmailContentHtml($roomId, $userId)
+    {
+        $date = getdate();
+        $time = mktime(0, 0, 0, $date['mon'], $date['mday'], $date['year']);
+
+        //SET EMAIL TEMPLETE
+        $template = OW::getPluginManager()->getPlugin('spodpublic')->getCmpViewDir() . 'email_notification_template_html.html';
+        $this->setTemplate($template);
+
+        //USER AVATAR FOR THE NEW MAIL
+        $avatar = BOL_AvatarService::getInstance()->getDataForUserAvatars(array(OW::getUser()->getId()))[OW::getUser()->getId()];
+        $this->assign('userName', BOL_UserService::getInstance()->getDisplayName($userId));
+        $this->assign('string', OW::getLanguage()->text('spodpublic', 'email_txt_comment') . " <b><a href=\"" .
+            OW::getRouter()->urlForRoute('spodpublic.main')  . "/#!/" . $roomId . "\">" .
+           SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->subject . "</a></b>");
+        $this->assign('avatar', $avatar);
+        $this->assign('time', $time);
+
+        return parent::render();
+
+    }
+
+    private function getEmailContentText($roomId){
+        $date = getdate();
+        $time = mktime(0, 0, 0, $date['mon'], $date['mday'], $date['year']);
+
+        $template = OW::getPluginManager()->getPlugin('spodpublic')->getCmpViewDir() . 'email_notification_template_text.html';
+        $this->setTemplate($template);
+
+        $this->assign('nl', '%%%nl%%%');
+        $this->assign('tab', '%%%tab%%%');
+        $this->assign('space', '%%%space%%%');
+        $this->assign('string', " has commented on a discussion in the room <b>" . SPODPUBLIC_BOL_Service::getInstance()->getPublicRoomById($roomId)->name . "</b>");
+
+        $content = parent::render();
+        $search = array('%%%nl%%%', '%%%tab%%%', '%%%space%%%');
+        $replace = array("\n", '    ', ' ');
+
+        return str_replace($search, $replace, $content);
+    }
+
+    private function sendEmailNotificationProcess( $roomId )
+    {
+
+        //GET ALL SUBSCRIBED USERS
+        $users = SPODPUBLIC_BOL_Service::getInstance()->getSubscribedNotificationUsersForRoom($roomId);
+
+        foreach($users as $user){
+
+            $userId = $user->userId;
+            $userService = BOL_UserService::getInstance();
+            $user = $userService->findUserById($userId);
+
+            if ( empty($user) )
+            {
+                return false;
+            }
+
+            $email = $user->email;
+            try
+            {
+                $mail = OW::getMailer()->createMail()
+                    ->addRecipientEmail($email)
+                    ->setTextContent($this->getEmailContentText($roomId))
+                    ->setHtmlContent($this->getEmailContentHtml($roomId, $userId))
+                    ->setSubject("Something interesting is happening on Agora");
+
+                OW::getMailer()->send($mail);
+            }
+            catch ( Exception $e )
+            {
+                //Skip invalid notification
+            }
+
+        }
+    }
+
     public function addComment()
     {
         //$clean = ODE_CLASS_InputFilter::getInstance()->sanitizeInputs($_REQUEST);
@@ -240,7 +283,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $tempArr = json_decode($clean['attachmentInfo'], true);
                 OW::getEventManager()->call('base.attachment_save_image', array('uid' => $tempArr['uid'], 'pluginKey' => $tempArr['pluginKey']));
                 $tempArr['href'] = $tempArr['url'];
-                $tempArr['type'] = 'photo';
+                //$tempArr['type'] = 'photo';
                 $attachment = json_encode($tempArr);
             }
             else if ( !empty($clean['oembedInfo']) )
@@ -288,6 +331,12 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             }
         }
         /* ODE */
+
+        /*SEND EMAIL TO SUBSCRIBED USERS*/
+
+        $this->sendEmailNotificationProcess($clean['publicRoom']);
+
+        /*END SEND EMAIL TO SUBSCRIBED USERS*/
 
         /* */
         // trigger event comment add
