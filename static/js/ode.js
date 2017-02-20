@@ -18,6 +18,14 @@ ODE.internationalization = {
 
 ODE.init = function()
 {
+    /*window.addEventListener('DOMContentLoaded', function() {
+        console.log("DOMContentLoaded");
+    });
+
+    window.addEventListener("load", function(event) {
+        console.log("load");
+    });*/
+
     //Hide like comment on Agora notification post (check if remove is faster than hide)
     $('.agora_notification').parent().parent().parent().find('.ow_newsfeed_left').css("display", "none");
     //$('.agora_notification').parent().parent().parent().find('.ow_newsfeed_left').remove();
@@ -104,8 +112,8 @@ ODE.savedDataletListener = function(e)
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
             break;
         case 'public-room' :
-            $(ODE.commentTarget).closest(".ow_comments_form_wrap").append($('<div class="comment_datalet_placeholder" id="'+$(ODE.commentTarget).attr("data-id")+'_placeholder" />'));
-            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
+            $("#agora_preview_button").show();
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), ODE.commentTarget);
             break;
         case 'event' :
         case 'forum' :
@@ -193,7 +201,7 @@ ODE.setDataletValues = function (data)
 
 ODE.loadDatalet = function(component, params, fields, cache, placeholder)
 {
-    $.extend(params, {data:(typeof cache == 'undefined') ? '' : cache.replace("'", "&#39;")});
+    $.extend(params, {data:(!cache || typeof cache == 'undefined') ? '' : cache.replace("'", "&#39;")});
 
     ComponentService.getComponent({
         component   : component,

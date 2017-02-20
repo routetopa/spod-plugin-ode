@@ -112,6 +112,7 @@ class ODE_CLASS_EventHandler
                 ODE.is_private_room_active = {$is_private_room_active}
                 ODE.user_language = {$user_language}
                 ODE.get_datalet_info = {$get_datalet_info}
+                ODE.ow_url_home = {$ow_url_home}
             ', array(
                 'ode_deep_url' => ODE_DEEP_URL,
                 'ajax_load_item' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'loadItem'),
@@ -123,7 +124,8 @@ class ODE_CLASS_EventHandler
                 'ode_webcomponents_js' => ODE_WEBCOMPONENTS_JS,
                 'is_private_room_active' => OW::getPluginManager()->isPluginActive('spodpr'),
                 'user_language' => BOL_LanguageService::getInstance()->getCurrent()->tag,
-                'get_datalet_info' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'getDataletInfo')
+                'get_datalet_info' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'getDataletInfo'),
+                'ow_url_home' => OW_URL_HOME
             ));
 
             OW::getDocument()->addOnloadScript($js);
