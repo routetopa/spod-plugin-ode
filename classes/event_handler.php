@@ -248,8 +248,8 @@ class ODE_CLASS_EventHandler
         }
     }
 
-    // Render Agora Notification post //TEST
-    /*public function onAgoraNotificationRender(OW_Event $event)
+    // Render Agora Notification post
+    public function onAgoraNotificationRender(OW_Event $event)
     {
         //Get parameter for check pluginKey for this event
         $params = $event->getParams();
@@ -280,7 +280,7 @@ class ODE_CLASS_EventHandler
             $content .= '</div>';
             $event->setData($data);
         }
-    }*/
+    }
 
     // Render comment
     public function onCommentItemProcess(BASE_CLASS_EventProcessCommentItem $event)
