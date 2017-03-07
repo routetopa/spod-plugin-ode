@@ -66,7 +66,7 @@ class ODE_CLASS_EventHandler
         // event raised just before rendering a feed item (= an Action)
         OW::getEventManager()->bind('feed.on_item_render', array($this, 'onItemRender'));
         OW::getEventManager()->bind('feed.on_item_render', array($this, 'onLastReplyForumRender'));
-        OW::getEventManager()->bind('feed.on_item_render', array($this, 'onAgoraNotificationRender'));
+        //OW::getEventManager()->bind('feed.on_item_render', array($this, 'onAgoraNotificationRender'));
 
         // event raised just before rendering a comment
         OW::getEventManager()->bind('base.comment_item_process', array($this, 'onCommentItemProcess'), 10000);
@@ -249,7 +249,7 @@ class ODE_CLASS_EventHandler
     }
 
     // Render Agora Notification post
-    public function onAgoraNotificationRender(OW_Event $event)
+    /*public function onAgoraNotificationRender(OW_Event $event)
     {
         //Get parameter for check pluginKey for this event
         $params = $event->getParams();
@@ -280,7 +280,7 @@ class ODE_CLASS_EventHandler
             $content .= '</div>';
             $event->setData($data);
         }
-    }
+    }*/
 
     // Render comment
     public function onCommentItemProcess(BASE_CLASS_EventProcessCommentItem $event)
