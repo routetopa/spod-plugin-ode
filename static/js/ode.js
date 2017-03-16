@@ -113,7 +113,7 @@ ODE.savedDataletListener = function(e)
             break;
         case 'public-room' :
             $("#agora_preview_button").show();
-            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), ODE.commentTarget);
+            ODE.loadDatalet(data.datalet, data.params, data.fields, '', ODE.commentTarget);
             break;
         case 'event' :
         case 'forum' :
