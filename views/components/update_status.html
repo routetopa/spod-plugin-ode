@@ -44,7 +44,7 @@ background-repeat: no-repeat;
     <div class="ow_submit_auto_click" style="text-align: left;">
         <div class="clearfix ow_status_update_btn_block">
             <span class="ow_attachment_btn">{submit name="save"}</span>
-            <span class="ow_attachment_icons" style="margin-left: 6px;">
+            <span class="ow_attachment_icons" title="{text key="ode+add_attachment"}" style="margin-left: 6px;" >
                 <span class="ow_attachments" id="{$uniqId}-btn-cont" >
                     <span class="clearfix">
                         <a class="image attachment_intro_placeholder" id="{$uniqId}-btn" href="javascript://"></a>
@@ -52,8 +52,8 @@ background-repeat: no-repeat;
                 </span>
             </span>
             <!-- ODE -->
-            <span class="ow_attachment_btn rounded_attachment_btn" title="{text key="ode+add_datalet"}">{submit name="ode_open_dialog"}</span>
-            <span class="ow_attachment_btn rounded_attachment_btn" title="{text key="ode+add_datalet"}">{submit name="map_open_dialog"}</span>
+            <span class="ow_attachment_btn rounded_attachment_btn" title= "{text key="ode+add_datalet"}">{submit name="ode_open_dialog"}</span>
+            <span class="ow_attachment_btn rounded_attachment_btn" title= "{text key="ode+add_maplet"}">{submit name="map_open_dialog"}</span>
             {if isset($private_room)}
                 {$private_room}
             {/if}
@@ -64,6 +64,7 @@ background-repeat: no-repeat;
 
     <div style="display: none" id="ode_controllet_placeholder" class="ow_box ow_no_cap">
     </div>
+
 
 </div>
 {/form}
