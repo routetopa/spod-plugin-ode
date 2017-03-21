@@ -111,9 +111,9 @@ ODE.savedDataletListener = function(e)
             $(ODE.commentTarget).closest(".ow_comments_form_wrap").append($('<div class="comment_datalet_placeholder" id="'+$(ODE.commentTarget).attr("data-id")+'_placeholder" />'));
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
             break;
-        case 'public-room' :
+        case 'agora' :
             $("#agora_preview_button").show();
-            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), ODE.commentTarget);
+            ODE.loadDatalet(data.datalet, data.params, data.fields, '', ODE.commentTarget);
             break;
         case 'event' :
         case 'forum' :
