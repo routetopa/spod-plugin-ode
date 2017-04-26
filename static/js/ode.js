@@ -38,11 +38,22 @@ ODE.init = function()
     window.addEventListener('generic-cards-container-controllet_card-selected', function(e){
 
         var fields = e.detail.selectedElement.getAttribute("fields");
+        fields = fields.substring(1, fields.length-1).split('","');
 
-        var data = {detail:{data:{datalet    : e.detail.selectedElement.getAttribute("datalet"),
-            fields     : fields.substring(1, fields.length-1).split('","'),
-            params     : JSON.parse(e.detail.selectedElement.getAttribute("preset")),
-            staticData : e.detail.selectedElement.getAttribute("static-data")}}};
+        var datalet = e.detail.selectedElement.getAttribute("datalet");
+        var params = JSON.parse(e.detail.selectedElement.getAttribute("preset"));
+        var staticData = e.detail.selectedElement.getAttribute("static-data") ? e.detail.selectedElement.getAttribute("static-data") : JSON.stringify($(e.detail.selectedElement).find('#content').children()[0].data).replace(/'/g, "&#39;");
+
+        var data = {
+            detail: {
+                data: {
+                    datalet : datalet,
+                    fields  : fields,
+                    params  : params,
+                    staticData : staticData
+                }
+            }
+        };
 
         ODE.savedDataletListener(data);
 
@@ -113,7 +124,7 @@ ODE.savedDataletListener = function(e)
             break;
         case 'agora' :
             $("#agora_preview_button").show();
-            ODE.loadDatalet(data.datalet, data.params, data.fields, '', ODE.commentTarget);
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), ODE.commentTarget);
             break;
         case 'event' :
         case 'forum' :
@@ -201,7 +212,14 @@ ODE.setDataletValues = function (data)
 
 ODE.loadDatalet = function(component, params, fields, cache, placeholder)
 {
-    $.extend(params, {data:(!cache || typeof cache == 'undefined') ? '' : cache.replace("'", "&#39;")});
+    if(typeof cache == 'undefined' || cache == null)
+        cache = '';
+    else if(typeof cache != 'string')
+        cache = JSON.stringify(cache).replace(/'/g, "&#39;");
+
+    $.extend(params, {data: cache});
+
+    // $.extend(params, {data:(!cache || typeof cache == 'undefined') ? '' : cache.replace("'", "&#39;")});
 
     ComponentService.getComponent({
         component   : component,
