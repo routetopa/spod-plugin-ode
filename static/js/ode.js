@@ -462,7 +462,19 @@ ODE.showHelper =  function()
     var dialog = "";
     var name = self.location.pathname;
     if(name.match(/\/public-room*/)) name = "/public-room";
+    if(name.match(/\/agora\/*/)) {
+        var address = self.location.pathname;
+        var publicRoom;
+        var last = address.charAt(address.length - 1);
+        if (!isNaN(last))
+            publicRoom = self.location.pathname;
+        else
+            name = "/agora";
+
+    }
     if(name.match(/\/*data-room*/)) name = "/cocreation/data-room";
+    //Issy issue
+    if(name.match(/\/cocreation*/) || name.match(/\/cocreation\/*/)) name = "/cocreation";
     if(name.match(/\/*knowledge*/)) name = "/cocreation/knowledge-room";
 
     switch(name){
@@ -493,13 +505,15 @@ ODE.showHelper =  function()
         case "/cocreation/data-room":
             dialog = 'COCREATION_CMP_HelperCocreationDataRoom';
             break;
-        case "/public-room":
+        case "/agora":
             var frame_body = $("#public_room_iframe").contents().find("body").html();
+            dialog = "SPODAGORA_CMP_HelperAgora";
             if(frame_body == undefined || frame_body == ""){
-                dialog = "SPODPUBLIC_CMP_HelperAgora";
-            }else {
-                dialog = "SPODPUBLIC_CMP_HelperPublicRoom";
+                dialog = "SPODAGORA_CMP_HelperAgora";
             }
+            break;
+        case publicRoom:
+            dialog = "SPODAGORA_CMP_HelperPublicRoom";
             break;
         default:
             dialog = "ODE_CMP_HelperDefault";
