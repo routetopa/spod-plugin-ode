@@ -1,16 +1,21 @@
+<link rel="import" href="{$components_url}bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+
 <style>
-    .floatbox_header{
-        display: none;
+    #scroll_content{
+        position: relative;
+        overflow: scroll;
+    }
+    div.cell{
+        padding: 20px;
+        margin-left: 20px;
     }
 
-    .floatbox_body{
-        font-family: 'Roboto', sans-serif;
-        background-color: #eeeeee;
-        padding : 3px;
+    ul.cell-list {
+        list-style-type: circle;
     }
 
-    .floatbox_bottom{
-        display: none;
+    li{
+        margin-left: 20px;
     }
 
     .helper_content {
@@ -40,50 +45,21 @@
     }
 
     .sect{
-        border: 1px solid #bebebe;
-        padding: 8px;
-        margin: 8px;
-        border-radius: 5px;
-        background-color: #fff;
-        color: #555;
+        border: 1px solid #bebebe; padding: 16px; margin: 16px; border-radius: 5px; background-color: #fff; color: #555;
     }
 
-    .members_helper_text_container div.section-number{
-        display: inline-block;
-        height: 64px;
-        width: 64px;
-        border-radius: 50%;
-        background: #ddd;
-        line-height: 64px;
-        font-size: 30px;
-        color: #666;
-        text-align: center;
-        margin-left: 0px;
+    .section-number{
+        display: inline-block; height: 64px; width: 64px; border-radius: 50%; background: #ddd; line-height: 64px; font-size: 30px; color: #666; text-align: center;
+    }
+
+    .section-title{
+        font-size: 22px; padding-top: 18px; color: #888;margin-left: 20px;
     }
 
     .section-title{
         font-size: 22px;
         color: #888;
     }
-
-
-    .members_helper_text_container{
-        overflow:auto;
-        padding: 8px;
-    }
-
-    .members_helper_text_container div {
-        float: left;
-        height: 64px;
-        line-height: 64px;
-        margin-left: 16px;
-    }
-
-    .members_helper_image_container {
-        padding: 8px;
-        clear: left;
-    }
-
 </style>
 
 <div class="layout vertical">
@@ -98,40 +74,56 @@
         </div>
     </div>
 
-    <div class="content">
+
+    <div class="content" id="scroll_content">
 
         <div class="sect">
-            <div class="members_helper_text_container">
-                <div class="section-number">1.</div>
-                <div class="section-title">TUTTI</div>
-                <div>La pagina "TUTTI" mostra l'elenco degli utenti che sono stati registrati sulla piattaforma.</div>
-            </div>
-            <div class="members_helper_image_container">
+            <div class= "horizontal layout cell">
                 <img src="{$staticResourcesUrl}images/members_it.png" style="width: 60%; height: 60%;">
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-number">1</div>
+                        <div class="section-title">TUTTI</div>
+                    </div>
+                    <div >
+                        La pagina  mostra l'elenco degli utenti che sono stati registrati sulla piattaforma.
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="sect">
-            <div class="members_helper_text_container">
-                <div class="section-number">2.</div>
-                <div class="section-title">Online</div>
-                <div>La pagina "ONLINE" mostra solo gli utenti che sono online sulla piattaforma</div>
-            </div>
-            <div class="members_helper_image_container">
+            <div class= "horizontal layout cell">
                 <img src="{$staticResourcesUrl}images/online_it.png" style="width: 60%; height: 60%;">
+
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-number">2</div>
+                        <div class="section-title">Online</div>
+                    </div>
+                    <div >
+                        La pagina "ONLINE" mostra solo gli utenti che sono online sulla piattaforma
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="sect">
-            <div class="members_helper_text_container">
-                <div class="section-number">3.</div>
-                <div class="section-title">CERCA</div>
-                <div>La pagina "Cerca" permette di ricercare utenti per nome o per genere.</div>
-            </div>
-            <div class="members_helper_image_container">
+            <div class= "horizontal layout cell">
                 <img src="{$staticResourcesUrl}images/search_it.png" style="width: 60%; height: 60%;">
+
+                <div class="cell">
+                    <div class="horizontal layout cell">
+                        <div class="section-number">3</div>
+                        <div class="section-title">CERCA</div>
+                    </div>
+                    <div >
+                        La pagina "Cerca" permette di ricercare utenti per nome o per genere.
+                    </div>
+                </div>
             </div>
         </div>
+
 
     </div>
 
