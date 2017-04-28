@@ -475,12 +475,11 @@ ODE.reset = function()
 
 };
 
-ODE.showHelper =  function()
-{
+ODE.showHelper =  function() {
     var dialog = "";
     var name = self.location.pathname;
-    if(name.match(/\/public-room*/)) name = "/public-room";
-    if(name.match(/\/agora\/*/)) {
+    //if(name.match(/\/public-room*/)) name = "/public-room";
+    if (name.match(/\/agora\/*/)) {
         var address = self.location.pathname;
         var publicRoom;
         var last = address.charAt(address.length - 1);
@@ -490,10 +489,13 @@ ODE.showHelper =  function()
             name = "/agora";
 
     }
-    if(name.match(/\/*data-room*/)) name = "/cocreation/data-room";
+
     //Issy issue
-    if(name.match(/\/cocreation*/) || name.match(/\/cocreation\/*/)) name = "/cocreation";
-    if(name.match(/\/*knowledge*/)) name = "/cocreation/knowledge-room";
+    //if (name.match(/\/*cocreation*/) || name.match(/\/*cocreation\/*/)) name = "/cocreation";
+    if (name.match(/\/*data-room*/)) name = "/cocreation/data-room";
+    if (name.match(/\/*knowledge*/)) name = "/cocreation/knowledge-room";
+
+
 
     switch(name){
         case "/spodpr":
@@ -515,6 +517,9 @@ ODE.showHelper =  function()
             dialog = 'ODE_CMP_HelperUsers';
             break;
         case "/cocreation":
+            dialog = 'COCREATION_CMP_HelperCocreation';
+            break;
+        case "/cocreation/":
             dialog = 'COCREATION_CMP_HelperCocreation';
             break;
         case "/cocreation/knowledge-room":
