@@ -207,7 +207,7 @@ ODE.setDataletValues = function (data)
     ODE.dataletParameters.fields    = '"'+data.fields.join('","')+'"';
     ODE.dataletParameters.data      = data.staticData;
     ODE.dataletParameters.comment   = data.params.description;
-    ODE.dataletParameters.title     = data.params.title;
+    ODE.dataletParameters.title     = data.params.datalettitle;
 };
 
 ODE.loadDatalet = function(component, params, fields, cache, placeholder)
