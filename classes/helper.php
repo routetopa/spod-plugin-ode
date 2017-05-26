@@ -15,15 +15,20 @@ class ODE_CLASS_Helper
         return self::$classInstance;
     }
 
-    public static function validateDatalet()
+    public static function validateDatalet($components, $params, $fields='')
     {
-        $params = get_defined_vars();
+        /*$params = get_defined_vars();
 
         foreach ($params as $param)
         {
             if(empty($param))
                 return false;
         }
+
+        return true;*/
+
+        if(empty($components) || empty($params))
+            return false;
 
         return true;
     }
