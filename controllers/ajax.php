@@ -309,7 +309,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 $clean['plugin'],
                 $clean['datalet']['data']);
 
-            if(OW::getPluginManager()->isPluginActive('spodpublic') && $clean['plugin'] == "public-room")
+            /*if(OW::getPluginManager()->isPluginActive('spodpublic') && $clean['plugin'] == "public-room")
             {
                 if( $delta = SPODPUBLIC_BOL_Service::getInstance()->addStat($clean['publicRoom'], 'opendata') )
                 {
@@ -329,13 +329,13 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                     OW::getEventManager()->trigger($event);
                     //End add post on What's New
                 }
-            }
+            }*/
         }
         /* ODE */
 
         /*SEND EMAIL TO SUBSCRIBED USERS*/
 
-        $this->sendEmailNotificationProcess($clean['publicRoom']);
+        //$this->sendEmailNotificationProcess($clean['publicRoom']);
 
         /*END SEND EMAIL TO SUBSCRIBED USERS*/
 
@@ -360,23 +360,21 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
         }
         else
         {
-            if($params->getPluginKey() == "spodpublic")
-            {
-                $commentListCmp = new SPODPUBLIC_CMP_CommentsList($params, $clean['cid']);
-            }else{
+            //if($params->getPluginKey() == "spodpublic")
+            //{
+             //   $commentListCmp = new SPODPUBLIC_CMP_CommentsList($params, $clean['cid']);
+            //}else{
                 $commentListCmp = new BASE_CMP_CommentsList($params, $clean['cid']);
-            }
+            //}
         }
         /* */
 
-        if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($clean['publicRoom']) && $params->getPluginKey() == 'spodpublic')
+        /*if(OW::getPluginManager()->isPluginActive('spodpublic') && !empty($clean['publicRoom']) && $params->getPluginKey() == 'spodpublic')
         {
-            /* Send realtime notification */
+            // Send realtime notification
             try
             {
                 $last_comment = end($commentListCmp->components);
-                /*$a = $last_comment->render();
-                $b = $commentListCmp->render();*/
 
                 $client = new Client(new Version1X('http://localhost:3000'));
                 $client->initialize();
@@ -404,7 +402,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
             }
             catch(Exception $e)
             {}
-            /* Send realtime notification */
+            // Send realtime notification
 
             // Add sentiment to a comment
             SPODPUBLIC_BOL_Service::getInstance()->addCommentSentiment($clean['publicRoom'],$comment->getId(),$clean['sentiment']);
@@ -429,7 +427,7 @@ class ODE_CTRL_Ajax extends NEWSFEED_CTRL_Ajax
                 OW::getEventManager()->trigger($event);
                 //End add post on What's New
             }
-        }
+        }*/
 
         exit(json_encode(array(
                 'newAttachUid' => BOL_CommentService::getInstance()->generateAttachmentUid($params->getEntityType(), $params->getEntityId()),
