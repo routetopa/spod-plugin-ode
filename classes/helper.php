@@ -15,7 +15,7 @@ class ODE_CLASS_Helper
         return self::$classInstance;
     }
 
-    public static function validateDatalet($datalet, $params, $query)
+    public static function validateDatalet()
     {
         $params = get_defined_vars();
 
