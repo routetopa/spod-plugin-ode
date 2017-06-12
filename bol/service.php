@@ -206,6 +206,15 @@ class ODE_BOL_Service
         $dtp->plugin    = $plugin;
         ODE_BOL_DataletPostDao::getInstance()->save($dtp);
 
+        //START DATALET IMAGE
+        $class_dir = OW::getPluginManager()->getPlugin('ode')->getRootDir() . 'lib';
+        chdir($class_dir);
+
+
+        $command = "nohup node image_generator.js {$dt->id} > /dev/null 2>/dev/null &";
+        shell_exec($command);
+        //END DATALET IMAGE
+
         return $dt->id;
     }
 
