@@ -109,6 +109,7 @@ class ODE_CLASS_EventHandler
                 ODE.ode_dataset_list = {$ode_dataset_list}
                 ODE.ode_deep_client = {$ode_deep_client}
                 ODE.ode_webcomponents_js = {$ode_webcomponents_js}
+                ODE.ode_ultra_clarity_url = {$ode_ultra_clarity_url}
                 ODE.is_private_room_active = {$is_private_room_active}
                 ODE.user_language = {$user_language}
                 ODE.get_datalet_info = {$get_datalet_info}
@@ -122,6 +123,7 @@ class ODE_CLASS_EventHandler
                 'ode_dataset_list' => ODE_BOL_Service::getInstance()->getSettingByKey('ode_datasets_list'),
                 'ode_deep_client' => ODE_DEEP_CLIENT,
                 'ode_webcomponents_js' => ODE_WEBCOMPONENTS_JS,
+                'ode_ultra_clarity_url' => ODE_ULTRACLARITY_URL,
                 'is_private_room_active' => OW::getPluginManager()->isPluginActive('spodpr'),
                 'user_language' => BOL_LanguageService::getInstance()->getCurrent()->tag,
                 'get_datalet_info' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'getDataletInfo'),

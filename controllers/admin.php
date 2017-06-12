@@ -73,6 +73,14 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $webcomponents->setRequired();
         $form->addElement($webcomponents);
 
+        /* ULTRACLARITY URL */
+        $ultraClarityUrl = new TextField('ultra_clarity_url');
+        $preference = BOL_PreferenceService::getInstance()->findPreference('ode_ultra_clarity_url');
+        $ode_ultra_clarity_url = empty($preference) ? "" : $preference->defaultValue;
+        $ultraClarityUrl->setValue($ode_ultra_clarity_url);
+        $ultraClarityUrl->setRequired();
+        $form->addElement($ultraClarityUrl);
+
         $submit = new Submit('add');
         $submit->setValue('SUBMIT');
         $form->addElement($submit);
@@ -139,6 +147,18 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sectionName = 'general';
             $preference->defaultValue = $data['webcomponents_js'];
             $preference->sortOrder = 4;
+            BOL_PreferenceService::getInstance()->savePreference($preference);
+
+            /* ode_ultra_clarity_url */
+            $preference = BOL_PreferenceService::getInstance()->findPreference('ode_ultra_clarity_url');
+
+            if(empty($preference))
+                $preference = new BOL_Preference();
+
+            $preference->key = 'ode_ultra_clarity_url';
+            $preference->sectionName = 'general';
+            $preference->defaultValue = $data['ultra_clarity_url'];
+            $preference->sortOrder = 5;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
         }

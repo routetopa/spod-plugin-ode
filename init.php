@@ -20,6 +20,10 @@ $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcompo
 $ode_webcomponents_js = empty($preference) ? "" : $preference->defaultValue;
 define("ODE_WEBCOMPONENTS_JS", $ode_webcomponents_js);
 
+$preference = BOL_PreferenceService::getInstance()->findPreference('ode_ultra_clarity_url');
+$ode_ultra_clarity_url = empty($preference) ? "" : $preference->defaultValue;
+define("ODE_ULTRACLARITY_URL", $ode_ultra_clarity_url);
+
 $preference = BOL_PreferenceService::getInstance()->findPreference('spodpr_components_url');
 $spodpr_components_url = empty($preference) ? "" : $preference->defaultValue;
 define("SPODPR_COMPONENTS_URL", $spodpr_components_url);
