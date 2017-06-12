@@ -100,13 +100,14 @@ class ODE_CLASS_EventHandler
             OW::getDocument()->addScript(ODE_DEEP_CLIENT, 'text/javascript');
 
             //Init JS CONSTANTS
+            //ODE.ode_dataset_list = {$ode_dataset_list}
             $js = UTIL_JsGenerator::composeJsString('
                 ODE.deep_url = {$ode_deep_url}
                 ODE.deep_datalet_list = {$ode_deep_datalet_list}
                 ODE.ajax_load_item = {$ajax_load_item}
                 ODE.ajax_add_comment = {$ajax_add_comment}
                 ODE.ajax_private_room_datalet = {$ajax_private_room_datalet}
-                ODE.ode_dataset_list = {$ode_dataset_list}
+                
                 ODE.ode_deep_client = {$ode_deep_client}
                 ODE.ode_webcomponents_js = {$ode_webcomponents_js}
                 ODE.ode_ultra_clarity_url = {$ode_ultra_clarity_url}
@@ -120,7 +121,7 @@ class ODE_CLASS_EventHandler
                 'ajax_add_comment' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'addComment'),
                 'ajax_private_room_datalet' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'privateRoomDatalet'),
                 'ode_deep_datalet_list' => ODE_DEEP_DATALET_LIST,
-                'ode_dataset_list' => ODE_BOL_Service::getInstance()->getSettingByKey('ode_datasets_list'),
+                //'ode_dataset_list' => ODE_BOL_Service::getInstance()->getSettingByKey('ode_datasets_list'),
                 'ode_deep_client' => ODE_DEEP_CLIENT,
                 'ode_webcomponents_js' => ODE_WEBCOMPONENTS_JS,
                 'ode_ultra_clarity_url' => ODE_ULTRACLARITY_URL,
