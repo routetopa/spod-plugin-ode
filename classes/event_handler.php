@@ -229,7 +229,7 @@ class ODE_CLASS_EventHandler
                     case "public-room"  : $content =  &$data['content']; break;
                 }
 
-                $content .= '<div class="datalet_placeholder" id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'"></div>';
+                $content .= '<div class="datalet_placeholder" id="datalet_placeholder_' . $id . '_'.$params["action"]["pluginKey"].'" datalet-id="'.$datalet["dataletId"].'"></div>';
 
                  // CACHE
 /*                OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
