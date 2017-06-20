@@ -123,7 +123,7 @@ ODE.savedDataletListener = function(e)
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), $(ODE.commentTarget).attr("data-id")+'_placeholder');
             break;
         case 'agora' :
-            $("#agora_preview_button").show();
+            AGORA.dataltet_preview_added();
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), ODE.commentTarget);
             break;
         case 'event' :
