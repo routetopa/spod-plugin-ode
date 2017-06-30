@@ -125,6 +125,9 @@ ODE.savedDataletListener = function(e)
         case 'agora' :
             AGORA.dataltet_preview_added();
             ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), ODE.commentTarget);
+        case 'discussion' :
+            SPODDISCUSSION.dataltet_preview_added();
+            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), ODE.commentTarget);
             break;
         case 'event' :
         case 'forum' :
