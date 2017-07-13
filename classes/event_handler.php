@@ -99,6 +99,14 @@ class ODE_CLASS_EventHandler
             //Add deepClient.js to all the Oxwall pages
             OW::getDocument()->addScript(ODE_DEEP_CLIENT, 'text/javascript');
 
+            //Facebook app id
+            $preference = BOL_PreferenceService::getInstance()->findPreference('fb_app_id');
+            $fb_app_id_pref = empty($preference) ? "0000000" : $preference->defaultValue;
+
+            //Deep components
+            $preference = BOL_PreferenceService::getInstance()->findPreference('spodpr_components_url');
+            $deep_components_pref = empty($preference) ? "0000000" : $preference->defaultValue;
+
             //Init JS CONSTANTS
             //ODE.ode_dataset_list = {$ode_dataset_list}
             $js = UTIL_JsGenerator::composeJsString('
@@ -107,7 +115,6 @@ class ODE_CLASS_EventHandler
                 ODE.ajax_load_item = {$ajax_load_item}
                 ODE.ajax_add_comment = {$ajax_add_comment}
                 ODE.ajax_private_room_datalet = {$ajax_private_room_datalet}
-                
                 ODE.ode_deep_client = {$ode_deep_client}
                 ODE.ode_webcomponents_js = {$ode_webcomponents_js}
                 ODE.ode_ultra_clarity_url = {$ode_ultra_clarity_url}
@@ -115,6 +122,8 @@ class ODE_CLASS_EventHandler
                 ODE.user_language = {$user_language}
                 ODE.get_datalet_info = {$get_datalet_info}
                 ODE.ow_url_home = {$ow_url_home}
+                ODE.fb_app_id = {$fb_app_id}
+                ODE.deep_components = {$deep_components}
             ', array(
                 'ode_deep_url' => ODE_DEEP_URL,
                 'ajax_load_item' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'loadItem'),
@@ -128,7 +137,9 @@ class ODE_CLASS_EventHandler
                 'is_private_room_active' => OW::getPluginManager()->isPluginActive('spodpr'),
                 'user_language' => BOL_LanguageService::getInstance()->getCurrent()->tag,
                 'get_datalet_info' => OW::getRouter()->urlFor('ODE_CTRL_Ajax', 'getDataletInfo'),
-                'ow_url_home' => OW_URL_HOME
+                'ow_url_home' => OW_URL_HOME,
+                'fb_app_id' => $fb_app_id_pref,
+                'deep_components' => $deep_components_pref
             ));
 
             OW::getDocument()->addOnloadScript($js);
