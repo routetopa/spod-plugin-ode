@@ -139,6 +139,8 @@ class ODE_BOL_Service
         $dt->data      = $data;
         ODE_BOL_DataletDao::getInstance()->save($dt);
 
+        $this->createDataletImage($dt->id);
+
         return $dt->id;
     }
 
@@ -206,16 +208,18 @@ class ODE_BOL_Service
         $dtp->plugin    = $plugin;
         ODE_BOL_DataletPostDao::getInstance()->save($dtp);
 
-        //START DATALET IMAGE
+        $this->createDataletImage($dt->id);
+
+        return $dt->id;
+    }
+
+    public function createDataletImage($dataletId)
+    {
         $class_dir = OW::getPluginManager()->getPlugin('ode')->getRootDir() . 'lib';
         chdir($class_dir);
 
-
-        $command = "nohup node image_generator.js {$dt->id} > /dev/null 2>/dev/null &";
+        $command = "nohup node image_generator.js {$dataletId} > /dev/null 2>/dev/null &";
         shell_exec($command);
-        //END DATALET IMAGE
-
-        return $dt->id;
     }
 
     public function deleteDataletsById($id, $plugin)
