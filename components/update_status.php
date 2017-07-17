@@ -43,8 +43,11 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
     {
         parent::__construct($feedAutoId, $feedType, $feedId, $actionVisibility = null);
 
-        if(OW::getPluginManager()->isPluginActive('spodpr'))
-            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn', array('datalet', 'link')));
+        // ADD DATALET DEFINITIONS
+        $this->assign('datalet_definition_import', ODE_CLASS_Tools::getInstance()->get_all_datalet_definitions());
+
+//        if(OW::getPluginManager()->isPluginActive('spodpr'))
+//            $this->addComponent('private_room', new SPODPR_CMP_PrivateRoomCard('ow_attachment_btn', array('datalet', 'link')));
     }
 
     /**
@@ -68,6 +71,10 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $mapButton->setValue("");
         $form->addElement($mapButton);
 
+        $mySpaceButton = new Button('my_space');
+        $mySpaceButton->setValue("");
+        $form->addElement($mySpaceButton);
+
         $field = new HiddenField('ode_datalet');
         $form->addElement($field);
 
@@ -89,6 +96,9 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
             });
             $('#{$mapButton->getId()}').click(function(e){
                 previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {component:'map-controllet'} , {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
+            });
+            $('#{$mySpaceButton->getId()}').click(function(e){
+                previewFloatBox = OW.ajaxFloatBox('SPODPR_CMP_PrivateRoomCardViewer', {data:['datalet']}, {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
             });
         ";
 

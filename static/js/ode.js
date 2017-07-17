@@ -35,10 +35,30 @@ ODE.init = function()
 
     ComponentService.deep_url = ODE.deep_url;
 
+    window.addEventListener('my-space_card-selected', function(e){
+
+        var datalet = e.detail.getAttribute("datalet-type");
+        var params = JSON.parse(e.detail.getAttribute("datalet-preset"));
+        var staticData = e.detail.getAttribute("datalet-data");
+
+        var data = {
+            detail: {
+                data: {
+                    datalet : datalet,
+                    params  : params,
+                    staticData : staticData
+                }
+            }
+        };
+
+        ODE.savedDataletListener(data);
+
+    });
+
     window.addEventListener('generic-cards-container-controllet_card-selected', function(e){
 
-        var fields = e.detail.selectedElement.getAttribute("fields");
-        fields = fields.substring(1, fields.length-1).split('","');
+        // var fields = e.detail.selectedElement.getAttribute("fields");
+        // fields = fields.substring(1, fields.length-1).split('","');
 
         var datalet = e.detail.selectedElement.getAttribute("datalet");
         var params = JSON.parse(e.detail.selectedElement.getAttribute("preset"));
@@ -48,7 +68,7 @@ ODE.init = function()
             detail: {
                 data: {
                     datalet : datalet,
-                    fields  : fields,
+                    // fields  : fields,
                     params  : params,
                     staticData : staticData
                 }
@@ -202,13 +222,13 @@ ODE.privateRoomDatalet = function ()
 ODE.setDataletValues = function (data)
 {
     $('input[name=ode_datalet]').val(data.datalet);
-    $('input[name=ode_fields]').val('"'+data.fields.join('","')+'"');
+    // $('input[name=ode_fields]').val('"'+data.fields.join('","')+'"');
     $('input[name=ode_params]').val(JSON.stringify(data.params));
     $('input[name=ode_data]').val(data.staticData);
 
     ODE.dataletParameters.component = data.datalet;
     ODE.dataletParameters.params    = JSON.stringify(data.params);
-    ODE.dataletParameters.fields    = '"'+data.fields.join('","')+'"';
+    // ODE.dataletParameters.fields    = '"'+data.fields.join('","')+'"';
     ODE.dataletParameters.data      = data.staticData;
     ODE.dataletParameters.comment   = data.params.description;
     ODE.dataletParameters.title     = data.params.datalettitle;
