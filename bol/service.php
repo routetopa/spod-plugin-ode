@@ -234,7 +234,40 @@ class ODE_BOL_Service
             $ex = new OW_Example();
             $ex->andFieldEqual('dataletId', $dt['id']);
             ODE_BOL_DataletPostDao::getInstance()->deleteByExample($ex);
+
+            $this->deleteDataletImage($dt['id']);
         }
+    }
+
+    public function deleteDataletAndAssociationByDataletAndCommentId($dataletId, $commentId, $plugin)
+    {
+        $dbo = OW::getDbo();
+
+        //Delete Datalet
+        $sql = "DELETE FROM ow_ode_datalet_post WHERE postId = {$commentId} AND dataletId = {$dataletId} AND plugin = '{$plugin}'; ";
+        $dbo->query($sql);
+        //Delete Datalet
+        $sql = "DELETE FROM ow_ode_datalet WHERE id = {$dataletId}; ";
+        $dbo->query($sql);
+
+        $this->deleteDataletImage($dataletId);
+    }
+
+    public function deleteDataletByDataletId($dataletId)
+    {
+        $e = new OW_Example();
+        $e->andFieldEqual('id', $dataletId);
+        ODE_BOL_DataletDao::getInstance()->deleteByExample($e);
+
+        $this->deleteDataletImage($dataletId);
+    }
+
+    private function deleteDataletImage($dataletId)
+    {
+        $class_dir = OW::getPluginManager()->getPlugin('ode')->getRootDir() . 'datalet_images';
+        chdir($class_dir);
+        $command = "rm  datalet_{$dataletId}.png";
+        shell_exec($command);
     }
 
     public function getSettingByKey($key)
