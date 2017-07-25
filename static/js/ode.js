@@ -179,6 +179,7 @@ ODE.cocreationRoomDatalet = function(){
             if(typeof previewFloatBox !== 'undefined') previewFloatBox.close();
             ODE.numDataletsInCocreationRooom++;
             window.dispatchEvent(new CustomEvent('ode-datalet-added-cocreation-room',{ detail : {'datalet_params' : ODE.dataletParameters, 'dataletId' : data.dataletId}}));
+            ODE.reset();
         },
         error: function( XMLHttpRequest, textStatus, errorThrown ){
             OW.error(textStatus);
