@@ -81,6 +81,15 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $ultraClarityUrl->setRequired();
         $form->addElement($ultraClarityUrl);
 
+
+        /* ELASTICMAIL APIKEY */
+        $elasticMailAPIKey = new TextField('elastic_mail_api_key');
+        $preference = BOL_PreferenceService::getInstance()->findPreference('elastic_mail_api_key');
+        $elastic_mail_api_key = empty($preference) ? "" : $preference->defaultValue;
+        $elasticMailAPIKey->setValue($elastic_mail_api_key);
+        $elasticMailAPIKey->setRequired();
+        $form->addElement($elasticMailAPIKey);
+
         $submit = new Submit('add');
         $submit->setValue('SUBMIT');
         $form->addElement($submit);
@@ -160,6 +169,19 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->defaultValue = $data['ultra_clarity_url'];
             $preference->sortOrder = 5;
             BOL_PreferenceService::getInstance()->savePreference($preference);
+
+            /* elastic_mail_api_key */
+            $preference = BOL_PreferenceService::getInstance()->findPreference('elastic_mail_api_key');
+
+            if(empty($preference))
+                $preference = new BOL_Preference();
+
+            $preference->key = 'elastic_mail_api_key';
+            $preference->sectionName = 'general';
+            $preference->defaultValue = $data['elastic_mail_api_key'];
+            $preference->sortOrder = 5;
+            BOL_PreferenceService::getInstance()->savePreference($preference);
+
 
         }
     }
