@@ -308,7 +308,7 @@ class ODE_CLASS_EventHandler
         if(!empty($datalet))
         {
             $content = $event->getDataProp('content');
-            $content .= '<div class="datalet_placeholder" id="datalet_placeholder_' . $id . '_comment"></div>';
+            $content .= '<div class="datalet_placeholder" id="datalet_placeholder_' . $id . '_comment" datalet-id="'.$datalet["dataletId"].'"></div>';
 
             // CACHE
 /*            OW::getDocument()->addOnloadScript('ODE.loadDatalet("'.$datalet["component"].'",
