@@ -74,12 +74,21 @@ class ODE_CLASS_Tools
                 throw new Exception("No jwt provided");
 
             $decoded_token = $this->decodeJwt($jwt);
+
             if (!empty($decoded_token)) {
+
                 $decoded_token = json_decode($decoded_token);
+
+                if(empty($decoded_token->email))
+                    throw new Exception("No user mail in decoded message");
+
                 $user = BOL_UserService::getInstance()->findByEmail($decoded_token->email);
                 if ($user)
                     return $user->id;
+            }else{
+                throw new Exception("Empty decoded token");
             }
+
         }catch (Exception $e)
         {
             throw new Exception($e->getMessage());
