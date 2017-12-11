@@ -59,9 +59,14 @@
                   parent.SPODPR.ControlletPresets = undefined;
                 }
 
-                if(parent.SPODPUBLICROOM != undefined && parent.SPODPUBLICROOM.suggested_datasets != undefined)
+                if(parent.AGORA != undefined && parent.AGORA.suggested_datasets != undefined)
                 {
-                    params["suggested-datasets"] = parent.SPODPUBLICROOM.suggested_datasets;
+                    params["suggested-datasets"] = JSON.stringify(parent.AGORA.suggested_datasets);
+                }
+
+                if(parent.COCREATION != undefined && parent.COCREATION.suggested_datasets != undefined)
+                {
+                    params["suggested-datasets"] = JSON.stringify(parent.COCREATION.suggested_datasets);
                 }
 
                 var iframe = parent.document.getElementById("ode_controllet_iframe_placeholder");
