@@ -75,6 +75,10 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $mySpaceButton->setValue("");
         $form->addElement($mySpaceButton);
 
+        $splodButton = new Button('splod_open_dialog');
+        $splodButton->setValue("");
+        $form->addElement($splodButton);
+
         $field = new HiddenField('ode_datalet');
         $form->addElement($field);
 
@@ -99,6 +103,9 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
             });
             $('#{$mySpaceButton->getId()}').click(function(e){
                 previewFloatBox = OW.ajaxFloatBox('SPODPR_CMP_PrivateRoomCardViewer', {data:['datalet']}, {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
+            });
+            $('#{$splodButton->getId()}').click(function(e){
+                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {component:'splod-visualization-controllet'} , {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
             });
         ";
 
