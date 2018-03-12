@@ -31,5 +31,6 @@ define("SPODPR_COMPONENTS_URL", $spodpr_components_url);
 
 OW::getRouter()->addRoute(new OW_Route('ode-settings', '/ode/settings', 'ODE_CTRL_Admin', 'settings'));
 OW::getRouter()->addRoute(new OW_Route('ode-providers', '/ode/providers', 'ODE_CTRL_Admin', 'providers'));
+OW::getRouter()->addRoute(new OW_Route('ode-tools', '/ode/tools', 'ODE_CTRL_Admin', 'tools'));
 
 ODE_CLASS_EventHandler::getInstance()->init();

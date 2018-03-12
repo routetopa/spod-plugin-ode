@@ -24,7 +24,13 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 //        $providersItem->setIconClass( 'ow_ic_help' );
         $providersItem->setOrder( 1 );
 
-        $menu = new BASE_CMP_ContentMenu( array( $settingsItem, $providersItem ) );
+        $toolsItem = new BASE_MenuItem();
+        $toolsItem->setLabel('TOOLS');
+        $toolsItem->setUrl( OW::getRouter()->urlForRoute( 'ode-tools' ) );
+        $toolsItem->setKey( 'tools' );
+        $toolsItem->setOrder( 2 );
+
+        $menu = new BASE_CMP_ContentMenu( array( $settingsItem, $providersItem, $toolsItem ) );
         $this->addComponent( 'menu', $menu );
 
         $this->setPageTitle('ODE SETTINGS');
@@ -202,7 +208,13 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 //        $providersItem->setIconClass( 'ow_ic_help' );
         $providersItem->setOrder( 1 );
 
-        $menu = new BASE_CMP_ContentMenu( array( $settingsItem, $providersItem ) );
+        $toolsItem = new BASE_MenuItem();
+        $toolsItem->setLabel('TOOLS');
+        $toolsItem->setUrl( OW::getRouter()->urlForRoute( 'ode-tools' ) );
+        $toolsItem->setKey( 'tools' );
+        $toolsItem->setOrder( 2 );
+
+        $menu = new BASE_CMP_ContentMenu( array( $settingsItem, $providersItem, $toolsItem ) );
         $this->addComponent( 'menu', $menu );
 
         $this->setPageTitle('ODE PROVIDERS');
@@ -245,6 +257,86 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $this->assign('providersList', $providersList);
         $this->assign('deleteUrls', $deleteUrls);
         $this->assign('createDatasetCache', OW::getRouter()->urlFor(__CLASS__, 'createDatasetCache'));
+    }
+
+    public function tools()
+    {
+        $settingsItem = new BASE_MenuItem();
+        $settingsItem->setLabel('SETTINGS');
+        $settingsItem->setUrl( OW::getRouter()->urlForRoute( 'ode-settings' ) );
+        $settingsItem->setKey( 'settings' );
+        $settingsItem->setIconClass( 'ow_ic_gear_wheel' );
+        $settingsItem->setOrder( 0 );
+
+        $providersItem = new BASE_MenuItem();
+        $providersItem->setLabel('PROVIDERS');
+        $providersItem->setUrl( OW::getRouter()->urlForRoute( 'ode-providers' ) );
+        $providersItem->setKey( 'tools' );
+//        $providersItem->setIconClass( 'ow_ic_help' );
+        $providersItem->setOrder( 1 );
+
+        $toolsItem = new BASE_MenuItem();
+        $toolsItem->setLabel('TOOLS');
+        $toolsItem->setUrl( OW::getRouter()->urlForRoute( 'ode-tools' ) );
+        $toolsItem->setKey( 'tools' );
+        $toolsItem->setOrder( 2 );
+
+        $menu = new BASE_CMP_ContentMenu( array( $settingsItem, $providersItem, $toolsItem ) );
+        $this->addComponent( 'menu', $menu );
+
+        $this->setPageTitle('ODE TOOLS');
+        $this->setPageHeading('ODE TOOLS');
+
+        $form = new Form('settings');
+        $this->addForm($form);
+
+        /* SPLOD IsVisible */
+        $SPLOD_visible = new CheckboxField('SPLOD_visible');
+        $preference = BOL_PreferenceService::getInstance()->findPreference('splod_is_visible_whatsnew');
+        $splod_pref = empty($preference) ? "0" : $preference->defaultValue;
+        $SPLOD_visible->setValue($splod_pref);
+        $form->addElement($SPLOD_visible);
+
+        /* MAPLET IsVisible */
+        $Maplet_visible = new CheckboxField('Maplet_visible');
+        $preference = BOL_PreferenceService::getInstance()->findPreference('maplet_is_visible_whatsnew');
+        $maplet_pref = empty($preference) ? "0" : $preference->defaultValue;
+        $Maplet_visible->setValue($maplet_pref);
+        $form->addElement($Maplet_visible);
+
+        $submit = new Submit('add');
+        $submit->setValue('SAVE');
+        $form->addElement($submit);
+
+        if ( OW::getRequest()->isPost() && $form->isValid($_POST))
+        {
+            $data = $form->getValues();
+
+            /* splod */
+            $preference = BOL_PreferenceService::getInstance()->findPreference('splod_is_visible_whatsnew');
+
+            if(empty($preference))
+                $preference = new BOL_Preference();
+
+            $preference->key = 'splod_is_visible_whatsnew';
+            $preference->sectionName = 'general';
+            $preference->defaultValue = $data['SPLOD_visible'] ? $data['SPLOD_visible'] : 0;
+            $preference->sortOrder = 1;
+            BOL_PreferenceService::getInstance()->savePreference($preference);
+
+            /* maplet */
+            $preference = BOL_PreferenceService::getInstance()->findPreference('maplet_is_visible_whatsnew');
+
+            if(empty($preference))
+                $preference = new BOL_Preference();
+
+            $preference->key = 'maplet_is_visible_whatsnew';
+            $preference->sectionName = 'general';
+            $preference->defaultValue = $data['Maplet_visible'] ? $data['Maplet_visible'] : 0;
+            $preference->sortOrder = 1;
+            BOL_PreferenceService::getInstance()->savePreference($preference);
+        }
+
     }
 
     public function delete( $params )

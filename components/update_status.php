@@ -67,17 +67,27 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
         $odeButton->setValue("");
         $form->addElement($odeButton);
 
-        $mapButton = new Button('map_open_dialog');
-        $mapButton->setValue("");
-        $form->addElement($mapButton);
-
         $mySpaceButton = new Button('my_space');
         $mySpaceButton->setValue("");
         $form->addElement($mySpaceButton);
 
-        $splodButton = new Button('splod_open_dialog');
-        $splodButton->setValue("");
-        $form->addElement($splodButton);
+        $preference_maplet = BOL_PreferenceService::getInstance()->findPreference('maplet_is_visible_whatsnew');
+        $this->assign('maplet_visible', $preference_maplet->defaultValue);
+        if($preference_maplet->defaultValue)
+        {
+            $mapButton = new Button('map_open_dialog');
+            $mapButton->setValue("");
+            $form->addElement($mapButton);
+        }
+
+        $preference_splod = BOL_PreferenceService::getInstance()->findPreference('splod_is_visible_whatsnew');
+        $this->assign('splod_visible', $preference_splod->defaultValue);
+        if($preference_splod->defaultValue)
+        {
+            $splodButton = new Button('splod_open_dialog');
+            $splodButton->setValue("");
+            $form->addElement($splodButton);
+        }
 
         $field = new HiddenField('ode_datalet');
         $form->addElement($field);
@@ -98,16 +108,24 @@ class ODE_CMP_UpdateStatus extends NEWSFEED_CMP_UpdateStatus
                 //$('#ode_controllet_placeholder').slideToggle('fast');
                 previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {} , {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
             });
-            $('#{$mapButton->getId()}').click(function(e){
-                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {component:'map-controllet'} , {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
-            });
             $('#{$mySpaceButton->getId()}').click(function(e){
                 previewFloatBox = OW.ajaxFloatBox('SPODPR_CMP_PrivateRoomCardViewer', {data:['datalet']}, {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
             });
-            $('#{$splodButton->getId()}').click(function(e){
-                previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {component:'splod-visualization-controllet'} , {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
-            });
         ";
+
+        if($preference_maplet->defaultValue)
+        {
+            $script .= "$('#{$mapButton->getId()}').click(function(e){
+                            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {component:'map-controllet'} , {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
+                        });";
+        }
+
+        if($preference_splod->defaultValue)
+        {
+            $script .= "$('#{$splodButton->getId()}').click(function(e){
+                            previewFloatBox = OW.ajaxFloatBox('ODE_CMP_Preview', {component:'splod-visualization-controllet'} , {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
+                        });";
+        }
 
         OW::getDocument()->addOnloadScript($script);
 
