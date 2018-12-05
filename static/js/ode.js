@@ -33,7 +33,8 @@ ODE.init = function()
     //Disable show/hide behaviour in newsfeed post
     $('.ow_newsfeed_context_menu_wrap, .ow_newsfeed_line').unbind("hover");
 
-    ComponentService.deep_url = ODE.deep_url;
+    ComponentService.components_url = ODE.deep_components;
+    ComponentService.deep_url       = ODE.deep_url;
 
     window.addEventListener('my-space_card-selected', function(e){
 
@@ -222,13 +223,16 @@ ODE.privateRoomDatalet = function ()
 
 ODE.setDataletValues = function (data)
 {
+    let params = JSON.stringify($.extend(data.params, data.context));
+
+
     $('input[name=ode_datalet]').val(data.datalet);
     // $('input[name=ode_fields]').val('"'+data.fields.join('","')+'"');
-    $('input[name=ode_params]').val(JSON.stringify(data.params));
+    $('input[name=ode_params]').val(params);
     $('input[name=ode_data]').val(data.staticData);
 
     ODE.dataletParameters.component = data.datalet;
-    ODE.dataletParameters.params    = JSON.stringify(data.params);
+    ODE.dataletParameters.params    = params;
     // ODE.dataletParameters.fields    = '"'+data.fields.join('","')+'"';
     ODE.dataletParameters.data      = data.staticData;
     ODE.dataletParameters.comment   = data.params.description;

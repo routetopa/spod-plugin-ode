@@ -38,14 +38,16 @@
         {
             if(addedJs == (dynamicAddedJs.length-1))
             {
-                ComponentService.deep_url = parent.ODE.deep_url;
+                ComponentService.components_url = parent.ODE.deep_components;
+                ComponentService.deep_url       = parent.ODE.deep_url;
 
                 var params =
                 {
                     'deep-url'          : parent.ODE.deep_url,
                     'datalets-list-url' : parent.ODE.deep_datalet_list,
                     'datasets'          : parent.ODE.ode_dataset_list.value,
-                    'localization'      : parent.ODE.user_language
+                    'localization'      : parent.ODE.user_language,
+                    'components-url'    : parent.ODE.deep_components
                 };
 
                 // Modify existing datalet
