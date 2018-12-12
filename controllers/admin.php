@@ -440,6 +440,28 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
                 }
                 continue;
             }
+
+
+            // Try DKAN
+            $ch = curl_init($p->url . "/?q=api/3/action/current_package_list_with_resources");
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $res = curl_exec($ch);
+            $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            if (200 == $retcode) {
+                $data = json_decode( $res, true );
+
+                $a = $this->getDKANDatasets($data, $p->id);
+                $l_a = count($a);
+                for($j = 0; $j < $l_a; $j++) {
+                    $providersDatasets[$p->id]['p_datasets'][] = $a[$j];
+                }
+                continue;
+            }
+
         }
 
         return json_encode($providersDatasets);
@@ -524,6 +546,40 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             );
         }
         return $treemapdata;
+    }
+
+    private function getDKANDatasets($data, $provider_id)
+    {
+        $treemapdata = array();
+        $datasets = $data['result'];
+        $datasetsCnt = count( $datasets );
+
+        for ($i = 0; $i < $datasetsCnt; $i++)
+        {
+            $ds = $datasets[$i];
+            $resourcesCnt = count($ds['resources']);
+            $resources = array();
+
+            for ($j = 0; $j < $resourcesCnt; $j++)
+                $resources[] =  $this->sanitizeInput($ds['resources'][$j]['title']);
+
+            if (count($resources) == 1)
+                $treemapdata[] = array(
+                    'name' => $this->sanitizeInput($ds['title']),
+                    'id' => $ds['id'],
+                    'p' => 'DKAN_' . $provider_id
+                );
+            else if(count($resources) > 1)
+                $treemapdata[] = array(
+                    'name' => $this->sanitizeInput($ds['title']),
+                    'id' => $ds['id'],
+                    'p' => 'DKAN_' . $provider_id,
+                    'resources' => $resources
+                );
+        }
+
+        return $treemapdata;
+
     }
 
     protected function sanitizeInput($str)
