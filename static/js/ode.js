@@ -131,8 +131,9 @@ ODE.savedDataletListener = function(e)
     switch(ODE.pluginPreview)
     {
         case 'newsfeed' :
-            $('#ode_controllet_placeholder').show('fast');
-            ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), 'ode_controllet_placeholder');
+            $('#ode_controllet_placeholder').show('fast',()=>{
+                ODE.loadDatalet(data.datalet, data.params, data.fields, data.staticData.replace(new RegExp("'", 'g'), " "), 'ode_controllet_placeholder');
+            });
             break;
         case 'comment' :
             $(ODE.commentTarget).closest(".ow_tooltip_body").append($('<div class="comment_datalet_placeholder" id="'+$(ODE.commentTarget).attr("data-id")+'_placeholder" />'));
