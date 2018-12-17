@@ -1,16 +1,15 @@
 {
-  "name": "lib",
+  "name": "datalet-image-creator",
   "version": "1.0.0",
+  "description": "datalet image creator",
   "main": "image_generator.js",
+  "dependencies": {
+    "puppeteer": "^1.11.0"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "fs": "^0.0.1-security",
-    "webshot": "^0.18.0"
-  },
-  "devDependencies": {},
-  "description": ""
+  "license": "ISC"
 }
