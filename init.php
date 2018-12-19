@@ -20,6 +20,11 @@ $preference = BOL_PreferenceService::getInstance()->findPreference('ode_webcompo
 $ode_webcomponents_js = empty($preference) ? "" : $preference->defaultValue;
 define("ODE_WEBCOMPONENTS_JS", $ode_webcomponents_js);
 
+$preference = BOL_PreferenceService::getInstance()->findPreference('ode_datalet_polyfill');
+$ode_datalet_polyfill = empty($preference) ? "" : $preference->defaultValue;
+define("ODE_DATALET_POLYFILL", $ode_datalet_polyfill);
+
+
 $preference = BOL_PreferenceService::getInstance()->findPreference('ode_ultra_clarity_url');
 $ode_ultra_clarity_url = empty($preference) ? "" : $preference->defaultValue;
 define("ODE_ULTRACLARITY_URL", $ode_ultra_clarity_url);

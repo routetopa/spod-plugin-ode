@@ -87,10 +87,10 @@ class ODE_CLASS_EventHandler
         // if request is Ajax, we don't need to re-execute the same code again!
         if (!OW::getRequest()->isAjax())
         {
-            // TODO try to bind this js inclusion to an event
-            // Load polyfill for browser not web-component ready
+            // Load polyfill for browser not web-component or polymer ready
             // Moved from ow_core/application.php#571 to here
             OW::getDocument()->addScript(ODE_WEBCOMPONENTS_JS, 'text/javascript', (-100));
+            OW::getDocument()->addScript(ODE_DATALET_POLYFILL, 'text/javascript', (-100));
 
             //Add ODE.JS script to all the Oxwall pages and set THEME_IMAGES_URL variable with theme image url
             OW::getDocument()->addScript(OW::getPluginManager()->getPlugin('ode')->getStaticJsUrl() . 'ode.js', 'text/javascript');
@@ -117,6 +117,7 @@ class ODE_CLASS_EventHandler
                 ODE.ajax_private_room_datalet = {$ajax_private_room_datalet}
                 ODE.ode_deep_client = {$ode_deep_client}
                 ODE.ode_webcomponents_js = {$ode_webcomponents_js}
+                ODE.ode_datalet_polyfill = {$ode_datalet_polyfill}
                 ODE.ode_ultra_clarity_url = {$ode_ultra_clarity_url}
                 ODE.is_private_room_active = {$is_private_room_active}
                 ODE.user_language = {$user_language}
@@ -133,6 +134,7 @@ class ODE_CLASS_EventHandler
                 //'ode_dataset_list' => ODE_BOL_Service::getInstance()->getSettingByKey('ode_datasets_list'),
                 'ode_deep_client' => ODE_DEEP_CLIENT,
                 'ode_webcomponents_js' => ODE_WEBCOMPONENTS_JS,
+                'ode_datalet_polyfill' => ODE_DATALET_POLYFILL,
                 'ode_ultra_clarity_url' => ODE_ULTRACLARITY_URL,
                 'is_private_room_active' => OW::getPluginManager()->isPluginActive('spodpr'),
                 'user_language' => BOL_LanguageService::getInstance()->getCurrent()->tag,

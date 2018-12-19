@@ -115,7 +115,7 @@ ODE.addOdeOnComment = function()
                 ODE.pluginPreview = 'comment';
                 ODE.commentTarget = e.target;
                 $('.ow_submit_auto_click').show();
-                document.getElementById('share_from_private_room').dispatchEvent(new Event('animated-button-container-controllet_open-window'));
+                previewFloatBox = OW.ajaxFloatBox('SPODPR_CMP_PrivateRoomCardViewer', {data:['datalet']}, {top:'56px', width:'calc(100vw - 112px)', height:'calc(100vh - 112px)', iconClass: 'ow_ic_add', title: ''});
             });
         }
 
