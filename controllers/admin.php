@@ -79,6 +79,15 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $webcomponents->setRequired();
         $form->addElement($webcomponents);
 
+        /* DATALET POLYFILL */
+        $datalet_polyfill = new TextField('datalet_polyfill');
+        $preference = BOL_PreferenceService::getInstance()->findPreference('ode_datalet_polyfill');
+        $ode_datalet_polyfill = empty($preference) ? "http://deep.routetopa.eu/COMPONENTS/datalets/lib/js/vendors/webcomponents_polyfill_ff/webcomponents-hi-sd-ce.js" : $preference->defaultValue;
+        $datalet_polyfill->setValue($ode_datalet_polyfill);
+        $datalet_polyfill->setRequired();
+        $form->addElement($datalet_polyfill);
+
+
         /* ULTRACLARITY URL */
         $ultraClarityUrl = new TextField('ultra_clarity_url');
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_ultra_clarity_url');
@@ -164,6 +173,18 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->sortOrder = 4;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
+            /* ode_datalet_polyfill */
+            $preference = BOL_PreferenceService::getInstance()->findPreference('ode_datalet_polyfill');
+
+            if(empty($preference))
+                $preference = new BOL_Preference();
+
+            $preference->key = 'ode_datalet_polyfill';
+            $preference->sectionName = 'general';
+            $preference->defaultValue = $data['datalet_polyfill'];
+            $preference->sortOrder = 5;
+            BOL_PreferenceService::getInstance()->savePreference($preference);
+
             /* ode_ultra_clarity_url */
             $preference = BOL_PreferenceService::getInstance()->findPreference('ode_ultra_clarity_url');
 
@@ -173,7 +194,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->key = 'ode_ultra_clarity_url';
             $preference->sectionName = 'general';
             $preference->defaultValue = $data['ultra_clarity_url'];
-            $preference->sortOrder = 5;
+            $preference->sortOrder = 6;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
             /* elastic_mail_api_key */
@@ -185,7 +206,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             $preference->key = 'elastic_mail_api_key';
             $preference->sectionName = 'general';
             $preference->defaultValue = $data['elastic_mail_api_key'];
-            $preference->sortOrder = 5;
+            $preference->sortOrder = 7;
             BOL_PreferenceService::getInstance()->savePreference($preference);
 
 
