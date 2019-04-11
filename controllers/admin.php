@@ -517,7 +517,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 //    }
 
     private function getCkanDatasets($data, $provider_id) {
-//        $filter = ['csv', 'ods', 'xls', 'xlsx'];
+        $filter = ['csv', 'ods', 'xls', 'xlsx'];
 
         $treemapdata = array();
         $datasets = $data['result']['results'];
@@ -529,12 +529,12 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
             for ($j = 0; $j < $resourcesCnt; $j++)
 //                if (strcasecmp($ds['resources'][$j]['format'], 'csv') == 0)
 
-//                if (in_array(strtolower($ds['resources'][$j]['format']), $filter))
-//                    $resources[] = $ds['resources'][$j]['name'];
-//                else
-//                    $resources[] = [$ds['resources'][$j]['name'], 'disabled'];
+                if (in_array(strtolower($ds['resources'][$j]['format']), $filter))
+                    $resources[] = $ds['resources'][$j]['name'];
+                else
+                    $resources[] = [$ds['resources'][$j]['name'], 'disabled'];
 
-                $resources[] =  $this->sanitizeInput($ds['resources'][$j]['name']);
+//                $resources[] =  $this->sanitizeInput($ds['resources'][$j]['name']);
 
                 if (count($resources) == 1)
                     $treemapdata[] = array(
@@ -605,7 +605,8 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
 
     protected function sanitizeInput($str)
     {
-        return str_replace("'", "&#39;", !empty($str) ? $str : "");
+//        return str_replace("'", "&#39;", !empty($str) ? $str : "");
+        return $str;
     }
 
 }
