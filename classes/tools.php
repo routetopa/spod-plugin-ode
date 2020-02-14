@@ -28,7 +28,7 @@ class ODE_CLASS_Tools
             $data = json_decode($res, true);
             foreach ($data as $datalet)
             {
-                $definitions .= "<link rel='import' href='{$datalet['url']}{$datalet['name']}.html' />";
+                $definitions .= "<script type='module' src='{$datalet['url']}{$datalet['name']}.js' />";
             }
         }
 
