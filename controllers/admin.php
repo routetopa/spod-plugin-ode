@@ -84,7 +84,7 @@ class ODE_CTRL_Admin extends ADMIN_CTRL_Abstract
         $preference = BOL_PreferenceService::getInstance()->findPreference('ode_datalet_polyfill');
         $ode_datalet_polyfill = empty($preference) ? "http://deep.routetopa.eu/COMPONENTS/datalets/lib/js/vendors/webcomponents_polyfill_ff/webcomponents-hi-sd-ce.js" : $preference->defaultValue;
         $datalet_polyfill->setValue($ode_datalet_polyfill);
-        $datalet_polyfill->setRequired();
+        //$datalet_polyfill->setRequired();
         $form->addElement($datalet_polyfill);
 
 
