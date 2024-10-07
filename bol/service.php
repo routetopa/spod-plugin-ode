@@ -181,6 +181,7 @@ class ODE_BOL_Service
         $dt->status    = 'approved';
         $dt->privacy   = 'everybody';
         $dt->data      = $cache;
+        $dt->timestamp = date('Y-m-d H:i:s',time());
         ODE_BOL_DataletDao::getInstance()->save($dt);
 
         return $dt;
@@ -200,6 +201,7 @@ class ODE_BOL_Service
         $dt->status    = 'approved';
         $dt->privacy   = 'everybody';
         $dt->data      = $cache;
+        $dt->timestamp = date('Y-m-d H:i:s',time());
         ODE_BOL_DataletDao::getInstance()->save($dt);
 
         $dtp            = new ODE_BOL_DataletPost();
